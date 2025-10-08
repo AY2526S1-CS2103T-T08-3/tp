@@ -36,4 +36,14 @@ public class ListCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
     }
+
+    @Test
+    void execute_listByTag_clients_showsTagged() {
+        PersonHasTagPredicate pred = new PersonHasTagPredicate("clients");
+        expectedModel.updateFilteredPersonList(pred);
+
+        assertCommandSuccess(new ListCommand(pred), model,
+                String.format(ListCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
+    }
 }
