@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.model.person.predicate.PersonHasTagPredicate; 
 
 class ListCommandParserTest {
     private final ListCommandParser parser = new ListCommandParser();

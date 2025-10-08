@@ -5,6 +5,14 @@ import java.util.function.Predicate;
 
 import seedu.address.model.person.Person;
 
+/**
+ * Tests that a {@code Person} has a tag with the given name (case-insensitive).
+ *
+ * <p>Example: new PersonHasTagPredicate("clients") returns {@code true} for any person
+ * who has a tag named "clients", regardless of case.</p>
+ */
+
+
 public class PersonHasTagPredicate implements Predicate<Person> {
     private final String tagNameLower;
 

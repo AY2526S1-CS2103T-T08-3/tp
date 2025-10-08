@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.predicate.PersonHasTagPredicate; 
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for ListCommand.
@@ -38,12 +39,12 @@ public class ListCommandTest {
     }
 
     @Test
-    void execute_listByTag_clients_showsTagged() {
-        PersonHasTagPredicate pred = new PersonHasTagPredicate("clients");
-        expectedModel.updateFilteredPersonList(pred);
+public void execute_listByTag_friends_showsTagged() {
+    PersonHasTagPredicate pred = new PersonHasTagPredicate("friends");
+    expectedModel.updateFilteredPersonList(pred);
 
-        assertCommandSuccess(new ListCommand(pred), model,
-                String.format(ListCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
-                expectedModel);
-    }
+    assertCommandSuccess(new ListCommand(pred), model,
+            ListCommand.MESSAGE_SUCCESS, expectedModel);
+}
+
 }
