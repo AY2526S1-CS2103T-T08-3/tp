@@ -34,7 +34,8 @@ public class Person {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Department dept, Role role, Team team, Skills skills, Set<Category> categories, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Department dept, Role role,
+            Team team, Skills skills, Set<Category> categories, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, dept, role, team, skills, categories, tags);
         this.name = name;
         this.phone = phone;
@@ -63,7 +64,7 @@ public class Person {
     public Role getRole() {
         return role;
     }
-    
+
     public Department getDept() {
         return dept;
     }

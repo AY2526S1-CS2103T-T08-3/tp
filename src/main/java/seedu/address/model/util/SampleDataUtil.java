@@ -8,15 +8,14 @@ import java.util.stream.Collectors;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.person.Address;
+import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Department;
 import seedu.address.model.person.Role;
-import seedu.address.model.person.Team;
 import seedu.address.model.person.Skills;
+import seedu.address.model.person.Team;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 
@@ -36,7 +35,7 @@ public class SampleDataUtil {
                     new Department("Engineering"), new Role("Engineer"), new Team("Team 3"), new Skills("Python"),
                     EMPTY_CATEGORY, getTagSet("colleagues", "friends")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                    new Department("Engineering"), new Role("Engineer"), new Team("Team 3"), new Skills("Python"),                 
+                    new Department("Engineering"), new Role("Engineer"), new Team("Team 3"), new Skills("Python"),
                     EMPTY_CATEGORY, getTagSet("neighbours")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                     new Department("Engineering"), new Role("Engineer"), new Team("Team 3"), new Skills("Python"),

@@ -10,15 +10,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Address;
+import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
-import seedu.address.model.person.Department;
-import seedu.address.model.person.Role;
-import seedu.address.model.person.Team;
-import seedu.address.model.person.Skills;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
+import seedu.address.model.person.Skills;
+import seedu.address.model.person.Team;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 
@@ -43,25 +42,25 @@ class JsonAdaptedPerson {
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
-        public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-                @JsonProperty("email") String email, @JsonProperty("address") String address,
-                @JsonProperty("categories") List<JsonAdaptedCategory> categories,
-                @JsonProperty("tags") List<JsonAdaptedTag> tags) {
-            this.name = name;
-            this.phone = phone;
-            this.email = email;
-            this.dept = "";
-            this.role = "";
-            this.team = "";
-            this.skills = "";
+    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
+            @JsonProperty("email") String email, @JsonProperty("address") String address,
+            @JsonProperty("categories") List<JsonAdaptedCategory> categories,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.dept = "";
+        this.role = "";
+        this.team = "";
+        this.skills = "";
 
-            if (categories != null) {
-                this.categories.addAll(categories);
-            }
-            if (tags != null) {
-                this.tags.addAll(tags);
-            }
+        if (categories != null) {
+            this.categories.addAll(categories);
         }
+        if (tags != null) {
+            this.tags.addAll(tags);
+        }
+    }
 
     /**
      * Converts a given {@code Person} into this class for Jackson use.
@@ -76,8 +75,7 @@ class JsonAdaptedPerson {
         skills = source.getSkills().value;
         categories.addAll(source.getCategories().stream()
                 .map(cat -> new JsonAdaptedCategory(cat.getCategory(), cat.getValue()))
-                .collect(Collectors.toList())
-                );
+                .collect(Collectors.toList()));
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -121,7 +119,7 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
         }
         final Email modelEmail = new Email(email);
-        
+
         if (!Department.isValidDept(dept)) {
             throw new IllegalValueException(Department.MESSAGE_CONSTRAINTS);
         }
@@ -144,7 +142,8 @@ class JsonAdaptedPerson {
 
         final Set<Category> modelCategory = new HashSet<>(personCategories);
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelDept, modelRole, modelTeam, modelSkills, modelCategory, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelDept, modelRole,
+                modelTeam, modelSkills, modelCategory, modelTags);
     }
 
 }
