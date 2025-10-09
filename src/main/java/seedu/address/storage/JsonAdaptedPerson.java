@@ -10,11 +10,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Address;
+import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
+import seedu.address.model.person.Skills;
+import seedu.address.model.person.Team;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 
@@ -28,7 +31,10 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
-    private final String address;
+    private final String dept;
+    private final String role;
+    private final String team;
+    private final String skills;
     private final List<JsonAdaptedCategory> categories = new ArrayList<>();
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
@@ -37,13 +43,17 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-                             @JsonProperty("email") String email, @JsonProperty("address") String address,
-                             @JsonProperty("categories") List<JsonAdaptedCategory> categories,
-                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("email") String email, @JsonProperty("address") String address,
+            @JsonProperty("categories") List<JsonAdaptedCategory> categories,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.address = address;
+        this.dept = "";
+        this.role = "";
+        this.team = "";
+        this.skills = "";
+
         if (categories != null) {
             this.categories.addAll(categories);
         }
@@ -59,11 +69,13 @@ class JsonAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
-        address = source.getAddress().value;
+        dept = source.getDept().value;
+        role = source.getRole().value;
+        team = source.getTeam().value;
+        skills = source.getSkills().value;
         categories.addAll(source.getCategories().stream()
                 .map(cat -> new JsonAdaptedCategory(cat.getCategory(), cat.getValue()))
-                .collect(Collectors.toList())
-        );
+                .collect(Collectors.toList()));
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -108,16 +120,30 @@ class JsonAdaptedPerson {
         }
         final Email modelEmail = new Email(email);
 
-        if (address == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
+        if (!Department.isValidDept(dept)) {
+            throw new IllegalValueException(Department.MESSAGE_CONSTRAINTS);
         }
-        if (!Address.isValidAddress(address)) {
-            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
+        final Department modelDept = new Department(dept);
+
+        if (!Role.isValidRole(role)) {
+            throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
         }
-        final Address modelAddress = new Address(address);
+        final Role modelRole = new Role(role);
+
+        if (!Team.isValidTeam(team)) {
+            throw new IllegalValueException(Team.MESSAGE_CONSTRAINTS);
+        }
+        final Team modelTeam = new Team(team);
+
+        if (!Skills.isValidSkills(skills)) {
+            throw new IllegalValueException(Skills.MESSAGE_CONSTRAINTS);
+        }
+        final Skills modelSkills = new Skills(skills);
+
         final Set<Category> modelCategory = new HashSet<>(personCategories);
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelCategory, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelDept, modelRole,
+                modelTeam, modelSkills, modelCategory, modelTags);
     }
 
 }
