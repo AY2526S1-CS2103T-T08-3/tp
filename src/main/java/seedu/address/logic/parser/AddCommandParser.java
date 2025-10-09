@@ -8,6 +8,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DEPARTMENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILLS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TEAM;
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -19,6 +23,10 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Department;
+import seedu.address.model.person.Role;
+import seedu.address.model.person.Team;
+import seedu.address.model.person.Skills;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 
@@ -36,24 +44,34 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args,
                         PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                        PREFIX_ADDRESS, PREFIX_ASSIGN_CATEGORY, PREFIX_ASSIGN_CATEGORY_VALUE, PREFIX_TAG);
+                        PREFIX_ADDRESS, PREFIX_ASSIGN_CATEGORY, PREFIX_ASSIGN_CATEGORY_VALUE, PREFIX_TAG, PREFIX_ROLE,
+                        PREFIX_TEAM, PREFIX_SKILLS, PREFIX_DEPARTMENT);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_DEPARTMENT, PREFIX_ROLE, PREFIX_SKILLS, PREFIX_TEAM, PREFIX_PHONE, PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ROLE, PREFIX_DEPARTMENT);
+        
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-        Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+        
+
+        // Potetial refactor into parserUtil
+        Department dept = new Department(argMultimap.getValue(PREFIX_DEPARTMENT).orElse(""));
+        Role role = new Role(argMultimap.getValue(PREFIX_ROLE).orElse(""));
+        Team team = new Team(argMultimap.getValue(PREFIX_TEAM).orElse(""));
+        Skills skills = new Skills(argMultimap.getValue(PREFIX_SKILLS).orElse(""));
+        
+
         Set<Category> categoryList =
                 ParserUtil.parseCategories(argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY),
                         argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY_VALUE));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(name, phone, email, address, categoryList, tagList);
+        Person person = new Person(name, phone, email, dept, role, team, skills, categoryList, tagList);
 
         return new AddCommand(person);
     }
