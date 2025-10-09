@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.testutil.TypicalPersons;
 import seedu.address.model.person.predicate.PersonHasTagPredicate;
+import seedu.address.testutil.TypicalPersons;
 
 public class ListCommandTest {
 
