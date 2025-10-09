@@ -102,7 +102,7 @@ public class PersonBuilder {
         this.phone = new Phone(phone);
         return this;
     }
-    
+
     /**
      * Sets the {@code Department} of the {@code Person} that we are building.
      */
