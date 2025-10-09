@@ -6,6 +6,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILLS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DEPARTMENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TEAM;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -18,25 +24,29 @@ import seedu.address.model.person.Person;
  */
 public class AddCommand extends Command {
 
-    public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_WORD = "add_employee";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an employee to the list. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
+            + PREFIX_DEPARTMENT + "DEPARTMENT "
+            + PREFIX_ROLE + "ROLE "
+            + PREFIX_TEAM + "TEAM "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
-            + PREFIX_ADDRESS + "ADDRESS "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + PREFIX_SKILLS + "SKILLS "
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
-            + PREFIX_PHONE + "98765432 "
-            + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
-            + PREFIX_TAG + "friends "
-            + PREFIX_TAG + "owesMoney";
+            + PREFIX_DEPARTMENT + "Engineering "
+            + PREFIX_TEAM + "Team 3 "
+            + PREFIX_ROLE + "Software Engineer "
+            + PREFIX_PHONE + "9234568 "
+            + PREFIX_EMAIL + "john.doe@example.com "
+            + PREFIX_SKILLS + "Python,Java ";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+
+    public static final String MESSAGE_SUCCESS = "Employee added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "Error: Employee %$1s alreading exists";
 
     private final Person toAdd;
 
