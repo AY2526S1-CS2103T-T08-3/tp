@@ -4,11 +4,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import seedu.address.model.person.Address;
+
+import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
+import seedu.address.model.person.Team;
+import seedu.address.model.person.Skills;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -21,12 +25,19 @@ public class PersonBuilder {
     public static final String DEFAULT_NAME = "Amy Bee";
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_ROLE = "none";
+    public static final String DEFAULT_TEAM = "nowhere";
+    public static final String DEFAULT_DEPARTMENT = "homeless";
+    public static final String DEFAULT_SKILLS = "nothing";
+
 
     private Name name;
     private Phone phone;
     private Email email;
-    private Address address;
+    private Department dept;
+    private Skills skills;
+    private Role role;
+    private Team team;
     private Set<Category> categories;
     private Set<Tag> tags;
 
@@ -37,7 +48,10 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
-        address = new Address(DEFAULT_ADDRESS);
+        dept = new Department(DEFAULT_DEPARTMENT);
+        role = new Role(DEFAULT_ROLE);
+        team = new Team(DEFAULT_TEAM);
+        skills = new Skills(DEFAULT_SKILLS);
         categories = new HashSet<>();
         tags = new HashSet<>();
     }
@@ -49,7 +63,10 @@ public class PersonBuilder {
         name = personToCopy.getName();
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
-        address = personToCopy.getAddress();
+        dept = personToCopy.getDept();
+        role = personToCopy.getRole();
+        team = personToCopy.getTeam();
+        skills = personToCopy.getSkills();
         categories = personToCopy.getCategories();
         tags = new HashSet<>(personToCopy.getTags());
     }
@@ -79,18 +96,43 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the {@code Address} of the {@code Person} that we are building.
-     */
-    public PersonBuilder withAddress(String address) {
-        this.address = new Address(address);
-        return this;
-    }
-
-    /**
      * Sets the {@code Phone} of the {@code Person} that we are building.
      */
     public PersonBuilder withPhone(String phone) {
         this.phone = new Phone(phone);
+        return this;
+    }
+    
+    /**
+     * Sets the {@code Department} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withDept(String dept) {
+        this.dept = new Department(dept);
+        return this;
+    }
+
+
+    /**
+     * Sets the {@code Role} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRole(String role) {
+        this.role = new Role(role);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Team} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withTeam(String team) {
+        this.team = new Team(team);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Skills} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withSkills(String skills) {
+        this.skills = new Skills(skills);
         return this;
     }
 
@@ -103,7 +145,9 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, categories, tags);
+        return new Person(name, phone, email,
+                dept, role, team, skills,
+                categories, tags);
     }
 
 }
