@@ -1,0 +1,8 @@
+.category-box {
+    -fx-font-size: 10px;
+    -fx-padding: 2 6 2 6;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}
