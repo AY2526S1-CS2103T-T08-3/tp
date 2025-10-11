@@ -9,7 +9,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Cancels the deletion of a person previously marked for deletion from the address book.
  */
 public class ConfirmCancelCommand extends Command {
 

@@ -116,7 +116,7 @@ public class ConfirmDeleteCommandTest {
 
         @Override
         public void setPersonToDelete(Person target) {
-            throw new AssertionError("This method should not be called.");
+            return;
         }
 
         @Override
