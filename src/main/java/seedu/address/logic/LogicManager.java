@@ -50,7 +50,8 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command = parseCommand(commandText);
+
         commandResult = command.execute(model);
 
         try {
@@ -62,6 +63,14 @@ public class LogicManager implements Logic {
         }
 
         return commandResult;
+    }
+
+    private Command parseCommand(String commandText) throws ParseException {
+        if (model.hasPersonToDelete()) {
+            return confirmationParser.parseCommand(commandText);
+        } else {
+            return addressBookParser.parseCommand(commandText);
+        }
     }
 
     @Override
