@@ -8,12 +8,12 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Team {
 
-    public static final String MESSAGE_CONSTRAINTS = "Team can take any values, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Team can take any value";
 
     /*
      * The first character of the team must not be a whitespace,
      */
-    public static final String VALIDATION_REGEX = "[^\\s].*";
+    public static final String VALIDATION_REGEX = "(^$)|[^\\s].*";
 
     public final String value;
 

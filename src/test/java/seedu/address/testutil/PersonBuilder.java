@@ -4,15 +4,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Role;
-import seedu.address.model.person.Team;
 import seedu.address.model.person.Skills;
+import seedu.address.model.person.Team;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -144,6 +143,9 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Returns the final built {@code Person}
+     */
     public Person build() {
         return new Person(name, phone, email,
                 dept, role, team, skills,

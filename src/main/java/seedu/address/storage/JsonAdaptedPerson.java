@@ -43,16 +43,18 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("address") String address,
+            @JsonProperty("email") String email, @JsonProperty("department") String dept,
+            @JsonProperty("role") String role, @JsonProperty("team") String team,
+            @JsonProperty("skills") String skills,
             @JsonProperty("categories") List<JsonAdaptedCategory> categories,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.dept = "";
-        this.role = "";
-        this.team = "";
-        this.skills = "";
+        this.dept = dept;
+        this.role = role;
+        this.team = team;
+        this.skills = skills;
 
         if (categories != null) {
             this.categories.addAll(categories);
