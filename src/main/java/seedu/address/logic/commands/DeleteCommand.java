@@ -12,7 +12,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Marks a person for deletion identified using it's displayed index from the address book.
  */
 public class DeleteCommand extends Command {
 
@@ -23,7 +23,9 @@ public class DeleteCommand extends Command {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Employee deleted: %1$s";
+    public static final String MESSAGE_DELETE_PERSON_CONFIRMATION =
+            "Are you sure you want to delete: %1$s?\n"
+            + "Enter \"yes\" to confirm deletion";
 
     private final Index targetIndex;
 
@@ -41,8 +43,8 @@ public class DeleteCommand extends Command {
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
-        model.deletePerson(personToDelete);
-        String feedbackString = String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.formatShort(personToDelete));
+        model.setPersonToDelete(personToDelete);
+        String feedbackString = String.format(MESSAGE_DELETE_PERSON_CONFIRMATION, Messages.formatShort(personToDelete));
         return new CommandResult(feedbackString);
     }
 

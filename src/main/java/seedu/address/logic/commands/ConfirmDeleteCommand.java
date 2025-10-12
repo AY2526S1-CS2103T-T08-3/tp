@@ -9,7 +9,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Confirms the deletion of a person previously marked for deletion from the address book.
  */
 public class ConfirmDeleteCommand extends Command {
 
@@ -29,6 +29,7 @@ public class ConfirmDeleteCommand extends Command {
 
         Person personToDelete = model.getPersonToDelete();
         model.deletePerson(personToDelete);
+        model.setPersonToDelete(null);
         String feedbackString = String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.formatShort(personToDelete));
         return new CommandResult(feedbackString);
     }
