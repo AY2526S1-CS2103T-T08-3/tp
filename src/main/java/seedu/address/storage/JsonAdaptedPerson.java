@@ -51,10 +51,10 @@ class JsonAdaptedPerson {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.dept = dept;
-        this.role = role;
-        this.team = team;
-        this.skills = skills;
+        this.dept = dept == null ? "" : dept;
+        this.role = role == null ? "" : role;
+        this.team = team == null ? "" : team;
+        this.skills = skills == null ? "" : skills;
 
         if (categories != null) {
             this.categories.addAll(categories);
