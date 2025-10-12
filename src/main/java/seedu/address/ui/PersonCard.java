@@ -10,7 +10,7 @@ import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * A UI component that displays information of a {@code Person}.
  */
 public class PersonCard extends UiPart<Region> {
 
@@ -46,6 +46,8 @@ public class PersonCard extends UiPart<Region> {
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private FlowPane categories;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -61,8 +63,38 @@ public class PersonCard extends UiPart<Region> {
         role.setText(person.getRole().value);
         team.setText(person.getTeam().value);
         skills.setText(person.getSkills().value);
+        person.getCategories().stream()
+                .sorted(Comparator.comparing(category -> category.value))
+                .forEach(category -> {
+                    Label catLabel = new Label(category.value);
+                    String bgColor = boxColor(category.category);
+
+                    catLabel.getStyleClass().add("category-box");
+                    catLabel.setStyle("-fx-background-color: "
+                            + (bgColor.isEmpty() ? "#A9A9A9" : bgColor) + ";");
+                    categories.getChildren().add(catLabel);
+                });
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+    }
+
+    private String boxColor(String category) {
+        StringBuilder sb = new StringBuilder();
+        switch (category) {
+        case "Role":
+            sb.append("#008B8B"); //DarkCyan
+            break;
+        case "Department":
+            sb.append("#006400"); //DarkGreen
+            break;
+        case "Team":
+            sb.append("#FF1493"); //DeepPink
+            break;
+        default:
+            break;
+        }
+
+        return sb.toString();
     }
 }
