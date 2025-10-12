@@ -3,7 +3,6 @@ package seedu.address.storage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Category;
 
 /**
@@ -41,10 +40,8 @@ class JsonAdaptedCategory {
 
     /**
      * Converts this Jackson-friendly adapted category object into the model's {@code Category} object.
-     *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted category.
      */
-    public Category toModelType() throws IllegalValueException {
+    public Category toModelType() {
         return new Category(category, value);
     }
 

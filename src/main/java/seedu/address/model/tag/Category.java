@@ -1,8 +1,8 @@
 package seedu.address.model.tag;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Represents an Employee's category(Role/Department/Team) in the directory.
@@ -19,7 +19,8 @@ public class Category {
      * @param value A valid category value.
      */
     public Category(String category, String value) {
-        requireNonNull(category, value);
+        requireNonNull(category);
+        requireNonNull(value);
 
         this.category = category;
         this.value = value;
