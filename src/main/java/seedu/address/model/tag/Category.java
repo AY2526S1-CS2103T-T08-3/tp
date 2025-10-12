@@ -1,8 +1,8 @@
 package seedu.address.model.tag;
 
-import java.util.Objects;
-
 import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
 
 /**
  * Represents an Employee's category(Role/Department/Team) in the directory.
