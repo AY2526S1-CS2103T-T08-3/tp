@@ -3,6 +3,8 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -17,6 +19,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -32,7 +35,8 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                        PREFIX_ASSIGN_CATEGORY, PREFIX_ASSIGN_CATEGORY_VALUE, PREFIX_TAG);
 
         Index index;
 
@@ -58,6 +62,9 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
+        parseCategoriesForEdit(argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY),
+                argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY_VALUE))
+                .ifPresent(editPersonDescriptor::setCategories);
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
@@ -65,6 +72,26 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         return new EditCommand(index, editPersonDescriptor);
+    }
+
+    /**
+     * Parses {@code Collection<String> categories} into a {@code Set<Category>} if {@code categories} is non-empty.
+     * If {@code categories} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Category>} containing zero categories.
+     */
+    private Optional<Set<Category>> parseCategoriesForEdit(Collection<String> categories, Collection<String> values)
+            throws ParseException {
+        assert categories != null;
+        assert values != null;
+
+        if (categories.isEmpty() || values.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> categorySet = categories.size() == 1 && categories.contains("")
+                ? Collections.emptySet() : categories;
+        Collection<String> valueSet = values.size() == 1 && values.contains("")
+                ? Collections.emptySet() : values;
+        return Optional.of(ParserUtil.parseCategories(categorySet, valueSet));
     }
 
     /**
