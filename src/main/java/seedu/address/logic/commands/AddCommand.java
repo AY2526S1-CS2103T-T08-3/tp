@@ -38,7 +38,7 @@ public class AddCommand extends Command {
             + PREFIX_ROLE + "Software Engineer "
             + PREFIX_PHONE + "9234568 "
             + PREFIX_EMAIL + "john.doe@example.com "
-            + PREFIX_SKILLS + "Python,Java ";
+            + PREFIX_SKILLS + "Python";
 
 
     public static final String MESSAGE_SUCCESS = "Employee added: %1$s";

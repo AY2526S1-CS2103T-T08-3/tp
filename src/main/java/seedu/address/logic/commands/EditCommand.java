@@ -106,8 +106,7 @@ public class EditCommand extends Command {
         Set<Category> updatedCategories = editPersonDescriptor.getCategories().orElse(personToEdit.getCategories());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, personToEdit.getDept(),
-                personToEdit.getRole(), personToEdit.getTeam(), personToEdit.getSkills(),
+        return new Person(updatedName, updatedPhone, updatedEmail,
                 updatedCategories, updatedTags);
     }
 

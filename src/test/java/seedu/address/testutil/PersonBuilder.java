@@ -4,14 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Role;
-import seedu.address.model.person.Skills;
-import seedu.address.model.person.Team;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -33,10 +29,6 @@ public class PersonBuilder {
     private Name name;
     private Phone phone;
     private Email email;
-    private Department dept;
-    private Skills skills;
-    private Role role;
-    private Team team;
     private Set<Category> categories;
     private Set<Tag> tags;
 
@@ -47,10 +39,6 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
-        dept = new Department(DEFAULT_DEPARTMENT);
-        role = new Role(DEFAULT_ROLE);
-        team = new Team(DEFAULT_TEAM);
-        skills = new Skills(DEFAULT_SKILLS);
         categories = new HashSet<>();
         tags = new HashSet<>();
     }
@@ -62,10 +50,6 @@ public class PersonBuilder {
         name = personToCopy.getName();
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
-        dept = personToCopy.getDept();
-        role = personToCopy.getRole();
-        team = personToCopy.getTeam();
-        skills = personToCopy.getSkills();
         categories = personToCopy.getCategories();
         tags = new HashSet<>(personToCopy.getTags());
     }
@@ -103,39 +87,6 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the {@code Department} of the {@code Person} that we are building.
-     */
-    public PersonBuilder withDept(String dept) {
-        this.dept = new Department(dept);
-        return this;
-    }
-
-
-    /**
-     * Sets the {@code Role} of the {@code Person} that we are building.
-     */
-    public PersonBuilder withRole(String role) {
-        this.role = new Role(role);
-        return this;
-    }
-
-    /**
-     * Sets the {@code Team} of the {@code Person} that we are building.
-     */
-    public PersonBuilder withTeam(String team) {
-        this.team = new Team(team);
-        return this;
-    }
-
-    /**
-     * Sets the {@code Skills} of the {@code Person} that we are building.
-     */
-    public PersonBuilder withSkills(String skills) {
-        this.skills = new Skills(skills);
-        return this;
-    }
-
-    /**
      * Sets the {@code Email} of the {@code Person} that we are building.
      */
     public PersonBuilder withEmail(String email) {
@@ -148,7 +99,6 @@ public class PersonBuilder {
      */
     public Person build() {
         return new Person(name, phone, email,
-                dept, role, team, skills,
                 categories, tags);
     }
 

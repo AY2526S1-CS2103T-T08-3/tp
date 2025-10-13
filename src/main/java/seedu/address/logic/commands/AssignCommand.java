@@ -62,7 +62,6 @@ public class AssignCommand extends Command {
         updatedCategories.add(categoryObject);
 
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getDept(), personToEdit.getRole(), personToEdit.getTeam(), personToEdit.getSkills(),
                 updatedCategories, personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);

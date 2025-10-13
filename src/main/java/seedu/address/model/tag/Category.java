@@ -8,7 +8,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Guarantees: immutable; category and value is valid as declared in {@link #isValidData(String)}
  */
 public class Category {
-    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric";
+    public static final String MESSAGE_CONSTRAINTS = "Categories should be alphanumeric";
     public static final String VALIDATION_REGEX = "\\p{Alnum}+";
 
     public final String category;

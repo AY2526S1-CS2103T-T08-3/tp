@@ -22,28 +22,18 @@ public class Person {
     private final Phone phone;
     private final Email email;
 
-    // Data fields
-    private final Department dept;
-    private final Role role;
-    private final Skills skills;
-    private final Team team;
-
     private final Set<Category> categories = new HashSet<>();
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Department dept, Role role,
-            Team team, Skills skills, Set<Category> categories, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, dept, role, team, skills, categories, tags);
+    public Person(Name name, Phone phone, Email email,
+            Set<Category> categories, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, categories, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.dept = dept;
-        this.role = role;
-        this.skills = skills;
-        this.team = team;
 
         this.categories.addAll(categories);
         this.tags.addAll(tags);
@@ -59,22 +49,6 @@ public class Person {
 
     public Email getEmail() {
         return email;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public Department getDept() {
-        return dept;
-    }
-
-    public Skills getSkills() {
-        return skills;
-    }
-
-    public Team getTeam() {
-        return team;
     }
 
     /**

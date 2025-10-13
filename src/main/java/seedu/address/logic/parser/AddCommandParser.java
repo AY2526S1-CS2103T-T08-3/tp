@@ -2,8 +2,6 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DEPARTMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -13,19 +11,16 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILLS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TEAM;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Role;
-import seedu.address.model.person.Skills;
-import seedu.address.model.person.Team;
 import seedu.address.model.tag.Category;
 import seedu.address.model.tag.Tag;
 
@@ -43,7 +38,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args,
                         PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                        PREFIX_ADDRESS, PREFIX_ASSIGN_CATEGORY, PREFIX_ASSIGN_CATEGORY_VALUE, PREFIX_TAG, PREFIX_ROLE,
+                        PREFIX_ADDRESS, PREFIX_TAG, PREFIX_ROLE,
                         PREFIX_TEAM, PREFIX_SKILLS, PREFIX_DEPARTMENT);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME,
@@ -60,18 +55,17 @@ public class AddCommandParser implements Parser<AddCommand> {
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
 
         // Potetial refactor into parserUtil
-        Department dept = new Department(argMultimap.getValue(PREFIX_DEPARTMENT).orElse(""));
-        Role role = new Role(argMultimap.getValue(PREFIX_ROLE).orElse(""));
-        Team team = new Team(argMultimap.getValue(PREFIX_TEAM).orElse(""));
-        Skills skills = new Skills(argMultimap.getValue(PREFIX_SKILLS).orElse(""));
+        Set<Category> categoryList = new HashSet<>();
+        argMultimap.getValue(PREFIX_DEPARTMENT).ifPresent(
+                d -> categoryList.add(new Category("Department", d)));
+        argMultimap.getValue(PREFIX_ROLE).ifPresent(
+                r -> categoryList.add(new Category("Role", r)));
+        argMultimap.getValue(PREFIX_TEAM).ifPresent(
+                t -> categoryList.add(new Category("Team", t)));
 
+        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_SKILLS));
 
-        Set<Category> categoryList =
-                ParserUtil.parseCategories(argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY),
-                        argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY_VALUE));
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-
-        Person person = new Person(name, phone, email, dept, role, team, skills, categoryList, tagList);
+        Person person = new Person(name, phone, email, categoryList, tagList);
 
         return new AddCommand(person);
     }

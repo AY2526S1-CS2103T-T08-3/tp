@@ -35,10 +35,6 @@
             <FlowPane fx:id="categories" />
             <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
             <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
-			<Label fx:id="dept" styleClass="cell_small_label" text="\$dept" />
-            <Label fx:id="role" styleClass="cell_small_label" text="\$role" />
-	        <Label fx:id="team" styleClass="cell_small_label" text="\$team" />
-            <Label fx:id="skills" styleClass="cell_small_label" text="\$skills" />
         </VBox>
     </GridPane>
 </HBox>
