@@ -55,6 +55,8 @@ public class Messages {
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
                 .append(" (");
+        person.getCategories().forEach(x -> builder.append(x.toString().replaceAll("[\\[\\]]", "")));
+        builder.append(")").append(" (");;
         person.getTags().forEach(x -> builder.append(x.toString().replaceAll("[\\[\\]]", "")));
         builder.append(")");
         return builder.toString();

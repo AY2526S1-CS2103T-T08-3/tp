@@ -32,7 +32,6 @@ public class AssignCommand extends Command {
             + PREFIX_ASSIGN_CATEGORY_VALUE + "Manager";
     public static final String MESSAGE_ADD_CATEGORY_SUCCESS = "Added category to Person: %1$s";
     public static final String MESSAGE_DELETE_CATEGORY_SUCCESS = "Removed category from Person: %1$s";
-    public static final String MESSAGE_NOT_IMPLEMENTED_YET = "Assign command not implemented yet.";
 
     private final Index index;
     private final Category categoryObject;

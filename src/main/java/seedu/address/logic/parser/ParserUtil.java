@@ -106,9 +106,7 @@ public class ParserUtil {
         requireNonNull(category);
         String trimmedCategory = category.trim();
         String trimmedValue = value.trim();
-        if (!Category.isValidData(trimmedCategory) || !Category.isValidData(trimmedValue)) {
-            throw new ParseException(Category.MESSAGE_CONSTRAINTS);
-        }
+
         return new Category(trimmedCategory, trimmedValue);
     }
 

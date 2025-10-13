@@ -1,11 +1,12 @@
 package seedu.address.model.tag;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.AppUtil.checkArgument;
+
+import java.util.Objects;
 
 /**
  * Represents an Employee's category(Role/Department/Team) in the directory.
- * Guarantees: immutable; category and value is valid as declared in {@link #isValidData(String)}
+ * Guarantees: immutable;
  */
 public class Category {
     public static final String MESSAGE_CONSTRAINTS = "Categories should be alphanumeric";
@@ -21,9 +22,8 @@ public class Category {
      * @param value A valid category value.
      */
     public Category(String category, String value) {
-        requireNonNull(category, value);
-        checkArgument(isValidData(category), MESSAGE_CONSTRAINTS);
-        checkArgument(isValidData(value), MESSAGE_CONSTRAINTS);
+        requireNonNull(category);
+        requireNonNull(value);
 
         this.category = category;
         this.value = value;
@@ -37,13 +37,6 @@ public class Category {
         return value;
     }
 
-    /**
-     * Returns true if a given string is a valid category or value.
-     */
-    public static boolean isValidData(String test) {
-        return test.matches(VALIDATION_REGEX);
-    }
-
     @Override
     public String toString() {
         return String.format("[category='%s', value='%s']", category, value);
@@ -51,13 +44,21 @@ public class Category {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof Category // instanceof handles nulls
-                && category.equals(((Category) other).category)); // state check
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof Category)) {
+            return false;
+        }
+
+        Category otherCategory = (Category) other;
+        return category.equals(otherCategory.category) && value.equals(otherCategory.value);
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return Objects.hash(category, value);
     }
 }

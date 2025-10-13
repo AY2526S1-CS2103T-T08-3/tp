@@ -5,7 +5,10 @@
     "phone" : "94351253",
     "email" : "alice@example.com",
     "address" : "123, Jurong West Ave 6, #08-111",
-    "categories" : [],
+    "categories": [{
+        "category": "Role",
+        "value": "Manager"
+      }],
     "tags" : [ "friends" ]
   }, {
     "name" : "Benson Meier",
