@@ -15,8 +15,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.tag.Category;
 
 /**
- * Integration tests for AssignCommandParser.
- * Tests that the parser integrates correctly with AssignCommand creation.
+ * Contains integration tests (interaction with the Model) for {@code AssignCommandParser}.
  */
 public class AssignCommandParserIntegrationTest {
 
@@ -47,7 +46,6 @@ public class AssignCommandParserIntegrationTest {
 
     @Test
     public void parse_missingValuePrefix_emptyValue() throws Exception {
-        // No value prefix, category present, value empty
         String input = "4 " + PREFIX_ASSIGN_CATEGORY + "Team";
         AssignCommand expected = new AssignCommand(Index.fromOneBased(4),
                 new Category("Team", ""));
@@ -57,7 +55,6 @@ public class AssignCommandParserIntegrationTest {
 
     @Test
     public void parse_missingBothPrefixes_emptyCategoryAndValue() throws Exception {
-        // Only index present, category and value empty
         String input = "5";
         AssignCommand expected = new AssignCommand(Index.fromOneBased(5),
                 new Category("", ""));
@@ -73,7 +70,6 @@ public class AssignCommandParserIntegrationTest {
 
     @Test
     public void parse_extraWhitespace_success() throws Exception {
-        // Test with extra spaces in input to verify trimming and parsing robustness
         String input = " 6   " + PREFIX_ASSIGN_CATEGORY + "  Location  " + PREFIX_ASSIGN_CATEGORY_VALUE + "  HQ ";
         AssignCommand expected = new AssignCommand(Index.fromOneBased(6),
                 new Category("Location", "HQ"));
