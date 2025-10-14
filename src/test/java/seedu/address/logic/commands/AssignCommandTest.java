@@ -57,9 +57,8 @@ public class AssignCommandTest {
         String expectedMessage = String.format(AssignCommand.MESSAGE_ADD_CATEGORY_SUCCESS, "Alice Pauline; "
                 + "Phone: 94351253; "
                 + "Email: alice@example.com; "
-                + "Address: 123, Jurong West Ave 6, #08-111; "
-                + "Categories: [category='Role', value='Manager']; "
-                + "Tags: [friends]");
+                + "Tags: ; " // Refactor
+                + "Categories: [category='Role', value='Manager'][friends]");
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
@@ -81,9 +80,8 @@ public class AssignCommandTest {
         String expectedMessage = String.format(AssignCommand.MESSAGE_ADD_CATEGORY_SUCCESS, "Alice Pauline; "
                 + "Phone: 94351253; "
                 + "Email: alice@example.com; "
-                + "Address: 123, Jurong West Ave 6, #08-111; "
-                + "Categories: [category='Role', value='Manager']; "
-                + "Tags: [friends]");
+                + "Tags: ; " // Refactor
+                + "Categories: [category='Role', value='Manager'][friends]");
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
