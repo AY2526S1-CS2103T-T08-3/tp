@@ -22,16 +22,17 @@ import seedu.address.model.tag.Category;
 public class AssignCommand extends Command {
     public static final String COMMAND_WORD = "assign_category";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Updates the category of the person identified "
-            + "by the index number used in the last person listing. "
-            + "Existing category will be overwritten by the input.\n"
+            + "by the index number used in the last person listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_ASSIGN_CATEGORY + "CATEGORY_TYPE "
-            + PREFIX_ASSIGN_CATEGORY_VALUE + "[VALUE]\n"
+            + PREFIX_ASSIGN_CATEGORY_VALUE + "VALUE\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_ASSIGN_CATEGORY + "Role "
             + PREFIX_ASSIGN_CATEGORY_VALUE + "Manager";
     public static final String MESSAGE_ADD_CATEGORY_SUCCESS = "Added category to Person: %1$s";
     public static final String MESSAGE_DELETE_CATEGORY_SUCCESS = "Removed category from Person: %1$s";
+    public static final String MESSAGE_ERROR =
+            "Employee \"%1$s\" is already assigned to %2$s: %3$s. An employee can only belong to one %2$s.";
 
     private final Index index;
     private final Category categoryObject;
@@ -56,6 +57,14 @@ public class AssignCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
+        Set<Category> personCategories = personToEdit.getCategories();
+
+        for (Category personCategory : personCategories) {
+            if (personCategory.getCategory().contains(categoryObject.getCategory())) {
+                throw new CommandException(String.format(MESSAGE_ERROR,
+                        personToEdit.getName(), personCategory.getCategory(), personCategory.getValue()));
+            }
+        }
 
         Set<Category> updatedCategories = new HashSet<>(personToEdit.getCategories());
         updatedCategories.add(categoryObject);
@@ -74,8 +83,8 @@ public class AssignCommand extends Command {
      * {@code personToEdit}.
      */
     private String generateSuccessMessage(Person personToEdit) {
-        String message = (!this.categoryObject.category.isEmpty() && !categoryObject.value.isEmpty())
-                ? MESSAGE_ADD_CATEGORY_SUCCESS : MESSAGE_DELETE_CATEGORY_SUCCESS;
+        String message = (!this.categoryObject.getCategory().isEmpty() && !categoryObject.getValue().isEmpty())
+                ? MESSAGE_ADD_CATEGORY_SUCCESS : Category.MESSAGE_CONSTRAINTS;
         return String.format(message, Messages.format(personToEdit));
     }
 

@@ -1,6 +1,7 @@
 package seedu.address.model.tag;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.util.Objects;
 
@@ -9,11 +10,21 @@ import java.util.Objects;
  * Guarantees: immutable;
  */
 public class Category {
-    public static final String MESSAGE_CONSTRAINTS = "Categories should be alphanumeric";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String MESSAGE_CONSTRAINTS = "Category/Value should be alphanumeric and spaces";
+    public static final String VALIDATION_REGEX = "[\\p{Alnum} ]+";
+    public static final String CATEGORY_CONSTRAINTS = "Category must be one of Team/Role/Department";
 
-    public final String category;
-    public final String value;
+    /**
+     * Represents the valid categories.
+     */
+    public enum CategoryType {
+        DEPARTMENT,
+        TEAM,
+        ROLE;
+    }
+
+    private final String category;
+    private final String value;
 
     /**
      * Constructs a {@code Category}.
@@ -25,6 +36,9 @@ public class Category {
         requireNonNull(category);
         requireNonNull(value);
 
+        checkArgument(isValidData(category), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidData(value), MESSAGE_CONSTRAINTS);
+
         this.category = category;
         this.value = value;
     }
@@ -35,6 +49,25 @@ public class Category {
 
     public String getValue() {
         return value;
+    }
+
+    /**
+     * Returns true if a given string is a valid category/value.
+     */
+    public static boolean isValidData(String test) {
+        return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if a given category is in CategoryType.
+     */
+    public static boolean isValidCategory(String test) {
+        for (CategoryType category : CategoryType.values()) {
+            if (category.name().equalsIgnoreCase(test)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

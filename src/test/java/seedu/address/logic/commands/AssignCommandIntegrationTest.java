@@ -39,25 +39,25 @@ public class AssignCommandIntegrationTest {
 
     @Test
     public void execute_addCategoryUnfilteredList_success() {
-        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
         Person editedPerson =
-                new PersonBuilder(firstPerson).withCategories(Arrays.asList(
+                new PersonBuilder(secondPerson).withCategories(Arrays.asList(
                         new Category(CATEGORY, VALUE))).build();
 
-        AssignCommand assignCommand = new AssignCommand(INDEX_FIRST_PERSON,
+        AssignCommand assignCommand = new AssignCommand(INDEX_SECOND_PERSON,
                 new Category(CATEGORY, VALUE));
         String expectedMessage = String.format(AssignCommand.MESSAGE_ADD_CATEGORY_SUCCESS,
                 Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(firstPerson, editedPerson);
+        expectedModel.setPerson(secondPerson, editedPerson);
 
         assertCommandSuccess(assignCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_filteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showPersonAtIndex(model, INDEX_SECOND_PERSON);
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))

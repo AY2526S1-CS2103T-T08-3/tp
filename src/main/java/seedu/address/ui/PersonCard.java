@@ -52,10 +52,10 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
         email.setText(person.getEmail().value);
         person.getCategories().stream()
-                .sorted(Comparator.comparing(category -> category.value))
+                .sorted(Comparator.comparing(category -> category.getCategory()))
                 .forEach(category -> {
-                    Label catLabel = new Label(category.value);
-                    String bgColor = boxColor(category.category);
+                    Label catLabel = new Label(category.getValue());
+                    String bgColor = boxColor(category.getCategory());
 
                     catLabel.getStyleClass().add("category-box");
                     catLabel.setStyle("-fx-background-color: "
@@ -69,14 +69,14 @@ public class PersonCard extends UiPart<Region> {
 
     private String boxColor(String category) {
         StringBuilder sb = new StringBuilder();
-        switch (category) {
-        case "Role":
+        switch (category.toLowerCase().trim()) {
+        case "role":
             sb.append("#008B8B"); //DarkCyan
             break;
-        case "Department":
+        case "department":
             sb.append("#006400"); //DarkGreen
             break;
-        case "Team":
+        case "team":
             sb.append("#FF1493"); //DeepPink
             break;
         default:

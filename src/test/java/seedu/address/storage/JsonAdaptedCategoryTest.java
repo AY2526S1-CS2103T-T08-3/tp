@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Category;
 
 public class JsonAdaptedCategoryTest {
@@ -57,14 +58,14 @@ public class JsonAdaptedCategoryTest {
     @Test
     public void toModelType_emptyCategory_returnsCategory() throws Exception {
         JsonAdaptedCategory adaptedCategory = new JsonAdaptedCategory(VALID_EMPTY_CATEGORY, VALID_VALUE);
-        Category category = adaptedCategory.toModelType();
-        assertEquals(VALID_EMPTY_CATEGORY, category.getCategory());
+        IllegalValueException e = assertThrows(IllegalValueException.class, adaptedCategory::toModelType);
+        assertEquals(Category.MESSAGE_CONSTRAINTS, e.getMessage());
     }
 
     @Test
     public void toModelType_emptyValue_returnsCategory() throws Exception {
         JsonAdaptedCategory adaptedCategory = new JsonAdaptedCategory(VALID_CATEGORY, VALID_EMPTY_VALUE);
-        Category category = adaptedCategory.toModelType();
-        assertEquals(VALID_EMPTY_VALUE, category.getValue());
+        IllegalValueException e = assertThrows(IllegalValueException.class, adaptedCategory::toModelType);
+        assertEquals(Category.MESSAGE_CONSTRAINTS, e.getMessage());
     }
 }
