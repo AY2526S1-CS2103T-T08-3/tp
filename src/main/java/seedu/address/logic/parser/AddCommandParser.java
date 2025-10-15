@@ -8,7 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILLS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TEAM;
 
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Category;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Skill;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -39,7 +39,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 ArgumentTokenizer.tokenize(args,
                         PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
                         PREFIX_ADDRESS, PREFIX_TAG, PREFIX_ROLE,
-                        PREFIX_TEAM, PREFIX_SKILLS, PREFIX_DEPARTMENT);
+                        PREFIX_TEAM, PREFIX_SKILL, PREFIX_DEPARTMENT);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME,
                 PREFIX_PHONE, PREFIX_EMAIL)
@@ -63,9 +63,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         argMultimap.getValue(PREFIX_TEAM).ifPresent(
                 t -> categoryList.add(new Category("Team", t)));
 
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_SKILLS));
+        Set<Skill> skillList = ParserUtil.parseSkills(argMultimap.getAllValues(PREFIX_SKILL));
 
-        Person person = new Person(name, phone, email, categoryList, tagList);
+        Person person = new Person(name, phone, email, categoryList, skillList);
 
         return new AddCommand(person);
     }

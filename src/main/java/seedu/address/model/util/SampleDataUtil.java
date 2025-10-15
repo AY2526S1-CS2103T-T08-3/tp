@@ -13,7 +13,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Category;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Skill;
 
 
 /**
@@ -25,17 +25,17 @@ public class SampleDataUtil {
     public static Person[] getSamplePersons() {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                    EMPTY_CATEGORY, getTagSet("friends")),
+                    EMPTY_CATEGORY, getSkillSet("python", "java")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                    EMPTY_CATEGORY, getTagSet("colleagues", "friends")),
+                    EMPTY_CATEGORY, getSkillSet("java")), 
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                    EMPTY_CATEGORY, getTagSet("neighbours")),
+                    EMPTY_CATEGORY, getSkillSet("csharp")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
-                    EMPTY_CATEGORY, getTagSet("family")),
+                    EMPTY_CATEGORY, getSkillSet("csharp")),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
-                    EMPTY_CATEGORY, getTagSet("classmates")),
+                    EMPTY_CATEGORY, getSkillSet("sql")),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                    EMPTY_CATEGORY, getTagSet("colleagues"))
+                    EMPTY_CATEGORY, getSkillSet("sql"))
         };
     }
 
@@ -56,12 +56,12 @@ public class SampleDataUtil {
     }
 
     /**
-     * Returns a tag set containing the list of strings given.
+     * Returns a skill set containing the list of strings given.
      */
-    public static Set<Tag> getTagSet(String... strings) {
+    public static Set<Skill> getSkillSet(String... strings) {
         return Arrays.stream(strings)
-                .map(Tag::new)
+                .map(Skill::new)
                 .collect(Collectors.toSet());
     }
-
 }
+

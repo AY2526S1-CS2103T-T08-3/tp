@@ -15,7 +15,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Category;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Skill;
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -28,7 +28,7 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String email;
     private final List<JsonAdaptedCategory> categories = new ArrayList<>();
-    private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final List<JsonAdaptedSkill> skills = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -45,8 +45,8 @@ class JsonAdaptedPerson {
         if (categories != null) {
             this.categories.addAll(categories);
         }
-        if (tags != null) {
-            this.tags.addAll(tags);
+        if (skills != null) {
+            this.skills.addAll(skills);
         }
     }
 
@@ -60,8 +60,8 @@ class JsonAdaptedPerson {
         categories.addAll(source.getCategories().stream()
                 .map(cat -> new JsonAdaptedCategory(cat.getCategory(), cat.getValue()))
                 .collect(Collectors.toList()));
-        tags.addAll(source.getTags().stream()
-                .map(JsonAdaptedTag::new)
+        skills.addAll(source.getSkills().stream()
+                .map(JsonAdaptedSkill::new)
                 .collect(Collectors.toList()));
     }
 
@@ -75,9 +75,9 @@ class JsonAdaptedPerson {
         for (JsonAdaptedCategory category : categories) {
             personCategories.add(category.toModelType());
         }
-        final List<Tag> personTags = new ArrayList<>();
-        for (JsonAdaptedTag tag : tags) {
-            personTags.add(tag.toModelType());
+        final List<Skill> personSkills = new ArrayList<>();
+        for (JsonAdaptedSkill skill : skills) {
+            personSkills.add(skill.toModelType());
         }
 
         if (name == null) {
@@ -105,9 +105,8 @@ class JsonAdaptedPerson {
         final Email modelEmail = new Email(email);
 
         final Set<Category> modelCategory = new HashSet<>(personCategories);
-        final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail,
-                modelCategory, modelTags);
+final Set<Skill> modelSkills = new HashSet<>(personSkills);
+        return new Person(modelName, modelPhone, modelEmail, modelCategory, modelSkills);
     }
-
 }
+

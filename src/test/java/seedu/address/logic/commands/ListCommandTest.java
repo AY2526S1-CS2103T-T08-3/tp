@@ -21,8 +21,8 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_listByTagFriends_showsTagged() {
-        PersonHasTagPredicate pred = new PersonHasTagPredicate("friends");
+    public void execute_listBySkillJava_showsSkilledPersons() {
+        PersonHasTagPredicate pred = new PersonHasTagPredicate("java");
         expectedModel.updateFilteredPersonList(pred);
         assertCommandSuccess(new ListCommand(pred), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
     }

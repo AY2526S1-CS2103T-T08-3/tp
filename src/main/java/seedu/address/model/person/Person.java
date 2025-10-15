@@ -9,7 +9,7 @@ import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Category;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Skill;
 
 /**
  * Represents a Person in the address book.
@@ -23,20 +23,20 @@ public class Person {
     private final Email email;
 
     private final Set<Category> categories = new HashSet<>();
-    private final Set<Tag> tags = new HashSet<>();
+    private final Set<Skill> skills = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email,
-            Set<Category> categories, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, categories, tags);
+            Set<Category> categories, Set<Skill> skills) {
+        requireAllNonNull(name, phone, email, categories, skills);
         this.name = name;
         this.phone = phone;
         this.email = email;
 
         this.categories.addAll(categories);
-        this.tags.addAll(tags);
+        this.skills.addAll(skills);
     }
 
     public Name getName() {
@@ -60,11 +60,11 @@ public class Person {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable skills set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public Set<Skill> getSkills() {
+        return Collections.unmodifiableSet(skills);
     }
 
     /**
@@ -90,7 +90,6 @@ public class Person {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Person)) {
             return false;
         }
@@ -100,13 +99,13 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && categories.equals(otherPerson.categories)
-                && tags.equals(otherPerson.tags);
+                && skills.equals(otherPerson.skills);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, categories, tags);
+        return Objects.hash(name, phone, email, categories, skills);
     }
 
     @Override
@@ -116,8 +115,8 @@ public class Person {
                 .add("phone", phone)
                 .add("email", email)
                 .add("categories", categories)
-                .add("tags", tags)
+                .add("skills", skills)
                 .toString();
     }
-
 }
+
