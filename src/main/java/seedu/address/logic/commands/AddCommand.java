@@ -6,7 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILLS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TEAM;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -30,7 +30,7 @@ public class AddCommand extends Command {
             + PREFIX_TEAM + "TEAM "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
-            + PREFIX_SKILLS + "SKILLS "
+            + PREFIX_SKILL + "java "
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_DEPARTMENT + "Engineering "
@@ -38,7 +38,7 @@ public class AddCommand extends Command {
             + PREFIX_ROLE + "Software Engineer "
             + PREFIX_PHONE + "9234568 "
             + PREFIX_EMAIL + "john.doe@example.com "
-            + PREFIX_SKILLS + "Python";
+            + PREFIX_SKILL + "Python";
 
 
     public static final String MESSAGE_SUCCESS = "Employee added: %1$s";
@@ -72,7 +72,6 @@ public class AddCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof AddCommand)) {
             return false;
         }
@@ -88,3 +87,4 @@ public class AddCommand extends Command {
                 .toString();
     }
 }
+

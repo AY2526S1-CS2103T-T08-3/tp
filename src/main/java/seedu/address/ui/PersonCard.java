@@ -42,7 +42,7 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane categories;
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
+     * Creates a {@code PersonCard} with the given {@code Person} and index to display.
      */
     public PersonCard(Person person, int displayedIndex) {
         super(FXML);
@@ -65,6 +65,9 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        person.getSkills().stream()
+                .sorted(Comparator.comparing(skill -> skill.skillName))
+                .forEach(skill -> tags.getChildren().add(new Label(skill.skillName)));
     }
 
     private String boxColor(String category) {
@@ -86,3 +89,4 @@ public class PersonCard extends UiPart<Region> {
         return sb.toString();
     }
 }
+
