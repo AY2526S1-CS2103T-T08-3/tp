@@ -9,7 +9,6 @@ import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Category;
-import seedu.address.model.person.Skill;
 
 /**
  * Represents a Person in the address book.

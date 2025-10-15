@@ -17,7 +17,7 @@ We are a team based in the [School of Computing, National University of Singapor
 * Role: Team Lead
 * Responsibilities: Scheduling and tracking
 
-### Xin Yi 
+### Xin Yi
 
 <img src="images/xinyi-lim-19.png" width="200px">
 

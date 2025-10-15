@@ -12,8 +12,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Category;
 import seedu.address.model.person.Skill;
+import seedu.address.model.tag.Category;
 
 
 /**
@@ -27,7 +27,7 @@ public class SampleDataUtil {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                     EMPTY_CATEGORY, getSkillSet("python", "java")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                    EMPTY_CATEGORY, getSkillSet("java")), 
+                    EMPTY_CATEGORY, getSkillSet("java")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                     EMPTY_CATEGORY, getSkillSet("csharp")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
@@ -51,8 +51,7 @@ public class SampleDataUtil {
      * Returns a category set containing the list of strings given.
      */
     public static Set<Category> getCategorySet(List<Category> categoryList) {
-        return categoryList.stream()
-                .collect(Collectors.toSet());
+        return categoryList.stream().collect(Collectors.toSet());
     }
 
     /**

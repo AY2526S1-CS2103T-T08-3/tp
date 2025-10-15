@@ -70,7 +70,7 @@ public class AssignCommand extends Command {
         updatedCategories.add(categoryObject);
 
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                updatedCategories, personToEdit.getTags());
+                updatedCategories, personToEdit.getSkills());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

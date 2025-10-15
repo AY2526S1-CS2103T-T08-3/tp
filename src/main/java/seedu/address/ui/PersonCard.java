@@ -37,7 +37,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
-    private FlowPane tags;
+    private FlowPane skills;
     @FXML
     private FlowPane categories;
 
@@ -62,12 +62,12 @@ public class PersonCard extends UiPart<Region> {
                             + (bgColor.isEmpty() ? "#A9A9A9" : bgColor) + ";");
                     categories.getChildren().add(catLabel);
                 });
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         person.getSkills().stream()
                 .sorted(Comparator.comparing(skill -> skill.skillName))
-                .forEach(skill -> tags.getChildren().add(new Label(skill.skillName)));
+                .forEach(skill -> skills.getChildren().add(new Label(skill.skillName)));
+        person.getSkills().stream()
+                .sorted(Comparator.comparing(skill -> skill.skillName))
+                .forEach(skill -> skills.getChildren().add(new Label(skill.skillName)));
     }
 
     private String boxColor(String category) {
