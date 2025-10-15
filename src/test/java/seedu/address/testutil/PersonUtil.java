@@ -36,8 +36,8 @@ public class PersonUtil {
         sb.append(PREFIX_PHONE + person.getPhone().value + " ");
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
         person.getCategories().stream().forEach(
-                s -> sb.append(PREFIX_ASSIGN_CATEGORY + s.category + " ")
-                        .append(PREFIX_ASSIGN_CATEGORY_VALUE + s.value + " ")
+                s -> sb.append(PREFIX_ASSIGN_CATEGORY + s.getCategory() + " ")
+                        .append(PREFIX_ASSIGN_CATEGORY_VALUE + s.getValue() + " ")
         );
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
@@ -58,8 +58,8 @@ public class PersonUtil {
             if (categories.isEmpty()) {
                 sb.append(PREFIX_ASSIGN_CATEGORY).append(" ").append(PREFIX_ASSIGN_CATEGORY_VALUE).append(" ");
             } else {
-                categories.forEach(s -> sb.append(PREFIX_ASSIGN_CATEGORY).append(s.category).append(" ")
-                        .append(PREFIX_ASSIGN_CATEGORY_VALUE).append(s.value).append(" "));
+                categories.forEach(s -> sb.append(PREFIX_ASSIGN_CATEGORY).append(s.getCategory()).append(" ")
+                        .append(PREFIX_ASSIGN_CATEGORY_VALUE).append(s.getValue()).append(" "));
             }
         }
         if (descriptor.getTags().isPresent()) {

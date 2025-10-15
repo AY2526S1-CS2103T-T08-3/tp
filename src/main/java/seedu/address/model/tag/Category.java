@@ -1,6 +1,7 @@
 package seedu.address.model.tag;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.util.Objects;
 
@@ -9,11 +10,11 @@ import java.util.Objects;
  * Guarantees: immutable;
  */
 public class Category {
-    public static final String MESSAGE_CONSTRAINTS = "Categories should be alphanumeric";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric and spaces";
+    public static final String VALIDATION_REGEX = "[\\p{Alnum} ]+";
 
-    public final String category;
-    public final String value;
+    private final String category;
+    private final String value;
 
     /**
      * Constructs a {@code Category}.
