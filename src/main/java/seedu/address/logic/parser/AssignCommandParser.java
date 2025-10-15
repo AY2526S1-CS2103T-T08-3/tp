@@ -33,9 +33,16 @@ public class AssignCommandParser implements Parser<AssignCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignCommand.MESSAGE_USAGE), ive);
         }
 
-        String category = argMultimap.getValue(PREFIX_ASSIGN_CATEGORY).orElse("");
+        String category = capitalizeFirstLetterOnly(argMultimap.getValue(PREFIX_ASSIGN_CATEGORY).orElse(""));
         String value = argMultimap.getValue(PREFIX_ASSIGN_CATEGORY_VALUE).orElse("");
 
         return new AssignCommand(index, new Category(category, value));
+    }
+
+    private String capitalizeFirstLetterOnly(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 }
