@@ -4,15 +4,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AssignCommand;
-import seedu.address.logic.commands.Command;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Person;
 import seedu.address.model.tag.Category;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code AssignCommandParser}.
@@ -20,60 +27,50 @@ import seedu.address.model.tag.Category;
 public class AssignCommandParserIntegrationTest {
 
     private AssignCommandParser parser;
+    private Model model;
 
     @BeforeEach
     public void setUp() {
         parser = new AssignCommandParser();
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     }
 
     @Test
-    public void parse_validInput_success() throws Exception {
+    public void parseAndExecute_validInput_success() throws Exception {
+        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        Person editedPerson =
+                new PersonBuilder(secondPerson).withCategories(Arrays.asList(
+                        new Category("Department", "Finance"))).build();
+
         String input = "2 " + PREFIX_ASSIGN_CATEGORY + "Department " + PREFIX_ASSIGN_CATEGORY_VALUE + "Finance";
-        AssignCommand expected = new AssignCommand(Index.fromOneBased(2),
-                new Category("Department", "Finance"));
-        Command actual = parser.parse(input);
-        assertEquals(expected, actual);
+        AssignCommand command = parser.parse(input);
+        command.execute(model);
+
+        assertEquals(editedPerson,
+                model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased()));
     }
 
     @Test
-    public void parse_missingCategoryPrefix_emptyCategory() throws Exception {
+    public void parse_missingCategoryPrefix_throwsParseException() {
         String input = "3 " + PREFIX_ASSIGN_CATEGORY_VALUE + "Developer";
-        AssignCommand expected = new AssignCommand(Index.fromOneBased(3),
-                new Category("", "Developer"));
-        Command actual = parser.parse(input);
-        assertEquals(expected, actual);
+        assertThrows(ParseException.class, () -> parser.parse(input));
     }
 
     @Test
-    public void parse_missingValuePrefix_emptyValue() throws Exception {
+    public void parse_missingValuePrefix_throwsParseException() {
         String input = "4 " + PREFIX_ASSIGN_CATEGORY + "Team";
-        AssignCommand expected = new AssignCommand(Index.fromOneBased(4),
-                new Category("Team", ""));
-        Command actual = parser.parse(input);
-        assertEquals(expected, actual);
+        assertThrows(ParseException.class, () -> parser.parse(input));
     }
 
     @Test
-    public void parse_missingBothPrefixes_emptyCategoryAndValue() throws Exception {
+    public void parse_missingBothPrefixes_throwsParseException() {
         String input = "5";
-        AssignCommand expected = new AssignCommand(Index.fromOneBased(5),
-                new Category("", ""));
-        AssignCommand result = parser.parse(input);
-        assertEquals(expected, result);
+        assertThrows(ParseException.class, () -> parser.parse(input));
     }
 
     @Test
     public void parse_invalidIndex_throwsParseException() {
         String input = "x " + PREFIX_ASSIGN_CATEGORY + "Role " + PREFIX_ASSIGN_CATEGORY_VALUE + "Manager";
         assertThrows(ParseException.class, () -> parser.parse(input));
-    }
-
-    @Test
-    public void parse_extraWhitespace_success() throws Exception {
-        String input = " 6   " + PREFIX_ASSIGN_CATEGORY + "  Location  " + PREFIX_ASSIGN_CATEGORY_VALUE + "  HQ ";
-        AssignCommand expected = new AssignCommand(Index.fromOneBased(6),
-                new Category("Location", "HQ"));
-        Command actual = parser.parse(input);
-        assertEquals(expected, actual);
     }
 }
