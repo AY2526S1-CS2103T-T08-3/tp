@@ -7,7 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILLS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TEAM;
 
@@ -21,8 +20,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Category;
 import seedu.address.model.person.Skill;
+import seedu.address.model.tag.Category;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -38,7 +37,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args,
                         PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                        PREFIX_ADDRESS, PREFIX_TAG, PREFIX_ROLE,
+                        PREFIX_ADDRESS, PREFIX_ROLE,
                         PREFIX_TEAM, PREFIX_SKILL, PREFIX_DEPARTMENT);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME,

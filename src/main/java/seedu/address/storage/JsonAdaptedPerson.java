@@ -14,8 +14,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Category;
 import seedu.address.model.person.Skill;
+import seedu.address.model.tag.Category;
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -37,7 +37,7 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email,
             @JsonProperty("categories") List<JsonAdaptedCategory> categories,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("tags") List<JsonAdaptedSkill> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -105,7 +105,7 @@ class JsonAdaptedPerson {
         final Email modelEmail = new Email(email);
 
         final Set<Category> modelCategory = new HashSet<>(personCategories);
-final Set<Skill> modelSkills = new HashSet<>(personSkills);
+        final Set<Skill> modelSkills = new HashSet<>(personSkills);
         return new Person(modelName, modelPhone, modelEmail, modelCategory, modelSkills);
     }
 }

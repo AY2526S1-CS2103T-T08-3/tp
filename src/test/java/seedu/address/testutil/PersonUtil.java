@@ -12,8 +12,8 @@ import java.util.Set;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Category;
-import seedu.address.model.tag.Tag;
 
 /**
  * A utility class for Person.
@@ -39,8 +39,8 @@ public class PersonUtil {
                 s -> sb.append(PREFIX_ASSIGN_CATEGORY + s.getCategory() + " ")
                         .append(PREFIX_ASSIGN_CATEGORY_VALUE + s.getValue() + " ")
         );
-        person.getTags().stream().forEach(
-            s -> sb.append(PREFIX_TAG + s.tagName + " ")
+        person.getSkills().stream().forEach(
+            s -> sb.append(PREFIX_TAG + s.skillName + " ")
         );
         return sb.toString();
     }
@@ -62,12 +62,12 @@ public class PersonUtil {
                         .append(PREFIX_ASSIGN_CATEGORY_VALUE).append(s.getValue()).append(" "));
             }
         }
-        if (descriptor.getTags().isPresent()) {
-            Set<Tag> tags = descriptor.getTags().get();
+        if (descriptor.getSkills().isPresent()) {
+            Set<Skill> tags = descriptor.getSkills().get();
             if (tags.isEmpty()) {
                 sb.append(PREFIX_TAG);
             } else {
-                tags.forEach(s -> sb.append(PREFIX_TAG).append(s.tagName).append(" "));
+                tags.forEach(s -> sb.append(PREFIX_TAG).append(s.skillName).append(" "));
             }
         }
         return sb.toString();
