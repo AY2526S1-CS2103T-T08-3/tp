@@ -18,8 +18,8 @@ public class ListCommand extends Command {
     // Keep AB3 stock message so existing tests continue to pass
     public static final String MESSAGE_SUCCESS = "Listed all persons";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows persons.\n"
-            + "Parameters: [tag/TAG_NAME]\n"
-            + "Examples: list | list tag/clients";
+            + "Parameters: [skills/SKILL_NAME]\n"
+            + "Examples: list | list skills/java";
 
     private final Optional<Predicate<Person>> predicate;
 

@@ -18,14 +18,14 @@ public class ListCommandParserTest {
     }
 
     @Test
-    public void parse_tagLong_returnsFiltered() throws Exception {
-        ListCommand expected = new ListCommand(new PersonHasTagPredicate("friends"));
-        assertEquals(expected, parser.parse(" tag/friends "));
+    public void parse_skillsLong_returnsFiltered() throws Exception {
+        ListCommand expected = new ListCommand(new PersonHasTagPredicate("java"));
+        assertEquals(expected, parser.parse(" skills/java "));
     }
 
     @Test
-    public void parse_tagShort_returnsFiltered() throws Exception {
-        ListCommand expected = new ListCommand(new PersonHasTagPredicate("friends"));
-        assertEquals(expected, parser.parse(" t/friends "));
+    public void parse_skillsShort_returnsFiltered() throws Exception {
+        ListCommand expected = new ListCommand(new PersonHasTagPredicate("java"));
+        assertEquals(expected, parser.parse(" s/java "));
     }
 }
