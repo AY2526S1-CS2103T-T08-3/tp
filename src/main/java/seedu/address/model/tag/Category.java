@@ -14,6 +14,9 @@ public class Category {
     public static final String VALIDATION_REGEX = "[\\p{Alnum} ]+";
     public static final String CATEGORY_CONSTRAINTS = "Category must be one of Team/Role/Department";
 
+    /**
+     * Represents the valid categories.
+     */
     public enum CategoryType {
         DEPARTMENT,
         TEAM,

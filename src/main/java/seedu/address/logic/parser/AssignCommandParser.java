@@ -40,7 +40,7 @@ public class AssignCommandParser implements Parser<AssignCommand> {
             throw new ParseException(Category.MESSAGE_CONSTRAINTS);
         }
 
-        if (!Category.isValidCategory(category)){
+        if (!Category.isValidCategory(category)) {
             throw new ParseException(Category.CATEGORY_CONSTRAINTS);
         }
 
