@@ -42,9 +42,8 @@ public class Messages {
                 .append(person.getPhone())
                 .append("; Email: ")
                 .append(person.getEmail())
-                .append("; Address: ")
-                .append(person.getAddress())
-                .append("; Tags: ");
+                .append("; Categories: ");
+        person.getCategories().forEach(builder::append);
         person.getSkills().forEach(builder::append);
         return builder.toString();
     }
