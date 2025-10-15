@@ -36,6 +36,14 @@ public class AssignCommandParser implements Parser<AssignCommand> {
         String category = capitalizeFirstLetterOnly(argMultimap.getValue(PREFIX_ASSIGN_CATEGORY).orElse(""));
         String value = argMultimap.getValue(PREFIX_ASSIGN_CATEGORY_VALUE).orElse("");
 
+        if (!Category.isValidData(category) || !Category.isValidData(value)) {
+            throw new ParseException(Category.MESSAGE_CONSTRAINTS);
+        }
+
+        if (!Category.isValidCategory(category)){
+            throw new ParseException(Category.CATEGORY_CONSTRAINTS);
+        }
+
         return new AssignCommand(index, new Category(category, value));
     }
 

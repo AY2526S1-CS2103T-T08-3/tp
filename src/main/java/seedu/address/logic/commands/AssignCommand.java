@@ -84,7 +84,7 @@ public class AssignCommand extends Command {
      */
     private String generateSuccessMessage(Person personToEdit) {
         String message = (!this.categoryObject.getCategory().isEmpty() && !categoryObject.getValue().isEmpty())
-                ? MESSAGE_ADD_CATEGORY_SUCCESS : MESSAGE_DELETE_CATEGORY_SUCCESS;
+                ? MESSAGE_ADD_CATEGORY_SUCCESS : Category.MESSAGE_CONSTRAINTS;
         return String.format(message, Messages.format(personToEdit));
     }
 
