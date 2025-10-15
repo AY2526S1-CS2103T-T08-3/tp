@@ -55,10 +55,10 @@ public class Messages {
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
                 .append(" (");
-        person.getCategories().forEach(x -> builder.append(x.toString().replaceAll("[\\[\\]]", "")));
-        builder.append(")").append(" (");;
+        person.getCategories().forEach(x -> builder.append(x.getCategory() + ": " + x.getValue() + "; "));
+        builder.append(")").append(", Skills: [");;
         person.getTags().forEach(x -> builder.append(x.toString().replaceAll("[\\[\\]]", "")));
-        builder.append(")");
+        builder.append("]");
         return builder.toString();
     }
 }
