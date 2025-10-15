@@ -65,9 +65,6 @@ public class PersonCard extends UiPart<Region> {
         person.getSkills().stream()
                 .sorted(Comparator.comparing(skill -> skill.skillName))
                 .forEach(skill -> skills.getChildren().add(new Label(skill.skillName)));
-        person.getSkills().stream()
-                .sorted(Comparator.comparing(skill -> skill.skillName))
-                .forEach(skill -> skills.getChildren().add(new Label(skill.skillName)));
     }
 
     private String boxColor(String category) {
