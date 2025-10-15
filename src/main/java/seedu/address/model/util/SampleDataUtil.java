@@ -51,8 +51,7 @@ public class SampleDataUtil {
      * Returns a category set containing the list of strings given.
      */
     public static Set<Category> getCategorySet(List<Category> categoryList) {
-        return categoryList.stream()
-                .collect(Collectors.toSet());
+        return categoryList.stream().collect(Collectors.toSet());
     }
 
     /**
