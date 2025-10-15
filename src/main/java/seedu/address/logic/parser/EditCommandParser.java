@@ -3,6 +3,8 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -17,7 +19,8 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Skill;
+import seedu.address.model.tag.Category;
+import seedu.address.model.tag.Skill;
 
 /**
  * Parses input arguments and creates a new EditCommand object.
@@ -33,7 +36,8 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_SKILL);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                        PREFIX_ASSIGN_CATEGORY, PREFIX_ASSIGN_CATEGORY_VALUE, PREFIX_SKILL);
 
         Index index;
 
@@ -59,6 +63,9 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
+        parseCategoriesForEdit(argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY),
+                argMultimap.getAllValues(PREFIX_ASSIGN_CATEGORY_VALUE))
+                .ifPresent(editPersonDescriptor::setCategories);
         parseSkillsForEdit(argMultimap.getAllValues(PREFIX_SKILL)).ifPresent(editPersonDescriptor::setSkills);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
@@ -69,9 +76,29 @@ public class EditCommandParser implements Parser<EditCommand> {
     }
 
     /**
-     * Parses {@code Collection<String> skills} into a {@code Set<Skill>} if {@code skills} is non-empty.
-     * If {@code skills} contains only one element which is an empty string, it will be parsed into a
-     * {@code Set<Skill>} containing zero skills (i.e. clear skills).
+     * Parses {@code Collection<String> categories} into a {@code Set<Category>} if {@code categories} is non-empty.
+     * If {@code categories} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Category>} containing zero categories.
+     */
+    private Optional<Set<Category>> parseCategoriesForEdit(Collection<String> categories, Collection<String> values)
+            throws ParseException {
+        assert categories != null;
+        assert values != null;
+
+        if (categories.isEmpty() || values.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> categorySet = categories.size() == 1 && categories.contains("")
+                ? Collections.emptySet() : categories;
+        Collection<String> valueSet = values.size() == 1 && values.contains("")
+                ? Collections.emptySet() : values;
+        return Optional.of(ParserUtil.parseCategories(categorySet, valueSet));
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
+     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Tag>} containing zero tags.
      */
     private Optional<Set<Skill>> parseSkillsForEdit(Collection<String> skills) throws ParseException {
         assert skills != null;

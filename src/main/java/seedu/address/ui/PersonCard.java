@@ -10,7 +10,7 @@ import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * A UI component that displays information of a {@code Person}.
  */
 public class PersonCard extends UiPart<Region> {
 
@@ -35,11 +35,11 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label phone;
     @FXML
-    private Label address;
-    @FXML
     private Label email;
     @FXML
-    private FlowPane tags; // kept as 'tags' to match existing FXML id
+    private FlowPane tags;
+    @FXML
+    private FlowPane categories;
 
     /**
      * Creates a {@code PersonCard} with the given {@code Person} and index to display.
@@ -50,13 +50,43 @@ public class PersonCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
+        person.getCategories().stream()
+                .sorted(Comparator.comparing(category -> category.getCategory()))
+                .forEach(category -> {
+                    Label catLabel = new Label(category.getValue());
+                    String bgColor = boxColor(category.getCategory());
 
-        // Populate skills (reusing the existing 'tags' FlowPane)
+                    catLabel.getStyleClass().add("category-box");
+                    catLabel.setStyle("-fx-background-color: "
+                            + (bgColor.isEmpty() ? "#A9A9A9" : bgColor) + ";");
+                    categories.getChildren().add(catLabel);
+                });
+        person.getTags().stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         person.getSkills().stream()
                 .sorted(Comparator.comparing(skill -> skill.skillName))
                 .forEach(skill -> tags.getChildren().add(new Label(skill.skillName)));
+    }
+
+    private String boxColor(String category) {
+        StringBuilder sb = new StringBuilder();
+        switch (category.toLowerCase().trim()) {
+        case "role":
+            sb.append("#008B8B"); //DarkCyan
+            break;
+        case "department":
+            sb.append("#006400"); //DarkGreen
+            break;
+        case "team":
+            sb.append("#FF1493"); //DeepPink
+            break;
+        default:
+            break;
+        }
+
+        return sb.toString();
     }
 }
 

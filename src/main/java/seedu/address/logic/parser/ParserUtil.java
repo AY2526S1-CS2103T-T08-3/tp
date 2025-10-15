@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.tag.Category;
 import seedu.address.model.person.Skill;
 
 /**
@@ -98,7 +100,42 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String category} into a {@code Category}.
      * Parses a {@code String skill} into a {@code Skill}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code category} is invalid.
+     */
+    public static Category parseCategory(String category, String value) throws ParseException {
+        requireAllNonNull(category, value);
+        String trimmedCategory = category.trim();
+        String trimmedValue = value.trim();
+
+        if (!Category.isValidData(trimmedCategory) && !Category.isValidData(trimmedValue)) {
+            throw new ParseException(Category.MESSAGE_CONSTRAINTS);
+        }
+        return new Category(trimmedCategory, trimmedValue);
+    }
+
+    /**
+     * Parses {@code Collection<String> categories} into a {@code Set<Category>}.
+     */
+    public static Set<Category>
+        parseCategories(Collection<String> categories, Collection<String> values) throws ParseException {
+        requireAllNonNull(categories, values);
+
+        final Set<Category> categorySet = new HashSet<>();
+        String[] categoryArray = categories.toArray(new String[0]);
+        String[] valueArray = values.toArray(new String[0]);
+
+        for (int i = 0; i < categories.size(); i++) {
+            categorySet.add(parseCategory(categoryArray[i], valueArray[i]));
+        }
+        return categorySet;
+    }
+
+    /**
+     * Parses a {@code String tag} into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code skill} is invalid.

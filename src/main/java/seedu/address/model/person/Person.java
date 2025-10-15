@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.tag.Category;
+import seedu.address.model.person.Skill;
 
 /**
  * Represents a Person in the address book.
@@ -20,19 +22,20 @@ public class Person {
     private final Phone phone;
     private final Email email;
 
-    // Data fields
-    private final Address address;
+    private final Set<Category> categories = new HashSet<>();
     private final Set<Skill> skills = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Skill> skills) {
-        requireAllNonNull(name, phone, email, address, skills);
+    public Person(Name name, Phone phone, Email email,
+            Set<Category> categories, Set<Skill> skills) {
+        requireAllNonNull(name, phone, email, categories, skills);
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.address = address;
+
+        this.categories.addAll(categories);
         this.skills.addAll(skills);
     }
 
@@ -48,8 +51,12 @@ public class Person {
         return email;
     }
 
-    public Address getAddress() {
-        return address;
+    /**
+     * Returns an immutable category set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Category> getCategories() {
+        return Collections.unmodifiableSet(categories);
     }
 
     /**
@@ -91,14 +98,14 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
+                && categories.equals(otherPerson.categories)
                 && skills.equals(otherPerson.skills);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, skills);
+        return Objects.hash(name, phone, email, categories, skills);
     }
 
     @Override
@@ -107,7 +114,7 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
-                .add("address", address)
+                .add("categories", categories)
                 .add("skills", skills)
                 .toString();
     }
