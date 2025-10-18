@@ -148,6 +148,8 @@ public class ParserUtilTest {
         assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
     }
 
+    // ===== Skill tests =====
+
     @Test
     public void parseSkill_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseSkill(null));
@@ -195,4 +197,3 @@ public class ParserUtilTest {
         assertEquals(expectedSkillSet, actualSkillSet);
     }
 }
-

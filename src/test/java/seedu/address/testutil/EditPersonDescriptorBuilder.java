@@ -121,7 +121,6 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withSkills(String... skills) {
         Set<Skill> skillSet = Arrays.stream(skills).map(Skill::new).collect(Collectors.toSet());
-        // Use bridge method on descriptor to map skills -> tags internally
         descriptor.setSkills(skillSet);
         return this;
     }
@@ -146,4 +145,3 @@ public class EditPersonDescriptorBuilder {
         return descriptor;
     }
 }
-
