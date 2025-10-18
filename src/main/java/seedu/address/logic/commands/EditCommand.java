@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
@@ -26,6 +27,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -209,6 +211,28 @@ public class EditCommand extends Command {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
+        /**
+         * Bridge methods for Skill-based tests:
+         * allow setting/getting skills while still storing tags internally.
+         */
+        public void setSkills(Set<Skill> skills) {
+            if (skills == null) {
+                this.tags = null;
+                return;
+            }
+            this.tags = skills.stream()
+                    .map(s -> new Tag(s.skillName))
+                    .collect(Collectors.toSet());
+        }
+
+        public Optional<Set<Skill>> getSkills() {
+            return (tags != null)
+                    ? Optional.of(tags.stream()
+                            .map(t -> new Skill(t.tagName))
+                            .collect(Collectors.toSet()))
+                    : Optional.empty();
+        }
+
         @Override
         public boolean equals(Object other) {
             if (other == this) {
@@ -240,3 +264,4 @@ public class EditCommand extends Command {
         }
     }
 }
+
