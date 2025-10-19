@@ -102,6 +102,10 @@ public class EditCommand extends Command {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
+        // If your Person model supports skills, also pull them from the descriptor here
+        // and use the appropriate constructor/setter.
+        // Set<Skill> updatedSkills = editPersonDescriptor.getSkills().orElse(personToEdit.getSkills());
+
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
     }
 
