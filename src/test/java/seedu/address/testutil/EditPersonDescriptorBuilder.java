@@ -6,13 +6,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
-import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Skill;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.Category;
 
 /**
  * A utility class to help with building {@code EditPersonDescriptor} objects.
@@ -37,9 +36,8 @@ public class EditPersonDescriptorBuilder {
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setEmail(person.getEmail());
-        descriptor.setAddress(person.getAddress());
-        // Person currently exposes tags; keep compatibility by setting tags directly.
-        descriptor.setTags(person.getTags());
+        descriptor.setCategories(person.getCategories());
+        descriptor.setSkills(person.getSkills());
     }
 
     /**
@@ -76,13 +74,12 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Address} of the {@code EditPersonDescriptor} that we are building.
-     *
-     * @param address a valid address string.
-     * @return this builder for chaining.
+     * Parses the {@code categories} into a {@code Set<Category>} and set it to the {@code EditPersonDescriptor}
+     * that we are building.
      */
-    public EditPersonDescriptorBuilder withAddress(String address) {
-        descriptor.setAddress(new Address(address));
+    public EditPersonDescriptorBuilder withCategories(List<Category> categoryArray) {
+        Set<Category> categorySet = new HashSet<>(categoryArray);
+        descriptor.setCategories(categorySet);
         return this;
     }
 
@@ -95,8 +92,8 @@ public class EditPersonDescriptorBuilder {
      * @return this builder for chaining.
      */
     public EditPersonDescriptorBuilder withTags(String... tags) {
-        Set<Tag> tagSet = Arrays.stream(tags).map(Tag::new).collect(Collectors.toSet());
-        descriptor.setTags(tagSet);
+        Set<Skill> tagSet = Stream.of(tags).map(Skill::new).collect(Collectors.toSet());
+        descriptor.setSkills(tagSet);
         return this;
     }
 

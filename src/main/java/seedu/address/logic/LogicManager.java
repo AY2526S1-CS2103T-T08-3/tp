@@ -12,6 +12,7 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
+import seedu.address.logic.parser.ConfirmationParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
@@ -32,6 +33,7 @@ public class LogicManager implements Logic {
     private final Model model;
     private final Storage storage;
     private final AddressBookParser addressBookParser;
+    private final ConfirmationParser confirmationParser;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -40,6 +42,7 @@ public class LogicManager implements Logic {
         this.model = model;
         this.storage = storage;
         addressBookParser = new AddressBookParser();
+        confirmationParser = new ConfirmationParser();
     }
 
     @Override
@@ -47,7 +50,8 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command = parseCommand(commandText);
+
         commandResult = command.execute(model);
 
         try {
@@ -59,6 +63,14 @@ public class LogicManager implements Logic {
         }
 
         return commandResult;
+    }
+
+    private Command parseCommand(String commandText) throws ParseException {
+        if (model.hasPersonToDelete()) {
+            return confirmationParser.parseCommand(commandText);
+        } else {
+            return addressBookParser.parseCommand(commandText);
+        }
     }
 
     @Override

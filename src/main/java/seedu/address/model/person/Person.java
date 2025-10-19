@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.Category;
 
 /**
  * Represents a Person in the address book.
@@ -21,20 +21,21 @@ public class Person {
     private final Phone phone;
     private final Email email;
 
-    // Data fields
-    private final Address address;
-    private final Set<Tag> tags = new HashSet<>();
+    private final Set<Category> categories = new HashSet<>();
+    private final Set<Skill> skills = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, Phone phone, Email email,
+            Set<Category> categories, Set<Skill> skills) {
+        requireAllNonNull(name, phone, email, categories, skills);
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.address = address;
-        this.tags.addAll(tags);
+
+        this.categories.addAll(categories);
+        this.skills.addAll(skills);
     }
 
     public Name getName() {
@@ -49,16 +50,20 @@ public class Person {
         return email;
     }
 
-    public Address getAddress() {
-        return address;
+    /**
+     * Returns an immutable category set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Category> getCategories() {
+        return Collections.unmodifiableSet(categories);
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable skills set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public Set<Skill> getSkills() {
+        return Collections.unmodifiableSet(skills);
     }
 
     /**
@@ -84,7 +89,6 @@ public class Person {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Person)) {
             return false;
         }
@@ -93,14 +97,14 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
-                && tags.equals(otherPerson.tags);
+                && categories.equals(otherPerson.categories)
+                && skills.equals(otherPerson.skills);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, categories, skills);
     }
 
     @Override
@@ -109,9 +113,9 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
-                .add("address", address)
-                .add("tags", tags)
+                .add("categories", categories)
+                .add("skills", skills)
                 .toString();
     }
-
 }
+
