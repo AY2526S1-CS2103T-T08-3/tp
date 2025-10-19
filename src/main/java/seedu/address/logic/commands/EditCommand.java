@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
@@ -27,7 +26,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.skill.Skill;
+import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -111,15 +110,17 @@ public class EditCommand extends Command {
         if (other == this) {
             return true;
         }
-
-        // instanceof handles nulls
         if (!(other instanceof EditCommand)) {
             return false;
         }
-
         EditCommand otherEditCommand = (EditCommand) other;
         return index.equals(otherEditCommand.index)
                 && editPersonDescriptor.equals(otherEditCommand.editPersonDescriptor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(index, editPersonDescriptor);
     }
 
     @Override
@@ -140,97 +141,63 @@ public class EditCommand extends Command {
         private Email email;
         private Address address;
         private Set<Tag> tags;
+        private Set<Skill> skills;
 
         public EditPersonDescriptor() {}
 
         /**
          * Copy constructor.
-         * A defensive copy of {@code tags} is used internally.
+         * Defensive copies are used for mutable collections.
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
+            requireNonNull(toCopy);
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
+            setSkills(toCopy.skills);
         }
 
-        /**
-         * Returns true if at least one field is edited.
-         */
+        /** Returns true if at least one field is edited. */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, skills);
         }
 
-        public void setName(Name name) {
-            this.name = name;
-        }
+        public void setName(Name name) { this.name = name; }
+        public Optional<Name> getName() { return Optional.ofNullable(name); }
 
-        public Optional<Name> getName() {
-            return Optional.ofNullable(name);
-        }
+        public void setPhone(Phone phone) { this.phone = phone; }
+        public Optional<Phone> getPhone() { return Optional.ofNullable(phone); }
 
-        public void setPhone(Phone phone) {
-            this.phone = phone;
-        }
+        public void setEmail(Email email) { this.email = email; }
+        public Optional<Email> getEmail() { return Optional.ofNullable(email); }
 
-        public Optional<Phone> getPhone() {
-            return Optional.ofNullable(phone);
-        }
+        public void setAddress(Address address) { this.address = address; }
+        public Optional<Address> getAddress() { return Optional.ofNullable(address); }
 
-        public void setEmail(Email email) {
-            this.email = email;
-        }
-
-        public Optional<Email> getEmail() {
-            return Optional.ofNullable(email);
-        }
-
-        public void setAddress(Address address) {
-            this.address = address;
-        }
-
-        public Optional<Address> getAddress() {
-            return Optional.ofNullable(address);
-        }
-
-        /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
-         */
+        /** Sets {@code tags}. A defensive copy is used internally. */
         public void setTags(Set<Tag> tags) {
             this.tags = (tags != null) ? new HashSet<>(tags) : null;
         }
 
         /**
-         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
-         * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code tags} is null.
+         * Returns an unmodifiable tag set (if present), or {@code Optional.empty()} if {@code tags} is null.
          */
         public Optional<Set<Tag>> getTags() {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
-        /**
-         * Bridge methods for Skill-based tests:
-         * allow setting/getting skills while still storing tags internally.
-         */
+        /** Sets {@code skills}. A defensive copy is used internally. */
         public void setSkills(Set<Skill> skills) {
-            if (skills == null) {
-                this.tags = null;
-                return;
-            }
-            this.tags = skills.stream()
-                    .map(s -> new Tag(s.skillName))
-                    .collect(Collectors.toSet());
+            this.skills = (skills != null) ? new HashSet<>(skills) : null;
         }
 
+        /**
+         * Returns an unmodifiable skill set (if present), or {@code Optional.empty()} if {@code skills} is null.
+         */
         public Optional<Set<Skill>> getSkills() {
-            return (tags != null)
-                    ? Optional.of(tags.stream()
-                            .map(t -> new Skill(t.tagName))
-                            .collect(Collectors.toSet()))
-                    : Optional.empty();
+            return (skills != null) ? Optional.of(Collections.unmodifiableSet(skills)) : Optional.empty();
         }
 
         @Override
@@ -238,18 +205,21 @@ public class EditCommand extends Command {
             if (other == this) {
                 return true;
             }
-
-            // instanceof handles nulls
             if (!(other instanceof EditPersonDescriptor)) {
                 return false;
             }
+            EditPersonDescriptor o = (EditPersonDescriptor) other;
+            return Objects.equals(name, o.name)
+                    && Objects.equals(phone, o.phone)
+                    && Objects.equals(email, o.email)
+                    && Objects.equals(address, o.address)
+                    && Objects.equals(tags, o.tags)
+                    && Objects.equals(skills, o.skills);
+        }
 
-            EditPersonDescriptor otherEditPersonDescriptor = (EditPersonDescriptor) other;
-            return Objects.equals(name, otherEditPersonDescriptor.name)
-                    && Objects.equals(phone, otherEditPersonDescriptor.phone)
-                    && Objects.equals(email, otherEditPersonDescriptor.email)
-                    && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+        @Override
+        public int hashCode() {
+            return Objects.hash(name, phone, email, address, tags, skills);
         }
 
         @Override
@@ -260,6 +230,7 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("tags", tags)
+                    .add("skills", skills)
                     .toString();
         }
     }

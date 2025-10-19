@@ -18,7 +18,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
-import seedu.address.model.skill.Skill;
+import seedu.address.model.person.Skill;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
@@ -147,6 +147,8 @@ public class ParserUtilTest {
         Email expectedEmail = new Email(VALID_EMAIL);
         assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
     }
+
+    // ===== Skill tests =====
 
     @Test
     public void parseSkill_null_throwsNullPointerException() {
