@@ -197,4 +197,3 @@ public class ParserUtilTest {
         assertEquals(expectedSkillSet, actualSkillSet);
     }
 }
-

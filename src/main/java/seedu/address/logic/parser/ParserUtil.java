@@ -13,7 +13,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Skill; // <-- Ensure your Skill class is here
+import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -116,7 +116,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Collection<String> tags} into a {@code Set<Tag>}.
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
     public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
         requireNonNull(tags);

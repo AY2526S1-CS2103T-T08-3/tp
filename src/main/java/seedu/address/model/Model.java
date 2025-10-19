@@ -58,6 +58,23 @@ public interface Model {
     boolean hasPerson(Person person);
 
     /**
+     * Sets the given person to delete.
+     * The person must exist in the address book.
+     */
+    void setPersonToDelete(Person target);
+
+    /**
+     * Gets the given person to delete.
+     * There must be a person set to be deleted.
+     */
+    Person getPersonToDelete();
+
+    /**
+     * Returns true if there is a person to delete.
+     */
+    boolean hasPersonToDelete();
+
+    /**
      * Deletes the given person.
      * The person must exist in the address book.
      */

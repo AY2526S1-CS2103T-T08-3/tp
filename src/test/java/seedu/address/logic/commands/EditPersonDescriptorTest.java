@@ -54,7 +54,6 @@ public class EditPersonDescriptorTest {
     public void toString_nonNullAndNonEmpty() {
         EditCommand.EditPersonDescriptor descriptor = new EditCommand.EditPersonDescriptor();
         String s = descriptor.toString();
-        // We don't assert exact content to avoid coupling to implementation.
         assertTrue(s != null && !s.isEmpty());
     }
 }
