@@ -7,8 +7,10 @@ import static java.util.Objects.requireNonNull;
  * Constraints mirror Tag-style constraints: alphanumeric only, no spaces, non-empty.
  */
 public class Skill {
+
     public static final String MESSAGE_CONSTRAINTS =
             "Skills should be alphanumeric and non-empty, with no spaces.";
+
     // Alphanumeric (Unicode letters/digits), at least 1 char, no spaces or symbols
     private static final String VALIDATION_REGEX = "\\p{Alnum}+";
 
@@ -37,7 +39,9 @@ public class Skill {
     }
 
     @Override
-    public String toString() { return value; }
+    public String toString() {
+        return value;
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -46,6 +50,8 @@ public class Skill {
     }
 
     @Override
-    public int hashCode() { return value.hashCode(); }
+    public int hashCode() {
+        return value.hashCode();
+    }
 }
 
