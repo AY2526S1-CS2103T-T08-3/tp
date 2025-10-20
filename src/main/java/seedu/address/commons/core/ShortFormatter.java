@@ -6,6 +6,7 @@ import java.util.logging.LogRecord;
 
 /**
  * Truncates and formats verbose log reports for audit logs
+ * Example: 2025-10-20 20:00:28 | Employee deleted: David Li (Department: Engineering), Skills: []
  */
 public class ShortFormatter extends Formatter {
     @Override
