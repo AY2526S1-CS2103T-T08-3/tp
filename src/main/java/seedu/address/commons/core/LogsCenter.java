@@ -20,7 +20,8 @@ import java.util.logging.SimpleFormatter;
 public class LogsCenter {
     private static final int MAX_FILE_COUNT = 5;
     private static final int MAX_FILE_SIZE_IN_BYTES = (int) (Math.pow(2, 20) * 5); // 5MB
-    private static final String LOG_FILE = "addressbook.log";
+    private static final String LOG_FILE = "slackbook.log";
+    private static final String LOG_FILE_USERS = "slackbook_short.log";
     private static final Logger logger; // logger for this class
     private static Logger baseLogger; // to be used as the parent of all other loggers created by this class.
     private static Level currentLogLevel = Level.INFO;
@@ -97,6 +98,12 @@ public class LogsCenter {
             fileHandler.setFormatter(new SimpleFormatter());
             fileHandler.setLevel(Level.ALL);
             baseLogger.addHandler(fileHandler);
+
+            FileHandler shortHandler = new FileHandler(LOG_FILE_USERS, MAX_FILE_SIZE_IN_BYTES, MAX_FILE_COUNT, true);
+            shortHandler.setFormatter(new ShortFormatter());
+
+            shortHandler.setFilter(record -> record.getMessage().contains("Result: "));
+            baseLogger.addHandler(shortHandler);
         } catch (IOException e) {
             logger.warning("Error adding file handler for logger.");
         }
