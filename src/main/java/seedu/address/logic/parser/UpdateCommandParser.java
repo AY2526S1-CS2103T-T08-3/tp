@@ -50,16 +50,16 @@ public class UpdateCommandParser implements Parser<UpdateCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL);
 
-        UpdatePersonDescriptor UpdatePersonDescriptor = new UpdatePersonDescriptor();
+        UpdatePersonDescriptor updatePersonDescriptor = new UpdatePersonDescriptor();
 
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-            UpdatePersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
+            updatePersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
         }
         if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
-            UpdatePersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
+            updatePersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
         }
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
-            UpdatePersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
+            updatePersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
         }
 
         Set<Category> categories = new HashSet<>();
@@ -82,18 +82,18 @@ public class UpdateCommandParser implements Parser<UpdateCommand> {
             );
         }
         if (!categories.isEmpty()) {
-            UpdatePersonDescriptor.setCategories(categories);
+            updatePersonDescriptor.setCategories(categories);
         } else {
-            UpdatePersonDescriptor.setCategories(null);
+            updatePersonDescriptor.setCategories(null);
         }
 
-        parseSkillsForEdit(argMultimap.getAllValues(PREFIX_SKILL)).ifPresent(UpdatePersonDescriptor::setSkills);
+        parseSkillsForEdit(argMultimap.getAllValues(PREFIX_SKILL)).ifPresent(updatePersonDescriptor::setSkills);
 
-        if (!UpdatePersonDescriptor.isAnyFieldEdited()) {
+        if (!updatePersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(UpdateCommand.MESSAGE_NOT_EDITED);
         }
 
-        return new UpdateCommand(index, UpdatePersonDescriptor);
+        return new UpdateCommand(index, updatePersonDescriptor);
     }
 
     /**

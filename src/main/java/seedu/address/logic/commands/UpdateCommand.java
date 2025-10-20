@@ -62,18 +62,18 @@ public class UpdateCommand extends Command {
             "Duplicate phone number detected. Please choose a unique phone number.";
 
     private final Index index;
-    private final UpdatePersonDescriptor UpdatePersonDescriptor;
+    private final UpdatePersonDescriptor updatePersonDescriptor;
 
     /**
      * @param index index of the person in the filtered person list to edit
-     * @param UpdatePersonDescriptor details to edit the person with
+     * @param updatePersonDescriptor details to edit the person with
      */
-    public UpdateCommand(Index index, UpdatePersonDescriptor UpdatePersonDescriptor) {
+    public UpdateCommand(Index index, UpdatePersonDescriptor updatePersonDescriptor) {
         requireNonNull(index);
-        requireNonNull(UpdatePersonDescriptor);
+        requireNonNull(updatePersonDescriptor);
 
         this.index = index;
-        this.UpdatePersonDescriptor = new UpdatePersonDescriptor(UpdatePersonDescriptor);
+        this.updatePersonDescriptor = new UpdatePersonDescriptor(updatePersonDescriptor);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class UpdateCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, UpdatePersonDescriptor);
+        Person editedPerson = createEditedPerson(personToEdit, updatePersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -109,15 +109,15 @@ public class UpdateCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code UpdatePersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, UpdatePersonDescriptor UpdatePersonDescriptor) {
+    private static Person createEditedPerson(Person personToEdit, UpdatePersonDescriptor updatePersonDescriptor) {
         assert personToEdit != null;
 
-        Name updatedName = UpdatePersonDescriptor.getName().orElse(personToEdit.getName());
-        Phone updatedPhone = UpdatePersonDescriptor.getPhone().orElse(personToEdit.getPhone());
-        Email updatedEmail = UpdatePersonDescriptor.getEmail().orElse(personToEdit.getEmail());
+        Name updatedName = updatePersonDescriptor.getName().orElse(personToEdit.getName());
+        Phone updatedPhone = updatePersonDescriptor.getPhone().orElse(personToEdit.getPhone());
+        Email updatedEmail = updatePersonDescriptor.getEmail().orElse(personToEdit.getEmail());
 
-        Set<Category> updatedCategories = UpdatePersonDescriptor.getCategories().orElse(personToEdit.getCategories());
-        Set<Skill> updatedSkills = UpdatePersonDescriptor.getSkills().orElse(personToEdit.getSkills());
+        Set<Category> updatedCategories = updatePersonDescriptor.getCategories().orElse(personToEdit.getCategories());
+        Set<Skill> updatedSkills = updatePersonDescriptor.getSkills().orElse(personToEdit.getSkills());
 
         return new Person(updatedName, updatedPhone, updatedEmail,
                 updatedCategories, updatedSkills);
@@ -135,14 +135,14 @@ public class UpdateCommand extends Command {
 
         UpdateCommand otherUpdateCommand = (UpdateCommand) other;
         return index.equals(otherUpdateCommand.index)
-                && UpdatePersonDescriptor.equals(otherUpdateCommand.UpdatePersonDescriptor);
+                && updatePersonDescriptor.equals(otherUpdateCommand.updatePersonDescriptor);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("index", index)
-                .add("UpdatePersonDescriptor", UpdatePersonDescriptor)
+                .add("UpdatePersonDescriptor", updatePersonDescriptor)
                 .toString();
     }
 
