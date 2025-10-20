@@ -39,13 +39,7 @@ public class FindCommand extends Command {
                 Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
         Map<String, Integer> depts = new Hashtable<>();
         for (Person p : model.getFilteredPersonList()) {
-            String dept = "N/A";
-            for (Category c: p.getCategories()) {
-                if (c.getCategory().equals("Department")) {
-                    dept = c.getValue();
-                    break;
-                }
-            }
+            String dept = identifyDept(p);
             depts.put(dept, depts.getOrDefault(dept, 0) + 1);
         }
         for (Map.Entry<String, Integer> entry : depts.entrySet()) {
@@ -74,5 +68,14 @@ public class FindCommand extends Command {
         return new ToStringBuilder(this)
                 .add("predicate", predicate)
                 .toString();
+    }
+
+    private String identifyDept(Person p) {
+        for (Category c: p.getCategories()) {
+            if (c.getCategory().equals("Department")) {
+                return c.getValue();
+            }
+        }
+        return "N/A";
     }
 }
