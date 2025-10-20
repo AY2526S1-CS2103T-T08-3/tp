@@ -28,7 +28,6 @@ import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
-import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
 /**
@@ -40,11 +39,13 @@ public class MainApp extends Application {
 
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
-    protected Ui ui;
+    protected UiManager ui;
     protected Logic logic;
     protected Storage storage;
     protected Model model;
     protected Config config;
+
+    private String errorMessage = "";
 
     @Override
     public void init() throws Exception {
@@ -64,7 +65,7 @@ public class MainApp extends Application {
 
         logic = new LogicManager(model, storage);
 
-        ui = new UiManager(logic);
+        ui = new UiManager(logic, errorMessage);
     }
 
     /**
@@ -81,12 +82,17 @@ public class MainApp extends Application {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
                 logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                        + " populated with a sample AddressBook.");
+                        + " populated with a sample Slackbook.");
             }
             initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataLoadingException e) {
-            logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                    + " Will be starting with an empty AddressBook.");
+            String errorMessage = "Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
+                    + " Will be starting with an empty Slackbook.";
+            logger.warning(errorMessage);
+            this.errorMessage = "Error: " + e.getCause().getMessage()
+                    + System.lineSeparator() + errorMessage
+                    + System.lineSeparator() + "Note that if you type any command, the "
+                    + storage.getAddressBookFilePath() + " file will be replaced.";
             initialData = new AddressBook();
         }
 
