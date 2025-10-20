@@ -2,10 +2,15 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Hashtable;
+import java.util.Map;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.model.tag.Category;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -30,8 +35,23 @@ public class FindCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
-        return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+        StringBuffer output = new StringBuffer(String.format(
+                Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+        Map<String, Integer> depts = new Hashtable<>();
+        for (Person p : model.getFilteredPersonList()) {
+            String dept = "N/A";
+            for (Category c: p.getCategories()) {
+                if (c.getCategory().equals("Department")) {
+                    dept = c.getValue();
+                    break;
+                }
+            }
+            depts.put(dept, depts.getOrDefault(dept, 0) + 1);
+        }
+        for (Map.Entry<String, Integer> entry : depts.entrySet()) {
+            output.append(String.format("\n %s: %d persons", entry.getKey(), entry.getValue()));
+        }
+        return new CommandResult(output.toString());
     }
 
     @Override
