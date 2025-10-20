@@ -6,12 +6,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Skill;
-import seedu.address.model.tag.Category;
+import seedu.address.model.tag.Tag;
 
 /**
  * A utility class to help with building {@code EditPersonDescriptor} objects.
@@ -36,8 +37,9 @@ public class EditPersonDescriptorBuilder {
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setEmail(person.getEmail());
-        descriptor.setCategories(person.getCategories());
-        descriptor.setSkills(person.getSkills());
+        descriptor.setAddress(person.getAddress());
+        // Person currently exposes tags; keep compatibility by setting tags directly.
+        descriptor.setTags(person.getTags());
     }
 
     /**
@@ -74,12 +76,13 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Parses the {@code categories} into a {@code Set<Category>} and set it to the {@code EditPersonDescriptor}
-     * that we are building.
+     * Sets the {@code Address} of the {@code EditPersonDescriptor} that we are building.
+     *
+     * @param address a valid address string.
+     * @return this builder for chaining.
      */
-    public EditPersonDescriptorBuilder withCategories(List<Category> categoryArray) {
-        Set<Category> categorySet = new HashSet<>(categoryArray);
-        descriptor.setCategories(categorySet);
+    public EditPersonDescriptorBuilder withAddress(String address) {
+        descriptor.setAddress(new Address(address));
         return this;
     }
 
@@ -92,8 +95,8 @@ public class EditPersonDescriptorBuilder {
      * @return this builder for chaining.
      */
     public EditPersonDescriptorBuilder withTags(String... tags) {
-        Set<Skill> tagSet = Stream.of(tags).map(Skill::new).collect(Collectors.toSet());
-        descriptor.setSkills(tagSet);
+        Set<Tag> tagSet = Arrays.stream(tags).map(Tag::new).collect(Collectors.toSet());
+        descriptor.setTags(tagSet);
         return this;
     }
 
@@ -118,7 +121,6 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withSkills(String... skills) {
         Set<Skill> skillSet = Arrays.stream(skills).map(Skill::new).collect(Collectors.toSet());
-        // Use bridge method on descriptor to map skills -> tags internally
         descriptor.setSkills(skillSet);
         return this;
     }
@@ -143,4 +145,3 @@ public class EditPersonDescriptorBuilder {
         return descriptor;
     }
 }
-
