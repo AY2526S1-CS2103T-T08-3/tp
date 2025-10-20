@@ -49,14 +49,13 @@ public class UpdatePersonDescriptorTest {
 
     @Test
     public void toStringMethod() {
-        UpdatePersonDescriptor UpdatePersonDescriptor = new UpdatePersonDescriptor();
+        UpdatePersonDescriptor updatePersonDescriptor = new UpdatePersonDescriptor();
         String expected = UpdatePersonDescriptor.class.getCanonicalName() + "{name="
-                + UpdatePersonDescriptor.getName().orElse(null) + ", phone="
-                + UpdatePersonDescriptor.getPhone().orElse(null) + ", email="
-                + UpdatePersonDescriptor.getEmail().orElse(null) + ", address="
-                + UpdatePersonDescriptor.getAddress().orElse(null) + ", categories="
-                + UpdatePersonDescriptor.getCategories().orElse(null) + ", skills="
-                + UpdatePersonDescriptor.getSkills().orElse(null) + "}";
-        assertEquals(expected, UpdatePersonDescriptor.toString());
+                + updatePersonDescriptor.getName().orElse(null) + ", phone="
+                + updatePersonDescriptor.getPhone().orElse(null) + ", email="
+                + updatePersonDescriptor.getEmail().orElse(null) + ", categories="
+                + updatePersonDescriptor.getCategories().orElse(null) + ", skills="
+                + updatePersonDescriptor.getSkills().orElse(null) + "}";
+        assertEquals(expected, updatePersonDescriptor.toString());
     }
 }
