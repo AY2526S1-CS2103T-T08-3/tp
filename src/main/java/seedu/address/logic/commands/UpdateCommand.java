@@ -56,6 +56,10 @@ public class UpdateCommand extends Command {
     public static final String MESSAGE_NOT_EDITED = "No fields specified to update. At least one field"
             + "(e.g., n/NAME, d/DEPARTMENT, s/SKILLS) must be included.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_EMAIL =
+            "Duplicate email detected. Please choose a unique email address.";
+    public static final String MESSAGE_DUPLICATE_PHONE =
+            "Duplicate phone number detected. Please choose a unique phone number.";
 
     private final Index index;
     private final UpdatePersonDescriptor UpdatePersonDescriptor;
@@ -86,6 +90,14 @@ public class UpdateCommand extends Command {
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        }
+
+        if (!personToEdit.isSameEmail(editedPerson) && model.hasPerson(editedPerson)) {
+            throw new CommandException(MESSAGE_DUPLICATE_EMAIL);
+        }
+
+        if (!personToEdit.isSamePhoneNumber(editedPerson) && model.hasPerson(editedPerson)) {
+            throw new CommandException(MESSAGE_DUPLICATE_PHONE);
         }
 
         model.setPerson(personToEdit, editedPerson);
