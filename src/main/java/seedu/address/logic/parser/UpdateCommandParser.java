@@ -24,13 +24,13 @@ import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Category;
 
 /**
- * Parses input arguments and creates a new EditCommand object.
+ * Parses input arguments and creates a new UpdateCommand object.
  */
 public class UpdateCommandParser implements Parser<UpdateCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the EditCommand
-     * and returns an EditCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the UpdateCommand
+     * and returns an UpdateCommand object for execution.
      *
      * @throws ParseException if the user input does not conform to the expected format
      */
@@ -87,10 +87,10 @@ public class UpdateCommandParser implements Parser<UpdateCommand> {
             updatePersonDescriptor.setCategories(null);
         }
 
-        parseSkillsForEdit(argMultimap.getAllValues(PREFIX_SKILL)).ifPresent(updatePersonDescriptor::setSkills);
+        parseSkillsForUpdate(argMultimap.getAllValues(PREFIX_SKILL)).ifPresent(updatePersonDescriptor::setSkills);
 
-        if (!updatePersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(UpdateCommand.MESSAGE_NOT_EDITED);
+        if (!updatePersonDescriptor.isAnyFieldUpdated()) {
+            throw new ParseException(UpdateCommand.MESSAGE_NOT_UPDATED);
         }
 
         return new UpdateCommand(index, updatePersonDescriptor);
@@ -101,7 +101,7 @@ public class UpdateCommandParser implements Parser<UpdateCommand> {
      * If {@code tags} contain only one element which is an empty string, it will be parsed into a
      * {@code Set<Tag>} containing zero tags.
      */
-    private Optional<Set<Skill>> parseSkillsForEdit(Collection<String> skills) throws ParseException {
+    private Optional<Set<Skill>> parseSkillsForUpdate(Collection<String> skills) throws ParseException {
         assert skills != null;
 
         if (skills.isEmpty()) {

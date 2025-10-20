@@ -31,7 +31,7 @@ import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Category;
 
 /**
- * Edits the details of an existing person in the address book.
+ * Updates the details of an existing person in the address book.
  */
 public class UpdateCommand extends Command {
 
@@ -52,8 +52,8 @@ public class UpdateCommand extends Command {
             + PREFIX_EMAIL + "johndoe@example.com"
             + PREFIX_PHONE + "91234567 ";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Updated Person: %1$s";
-    public static final String MESSAGE_NOT_EDITED = "No fields specified to update. At least one field"
+    public static final String MESSAGE_UPDATE_PERSON_SUCCESS = "Updated Person: %1$s";
+    public static final String MESSAGE_NOT_UPDATED = "No fields specified to update. At least one field"
             + "(e.g., n/NAME, d/DEPARTMENT, s/SKILLS) must be included.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     public static final String MESSAGE_DUPLICATE_EMAIL =
@@ -65,8 +65,8 @@ public class UpdateCommand extends Command {
     private final UpdatePersonDescriptor updatePersonDescriptor;
 
     /**
-     * @param index index of the person in the filtered person list to edit
-     * @param updatePersonDescriptor details to edit the person with
+     * @param index index of the person in the filtered person list to update
+     * @param updatePersonDescriptor details to update the person with
      */
     public UpdateCommand(Index index, UpdatePersonDescriptor updatePersonDescriptor) {
         requireNonNull(index);
@@ -85,31 +85,31 @@ public class UpdateCommand extends Command {
             throw new CommandException(String.format(Messages.MESSAGE_INDEX_NOT_FOUND, index.getOneBased()));
         }
 
-        Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, updatePersonDescriptor);
+        Person personToUpdate = lastShownList.get(index.getZeroBased());
+        Person updatedPerson = createUpdatedPerson(personToUpdate, updatePersonDescriptor);
 
-        if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
+        if (!personToUpdate.isSamePerson(updatedPerson) && model.hasPerson(updatedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        if (!personToEdit.isSameEmail(editedPerson) && model.hasPerson(editedPerson)) {
+        if (!personToUpdate.isSameEmail(updatedPerson) && model.hasPerson(updatedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_EMAIL);
         }
 
-        if (!personToEdit.isSamePhoneNumber(editedPerson) && model.hasPerson(editedPerson)) {
+        if (!personToUpdate.isSamePhoneNumber(updatedPerson) && model.hasPerson(updatedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PHONE);
         }
 
-        model.setPerson(personToEdit, editedPerson);
+        model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+        return new CommandResult(String.format(MESSAGE_UPDATE_PERSON_SUCCESS, Messages.format(updatedPerson)));
     }
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code UpdatePersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, UpdatePersonDescriptor updatePersonDescriptor) {
+    private static Person createUpdatedPerson(Person personToEdit, UpdatePersonDescriptor updatePersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = updatePersonDescriptor.getName().orElse(personToEdit.getName());
@@ -174,7 +174,7 @@ public class UpdateCommand extends Command {
         /**
          * Returns true if at least one field is edited.
          */
-        public boolean isAnyFieldEdited() {
+        public boolean isAnyFieldUpdated() {
             return CollectionUtil.isAnyNonNull(name, phone, email, categories, skills);
         }
 
