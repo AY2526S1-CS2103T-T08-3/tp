@@ -3,55 +3,48 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a Skill in the address book.
- * Constraints mirror Tag-style constraints: alphanumeric only, no spaces, non-empty.
+ * Represents a Skill in a Person's profile.
+ * Guarantees: immutable; valid according to defined constraints.
  */
 public class Skill {
 
+    /** Alphanumeric + spaces only; not blank. */
     public static final String MESSAGE_CONSTRAINTS =
-            "Skills should be alphanumeric and non-empty, with no spaces.";
+            "Skills should only contain alphanumeric characters and spaces, and should not be blank.";
 
-    // Alphanumeric (Unicode letters/digits), at least 1 char, no spaces or symbols
-    private static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    // One or more alphanumeric words separated by single spaces.
+    private static final String VALIDATION_REGEX = "[\\p{Alnum}]+( [\\p{Alnum}]+)*";
 
-    public final String value;
+    public final String skillName;
 
-    /**
-     * Constructs a {@code Skill}.
-     *
-     * @param value A valid skill string.
-     */
-    public Skill(String value) {
-        requireNonNull(value);
-        String trimmed = value.trim();
+    public Skill(String skillName) {
+        requireNonNull(skillName);
+        String trimmed = skillName.trim();
         if (!isValidSkillName(trimmed)) {
             throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
         }
-        this.value = trimmed;
+        this.skillName = trimmed;
     }
 
-    /**
-     * Returns true if a given string is a valid skill name.
-     * Alphanumeric only, no spaces/symbols, non-empty.
-     */
-    public static boolean isValidSkillName(String s) {
-        return s != null && s.matches(VALIDATION_REGEX);
+    public static boolean isValidSkillName(String test) {
+        return test != null && test.matches(VALIDATION_REGEX);
     }
 
     @Override
     public String toString() {
-        return value;
+        return skillName;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this
-                || (other instanceof Skill && value.equals(((Skill) other).value));
+                || (other instanceof Skill
+                && skillName.equals(((Skill) other).skillName)); // case-sensitive (matches AB-3 Tag)
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return skillName.hashCode(); // case-sensitive
     }
 }
 

@@ -1,8 +1,9 @@
 package seedu.address.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Skill;
 
 /**
@@ -10,24 +11,29 @@ import seedu.address.model.person.Skill;
  */
 class JsonAdaptedSkill {
 
-    private final String skillName;
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Skill's name field is missing!";
+
+    private final String name;
 
     @JsonCreator
-    public JsonAdaptedSkill(String skillName) {
-        this.skillName = skillName;
+    public JsonAdaptedSkill(@JsonProperty("name") String name,
+                            // Legacy AB-3 "tagged" items used "tagName"
+                            @JsonProperty("tagName") String legacyTagName) {
+        this.name = (name != null) ? name : legacyTagName;
     }
 
     public JsonAdaptedSkill(Skill source) {
-        this.skillName = source.skillName;
+        this.name = source.skillName;
     }
 
-    @JsonValue
-    public String getSkillName() {
-        return skillName;
-    }
-
-    public Skill toModelType() {
-        return new Skill(skillName);
+    public Skill toModelType() throws IllegalValueException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalValueException(MISSING_FIELD_MESSAGE_FORMAT);
+        }
+        if (!Skill.isValidSkillName(name)) {
+            throw new IllegalValueException(Skill.MESSAGE_CONSTRAINTS);
+        }
+        return new Skill(name);
     }
 }
 

@@ -1,5 +1,7 @@
 package seedu.address.storage;
 
+import static java.util.Objects.requireNonNull;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -42,13 +44,18 @@ class JsonAdaptedCategory {
     /**
      * Converts this Jackson-friendly adapted category object into the model's {@code Category} object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted category or value.
+     * @throws NullPointerException if either category or value is null (as per test expectations).
+     * @throws IllegalValueException if data constraints are violated.
      */
     public Category toModelType() throws IllegalValueException {
+        // Tests expect a NullPointerException when category or value is null
+        requireNonNull(category);
+        requireNonNull(value);
+
         if (!Category.isValidData(category) || !Category.isValidData(value)) {
             throw new IllegalValueException(Category.MESSAGE_CONSTRAINTS);
         }
         return new Category(category, value);
     }
-
 }
+

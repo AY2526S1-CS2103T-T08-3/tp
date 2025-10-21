@@ -18,19 +18,17 @@ import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Category;
 
 /**
- * Contains utility methods used for parsing strings in the various *Parser classes.
+ * Utility class for parsing user input strings into model objects.
  */
 public class ParserUtil {
 
+    /** Message displayed when the index is invalid. */
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-    public static final String MESSAGE_INVALID_SKILL = "Skills should not be blank.";
 
-    /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
-     *
-     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
-     */
+    /** Message when category lists have different lengths. */
+    private static final String MESSAGE_CATEGORY_COUNT_MISMATCH =
+            "Each category must have a corresponding value (counts must match).";
+
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         requireNonNull(oneBasedIndex);
         final String trimmedIndex = oneBasedIndex.trim();
@@ -40,138 +38,75 @@ public class ParserUtil {
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
 
-    /**
-     * Parses a {@code String name} into a {@code Name}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code name} is invalid.
-     */
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
-        final String trimmedName = name.trim();
-        if (!Name.isValidName(trimmedName)) {
+        final String trimmed = name.trim();
+        if (!Name.isValidName(trimmed)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
-        return new Name(trimmedName);
+        return new Name(trimmed);
     }
 
-    /**
-     * Parses a {@code String phone} into a {@code Phone}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code phone} is invalid.
-     */
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
-        final String trimmedPhone = phone.trim();
-        if (!Phone.isValidPhone(trimmedPhone)) {
+        final String trimmed = phone.trim();
+        if (!Phone.isValidPhone(trimmed)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
-        return new Phone(trimmedPhone);
+        return new Phone(trimmed);
     }
 
-    /**
-     * Parses a {@code String address} into an {@code Address}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code address} is invalid.
-     */
-    public static Address parseAddress(String address) throws ParseException {
-        requireNonNull(address);
-        final String trimmedAddress = address.trim();
-        if (!Address.isValidAddress(trimmedAddress)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
-        }
-        return new Address(trimmedAddress);
-    }
-
-    /**
-     * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code email} is invalid.
-     */
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
-        final String trimmedEmail = email.trim();
-        if (!Email.isValidEmail(trimmedEmail)) {
+        final String trimmed = email.trim();
+        if (!Email.isValidEmail(trimmed)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
-        return new Email(trimmedEmail);
+        return new Email(trimmed);
     }
 
-    // ===== Tag parsing =====
+    /** Retained for components that still accept addresses. */
+    public static Address parseAddress(String address) throws ParseException {
+        requireNonNull(address);
+        final String trimmed = address.trim();
+        if (!Address.isValidAddress(trimmed)) {
+            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
+        }
+        return new Address(trimmed);
+    }
 
-    /**
-     * Parses a {@code String category} into a {@code Category}.
-     * Parses a {@code String skill} into a {@code Skill}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code category} is invalid.
-     */
+    // ===== Category parsing =====
+
     public static Category parseCategory(String category, String value) throws ParseException {
         requireAllNonNull(category, value);
-        String trimmedCategory = category.trim();
-        String trimmedValue = value.trim();
-
-        if (!Category.isValidData(trimmedCategory) && !Category.isValidData(trimmedValue)) {
+        String c = category.trim();
+        String v = value.trim();
+        if (!Category.isValidData(c) || !Category.isValidData(v)) {
             throw new ParseException(Category.MESSAGE_CONSTRAINTS);
         }
-        return new Category(trimmedCategory, trimmedValue);
+        return new Category(c, v);
     }
 
-    /**
-     * Parses {@code Collection<String> categories} into a {@code Set<Category>}.
-     */
-    public static Set<Category>
-        parseCategories(Collection<String> categories, Collection<String> values) throws ParseException {
+    public static Set<Category> parseCategories(Collection<String> categories, Collection<String> values)
+            throws ParseException {
         requireAllNonNull(categories, values);
 
-        final Set<Category> categorySet = new HashSet<>();
-        String[] categoryArray = categories.toArray(new String[0]);
-        String[] valueArray = values.toArray(new String[0]);
+        String[] ca = categories.toArray(new String[0]);
+        String[] va = values.toArray(new String[0]);
 
-        for (int i = 0; i < categories.size(); i++) {
-            categorySet.add(parseCategory(categoryArray[i], valueArray[i]));
+        if (ca.length != va.length) {
+            throw new ParseException(MESSAGE_CATEGORY_COUNT_MISMATCH);
         }
-        return categorySet;
-    }
 
-    /**
-     * Parses a {@code String tag} into a {@code Tag}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code skill} is invalid.
-     */
-    public static Skill parseSkill(String skill) throws ParseException {
-        requireNonNull(skill);
-        String trimmedSkill = skill.trim();
-        if (!Skill.isValidSkillName(trimmedSkill)) {
-            throw new ParseException(MESSAGE_INVALID_SKILL);
+        final Set<Category> set = new HashSet<>();
+        for (int i = 0; i < ca.length; i++) {
+            set.add(parseCategory(ca[i], va[i]));
         }
-        return new Skill(trimmedSkill);
-    }
-
-    /**
-     * Parses {@code Collection<String> skills} into a {@code Set<Skill>}.
-     */
-    public static Set<Skill> parseSkills(Collection<String> skills) throws ParseException {
-        requireNonNull(skills);
-        final Set<Skill> skillSet = new HashSet<>();
-        for (String s : skills) {
-            skillSet.add(parseSkill(s));
-        }
-        return skillSet;
+        return set;
     }
 
     // ===== Skill parsing =====
 
-    /**
-     * Parses a {@code String skill} into a {@code Skill}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code skill} is invalid.
-     */
     public static Skill parseSkill(String skill) throws ParseException {
         requireNonNull(skill);
         final String trimmed = skill.trim();
@@ -182,15 +117,28 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Collection<String> skills} into a {@code Set<Skill>}.
+     * Parses a collection of skills into a {@code Set<Skill>}.
+     *
+     * Behavior:
+     * - If the collection is empty, returns an empty set.
+     * - Blank entries (e.g., "") are ignored (this supports cases like "s/ s/friend").
+     * - Any non-blank invalid entry causes a {@link ParseException}.
      */
     public static Set<Skill> parseSkills(Collection<String> skills) throws ParseException {
         requireNonNull(skills);
-        final Set<Skill> skillSet = new HashSet<>();
+        final Set<Skill> set = new HashSet<>();
         for (String s : skills) {
-            skillSet.add(parseSkill(s));
+            if (s == null) {
+                continue;
+            }
+            String trimmed = s.trim();
+            if (trimmed.isEmpty()) {
+                // ignore blanks; reset behavior is handled by the parser when ALL are blank
+                continue;
+            }
+            set.add(parseSkill(trimmed));
         }
-        return skillSet;
+        return set;
     }
 }
 
