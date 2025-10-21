@@ -8,51 +8,51 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for {@link EditCommand.EditPersonDescriptor}.
+ * Tests for {@link UpdateCommand.UpdatePersonDescriptor}.
  *
  * NOTE: This file must NOT declare a public EditPersonDescriptor class.
  * It should import and use the real descriptor from main code.
  */
-public class EditPersonDescriptorTest {
+public class UpdatePersonDescriptorTest {
 
     @Test
     public void equals_sameEmptyDescriptors_returnsTrue() {
-        EditCommand.EditPersonDescriptor a = new EditCommand.EditPersonDescriptor();
-        EditCommand.EditPersonDescriptor b = new EditCommand.EditPersonDescriptor();
+        UpdateCommand.UpdatePersonDescriptor a = new UpdateCommand.UpdatePersonDescriptor();
+        UpdateCommand.UpdatePersonDescriptor b = new UpdateCommand.UpdatePersonDescriptor();
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
     public void equals_sameInstance_returnsTrue() {
-        EditCommand.EditPersonDescriptor a = new EditCommand.EditPersonDescriptor();
+        UpdateCommand.UpdatePersonDescriptor a = new UpdateCommand.UpdatePersonDescriptor();
         assertEquals(a, a);
     }
 
     @Test
     public void equals_nullOrDifferentType_returnsFalse() {
-        EditCommand.EditPersonDescriptor a = new EditCommand.EditPersonDescriptor();
+        UpdateCommand.UpdatePersonDescriptor a = new UpdateCommand.UpdatePersonDescriptor();
         assertNotEquals(a, null);
         assertNotEquals(a, new Object());
     }
 
     @Test
     public void copyConstructor_copiesValuesAndEqualityHolds() {
-        EditCommand.EditPersonDescriptor original = new EditCommand.EditPersonDescriptor();
-        EditCommand.EditPersonDescriptor copy = new EditCommand.EditPersonDescriptor(original);
+        UpdateCommand.UpdatePersonDescriptor original = new UpdateCommand.UpdatePersonDescriptor();
+        UpdateCommand.UpdatePersonDescriptor copy = new UpdateCommand.UpdatePersonDescriptor(original);
         assertEquals(original, copy);
         assertEquals(original.hashCode(), copy.hashCode());
     }
 
     @Test
     public void isAnyFieldEdited_emptyDescriptor_returnsFalse() {
-        EditCommand.EditPersonDescriptor descriptor = new EditCommand.EditPersonDescriptor();
-        assertFalse(descriptor.isAnyFieldEdited());
+        UpdateCommand.UpdatePersonDescriptor descriptor = new UpdateCommand.UpdatePersonDescriptor();
+        assertFalse(descriptor.isAnyFieldUpdated());
     }
 
     @Test
     public void toString_nonNullAndNonEmpty() {
-        EditCommand.EditPersonDescriptor descriptor = new EditCommand.EditPersonDescriptor();
+        UpdateCommand.UpdatePersonDescriptor descriptor = new UpdateCommand.UpdatePersonDescriptor();
         String s = descriptor.toString();
         assertTrue(s != null && !s.isEmpty());
     }
