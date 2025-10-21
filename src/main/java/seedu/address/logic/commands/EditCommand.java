@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -23,7 +22,6 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -45,7 +43,6 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_ASSIGN_CATEGORY + "CATEGORY" + PREFIX_ASSIGN_CATEGORY_VALUE + "VALUE] "
             + "[" + PREFIX_SKILL + "SKILL]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -60,17 +57,25 @@ public class EditCommand extends Command {
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**
-     * @param index index of the person in the filtered person list to edit
-     * @param editPersonDescriptor details to edit the person with
+     * Creates an EditCommand to edit the person at the specified {@code index}.
+     *
+     * @param index Index of the person to edit.
+     * @param editPersonDescriptor Details of the edits to apply.
      */
     public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(index);
         requireNonNull(editPersonDescriptor);
-
         this.index = index;
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
+    /**
+     * Executes the edit command.
+     *
+     * @param model The model containing the address book data.
+     * @return A {@code CommandResult} describing the outcome.
+     * @throws CommandException If the index is invalid or the edit would create a duplicate person.
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -92,22 +97,17 @@ public class EditCommand extends Command {
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
     }
 
-    /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
-     */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    /** Creates and returns a {@code Person} with edited fields. */
+    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor d) {
         assert personToEdit != null;
 
-        Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
-        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
-        Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
+        Name updatedName = d.getName().orElse(personToEdit.getName());
+        Phone updatedPhone = d.getPhone().orElse(personToEdit.getPhone());
+        Email updatedEmail = d.getEmail().orElse(personToEdit.getEmail());
+        Set<Category> updatedCategories = d.getCategories().orElse(personToEdit.getCategories());
+        Set<Skill> updatedSkills = d.getSkills().orElse(personToEdit.getSkills());
 
-        Set<Category> updatedCategories = editPersonDescriptor.getCategories().orElse(personToEdit.getCategories());
-        Set<Skill> updatedSkills = editPersonDescriptor.getSkills().orElse(personToEdit.getSkills());
-
-        return new Person(updatedName, updatedPhone, updatedEmail,
-                updatedCategories, updatedSkills);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedCategories, updatedSkills);
     }
 
     @Override
@@ -115,14 +115,16 @@ public class EditCommand extends Command {
         if (other == this) {
             return true;
         }
-
         if (!(other instanceof EditCommand)) {
             return false;
         }
+        EditCommand o = (EditCommand) other;
+        return index.equals(o.index) && editPersonDescriptor.equals(o.editPersonDescriptor);
+    }
 
-        EditCommand otherEditCommand = (EditCommand) other;
-        return index.equals(otherEditCommand.index)
-                && editPersonDescriptor.equals(otherEditCommand.editPersonDescriptor);
+    @Override
+    public int hashCode() {
+        return Objects.hash(index, editPersonDescriptor);
     }
 
     @Override
@@ -133,38 +135,30 @@ public class EditCommand extends Command {
                 .toString();
     }
 
-    /**
-     * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person.
-     */
+    /** Descriptor of editable fields. */
     public static class EditPersonDescriptor {
         private Name name;
         private Phone phone;
         private Email email;
-        private Address address;
         private Set<Category> categories;
         private Set<Skill> skills;
 
-        public EditPersonDescriptor() {}
+        public EditPersonDescriptor() {
+        }
 
-        /**
-         * Copy constructor.
-         * A defensive copy of {@code skills} is used internally.
-         */
+        /** Copy constructor with defensive copies. */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
+            requireNonNull(toCopy);
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
-            setAddress(toCopy.address);
             setCategories(toCopy.categories);
             setSkills(toCopy.skills);
         }
 
-        /**
-         * Returns true if at least one field is edited.
-         */
+        /** Returns true if at least one field is edited. */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, categories, skills);
+            return CollectionUtil.isAnyNonNull(name, phone, email, categories, skills);
         }
 
         public void setName(Name name) {
@@ -191,44 +185,22 @@ public class EditCommand extends Command {
             return Optional.ofNullable(email);
         }
 
-        public void setAddress(Address address) {
-            this.address = address;
-        }
-
-        public Optional<Address> getAddress() {
-            return Optional.ofNullable(address);
-        }
-
-        /**
-         * Sets {@code categories} to this object's {@code categories}.
-         * A defensive copy of {@code categories} is used internally.
-         */
+        /** Sets {@code categories}. Defensive copy internally. */
         public void setCategories(Set<Category> categories) {
             this.categories = (categories != null) ? new HashSet<>(categories) : null;
         }
 
-        /**
-         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
-         * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code categories} is null.
-         */
+        /** Returns unmodifiable set if present. */
         public Optional<Set<Category>> getCategories() {
             return (categories != null) ? Optional.of(Collections.unmodifiableSet(categories)) : Optional.empty();
         }
 
-        /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
-         */
+        /** Sets {@code skills}. Defensive copy internally. */
         public void setSkills(Set<Skill> skills) {
             this.skills = (skills != null) ? new HashSet<>(skills) : null;
         }
 
-        /**
-         * Returns an unmodifiable skill set, which throws {@code UnsupportedOperationException}
-         * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code skills} is null.
-         */
+        /** Returns unmodifiable set if present. */
         public Optional<Set<Skill>> getSkills() {
             return (skills != null) ? Optional.of(Collections.unmodifiableSet(skills)) : Optional.empty();
         }
@@ -238,18 +210,20 @@ public class EditCommand extends Command {
             if (other == this) {
                 return true;
             }
-
             if (!(other instanceof EditPersonDescriptor)) {
                 return false;
             }
+            EditPersonDescriptor o = (EditPersonDescriptor) other;
+            return Objects.equals(name, o.name)
+                    && Objects.equals(phone, o.phone)
+                    && Objects.equals(email, o.email)
+                    && Objects.equals(categories, o.categories)
+                    && Objects.equals(skills, o.skills);
+        }
 
-            EditPersonDescriptor otherEditPersonDescriptor = (EditPersonDescriptor) other;
-            return Objects.equals(name, otherEditPersonDescriptor.name)
-                    && Objects.equals(phone, otherEditPersonDescriptor.phone)
-                    && Objects.equals(email, otherEditPersonDescriptor.email)
-                    && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(categories, otherEditPersonDescriptor.categories)
-                    && Objects.equals(skills, otherEditPersonDescriptor.skills);
+        @Override
+        public int hashCode() {
+            return Objects.hash(name, phone, email, categories, skills);
         }
 
         @Override
@@ -258,7 +232,6 @@ public class EditCommand extends Command {
                     .add("name", name)
                     .add("phone", phone)
                     .add("email", email)
-                    .add("address", address)
                     .add("categories", categories)
                     .add("skills", skills)
                     .toString();

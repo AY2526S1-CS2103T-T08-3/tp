@@ -1,7 +1,6 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,6 +18,8 @@ import seedu.address.model.tag.Category;
 
 /**
  * Jackson-friendly version of {@link Person}.
+ * NOTE: Address is not part of the current model. We accept "address" in JSON for legacy
+ * files but ignore it during (de)serialization so legacy data still loads.
  */
 class JsonAdaptedPerson {
 
@@ -27,20 +28,60 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
-    private final List<JsonAdaptedCategory> categories = new ArrayList<>();
+
+    // Accept (but ignore) legacy "address" from JSON
+    @JsonProperty("address")
+    private final String ignoredAddress;
+
+    // Canonical serialized fields
     private final List<JsonAdaptedSkill> skills = new ArrayList<>();
+    private final List<JsonAdaptedCategory> categories = new ArrayList<>();
+
+    // Legacy AB-3 alias for tags -> map to skills
+    @JsonProperty("tagged")
+    private final List<JsonAdaptedSkill> tagged = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     * Jackson constructor. Accepts canonical fields plus legacy "tagged" and "address" (ignored).
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email,
-            @JsonProperty("categories") List<JsonAdaptedCategory> categories,
-            @JsonProperty("tags") List<JsonAdaptedSkill> tags) {
+    public JsonAdaptedPerson(@JsonProperty("name") String name,
+                             @JsonProperty("phone") String phone,
+                             @JsonProperty("email") String email,
+                             @JsonProperty("address") String address, // accepted, ignored
+                             @JsonProperty("skills") List<JsonAdaptedSkill> skills,
+                             @JsonProperty("categories") List<JsonAdaptedCategory> categories,
+                             // legacy
+                             @JsonProperty("tagged") List<JsonAdaptedSkill> tagged) {
+
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.ignoredAddress = address;
+
+        if (skills != null) {
+            this.skills.addAll(skills);
+        }
+        if (categories != null) {
+            this.categories.addAll(categories);
+        }
+        if (tagged != null) {
+            this.tagged.addAll(tagged);
+        }
+    }
+
+    /**
+     * Convenience constructor used by tests.
+     */
+    public JsonAdaptedPerson(String name,
+                             String phone,
+                             String email,
+                             List<JsonAdaptedCategory> categories,
+                             List<JsonAdaptedSkill> skills) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.ignoredAddress = null;
 
         if (categories != null) {
             this.categories.addAll(categories);
@@ -50,36 +91,23 @@ class JsonAdaptedPerson {
         }
     }
 
-    /**
-     * Converts a given {@code Person} into this class for Jackson use.
-     */
     public JsonAdaptedPerson(Person source) {
-        name = source.getName().fullName;
-        phone = source.getPhone().value;
-        email = source.getEmail().value;
-        categories.addAll(source.getCategories().stream()
-                .map(cat -> new JsonAdaptedCategory(cat.getCategory(), cat.getValue()))
-                .collect(Collectors.toList()));
-        skills.addAll(source.getSkills().stream()
+        this.name = source.getName().fullName;
+        this.phone = source.getPhone().value;
+        this.email = source.getEmail().value;
+
+        this.skills.addAll(source.getSkills().stream()
                 .map(JsonAdaptedSkill::new)
                 .collect(Collectors.toList()));
+        this.categories.addAll(source.getCategories().stream()
+                .map(JsonAdaptedCategory::new)
+                .collect(Collectors.toList()));
+
+        // no address in model; keep null for legacy compatibility
+        this.ignoredAddress = null;
     }
 
-    /**
-     * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
-     *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
-     */
     public Person toModelType() throws IllegalValueException {
-        final List<Category> personCategories = new ArrayList<>();
-        for (JsonAdaptedCategory category : categories) {
-            personCategories.add(category.toModelType());
-        }
-        final List<Skill> personSkills = new ArrayList<>();
-        for (JsonAdaptedSkill skill : skills) {
-            personSkills.add(skill.toModelType());
-        }
-
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
@@ -104,9 +132,33 @@ class JsonAdaptedPerson {
         }
         final Email modelEmail = new Email(email);
 
-        final Set<Category> modelCategory = new HashSet<>(personCategories);
-        final Set<Skill> modelSkills = new HashSet<>(personSkills);
-        return new Person(modelName, modelPhone, modelEmail, modelCategory, modelSkills);
+        // Merge canonical skills + legacy tagged
+        List<JsonAdaptedSkill> allSkillNodes = new ArrayList<>(skills);
+        allSkillNodes.addAll(tagged);
+
+        final Set<Skill> modelSkills = allSkillNodes.stream()
+                .map(s -> {
+                    try {
+                        return s.toModelType();
+                    } catch (IllegalValueException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                })
+                .collect(Collectors.toSet());
+
+        final Set<Category> modelCategories = categories.stream()
+                .map(c -> {
+                    try {
+                        return c.toModelType();
+                    } catch (IllegalValueException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                })
+                .collect(Collectors.toSet());
+
+        // Your current Person signature (from earlier errors):
+        // Person(Name, Phone, Email, Set<Category>, Set<Skill>)
+        return new Person(modelName, modelPhone, modelEmail, modelCategories, modelSkills);
     }
 }
 
