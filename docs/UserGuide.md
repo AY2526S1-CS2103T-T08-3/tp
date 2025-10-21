@@ -77,7 +77,7 @@ Format: `help`
 
 Adds a person to the directory.
 
-Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]*`
+Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...`
 
 :bulb: **Tip:**
 A person can have any number of skills (including 0)
@@ -166,7 +166,7 @@ Furthermore, certain edits can cause the Slackbook to behave in unexpected ways 
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]*​` <br> e.g., `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
+**Add** | `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...​` <br> e.g., `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
 **Clear** | `clear`
 **Delete** | `delete_employee INDEX`<br> e.g., `delete 3`
 **Categorize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
