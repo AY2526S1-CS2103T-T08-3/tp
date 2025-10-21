@@ -193,4 +193,12 @@ public class MainWindow extends UiPart<Stage> {
             throw e;
         }
     }
+
+    /**
+     * Displays the string passed in on the result display.
+     * @param message
+     */
+    public void setResultDisplay(String message) {
+        resultDisplay.setFeedbackToUser(message);
+    }
 }
