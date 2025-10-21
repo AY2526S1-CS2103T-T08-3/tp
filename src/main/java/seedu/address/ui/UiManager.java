@@ -25,11 +25,21 @@ public class UiManager implements Ui {
     private Logic logic;
     private MainWindow mainWindow;
 
+    private String errorMessage;
+
     /**
      * Creates a {@code UiManager} with the given {@code Logic}.
      */
     public UiManager(Logic logic) {
         this.logic = logic;
+    }
+
+    /**
+     * Creates a {@code UiManager} with the given {@code Logic}.
+     */
+    public UiManager(Logic logic, String errorMessage) {
+        this.logic = logic;
+        this.errorMessage = errorMessage;
     }
 
     @Override
@@ -43,6 +53,7 @@ public class UiManager implements Ui {
             mainWindow = new MainWindow(primaryStage, logic);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.fillInnerParts();
+            mainWindow.setResultDisplay(errorMessage);
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
