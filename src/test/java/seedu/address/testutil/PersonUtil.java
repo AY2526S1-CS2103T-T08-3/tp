@@ -5,7 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 
 import java.util.Set;
 
@@ -40,7 +40,7 @@ public class PersonUtil {
                         .append(PREFIX_ASSIGN_CATEGORY_VALUE + s.getValue() + " ")
         );
         person.getSkills().stream().forEach(
-            s -> sb.append(PREFIX_TAG + s.skillName + " ")
+            s -> sb.append(PREFIX_SKILL + s.skillName + " ")
         );
         return sb.toString();
     }
@@ -65,9 +65,9 @@ public class PersonUtil {
         if (descriptor.getSkills().isPresent()) {
             Set<Skill> tags = descriptor.getSkills().get();
             if (tags.isEmpty()) {
-                sb.append(PREFIX_TAG);
+                sb.append(PREFIX_SKILL);
             } else {
-                tags.forEach(s -> sb.append(PREFIX_TAG).append(s.skillName).append(" "));
+                tags.forEach(s -> sb.append(PREFIX_SKILL).append(s.skillName).append(" "));
             }
         }
         return sb.toString();
