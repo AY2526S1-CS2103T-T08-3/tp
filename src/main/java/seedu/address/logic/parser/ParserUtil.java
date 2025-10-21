@@ -29,6 +29,13 @@ public class ParserUtil {
     private static final String MESSAGE_CATEGORY_COUNT_MISMATCH =
             "Each category must have a corresponding value (counts must match).";
 
+    /**
+     * Parses {@code oneBasedIndex} into an {@link Index}.
+     *
+     * @param oneBasedIndex String representing a 1-based index.
+     * @return Parsed {@link Index}.
+     * @throws ParseException If the input is not a non-zero unsigned integer.
+     */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         requireNonNull(oneBasedIndex);
         final String trimmedIndex = oneBasedIndex.trim();
@@ -38,6 +45,13 @@ public class ParserUtil {
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
 
+    /**
+     * Parses a {@code String} into a {@link Name}.
+     *
+     * @param name Raw name string.
+     * @return Parsed {@link Name}.
+     * @throws ParseException If the name violates constraints.
+     */
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
         final String trimmed = name.trim();
@@ -47,6 +61,13 @@ public class ParserUtil {
         return new Name(trimmed);
     }
 
+    /**
+     * Parses a {@code String} into a {@link Phone}.
+     *
+     * @param phone Raw phone string.
+     * @return Parsed {@link Phone}.
+     * @throws ParseException If the phone violates constraints.
+     */
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
         final String trimmed = phone.trim();
@@ -56,6 +77,13 @@ public class ParserUtil {
         return new Phone(trimmed);
     }
 
+    /**
+     * Parses a {@code String} into an {@link Email}.
+     *
+     * @param email Raw email string.
+     * @return Parsed {@link Email}.
+     * @throws ParseException If the email violates constraints.
+     */
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
         final String trimmed = email.trim();
@@ -65,7 +93,14 @@ public class ParserUtil {
         return new Email(trimmed);
     }
 
-    /** Retained for components that still accept addresses. */
+    /**
+     * Parses a {@code String} into an {@link Address}.
+     * Retained for components that still accept addresses.
+     *
+     * @param address Raw address string.
+     * @return Parsed {@link Address}.
+     * @throws ParseException If the address violates constraints.
+     */
     public static Address parseAddress(String address) throws ParseException {
         requireNonNull(address);
         final String trimmed = address.trim();
@@ -77,6 +112,14 @@ public class ParserUtil {
 
     // ===== Category parsing =====
 
+    /**
+     * Parses a category/value pair into a {@link Category}.
+     *
+     * @param category Category name.
+     * @param value Category value.
+     * @return Parsed {@link Category}.
+     * @throws ParseException If either entry violates constraints.
+     */
     public static Category parseCategory(String category, String value) throws ParseException {
         requireAllNonNull(category, value);
         String c = category.trim();
@@ -87,6 +130,16 @@ public class ParserUtil {
         return new Category(c, v);
     }
 
+    /**
+     * Parses aligned collections of category names and values into a {@code Set<Category>}.
+     * The two collections must be the same size; each name is paired with the value at the
+     * same index.
+     *
+     * @param categories Collection of category names.
+     * @param values Collection of category values.
+     * @return Set of parsed {@link Category}.
+     * @throws ParseException If counts mismatch or any entry violates constraints.
+     */
     public static Set<Category> parseCategories(Collection<String> categories, Collection<String> values)
             throws ParseException {
         requireAllNonNull(categories, values);
@@ -107,6 +160,13 @@ public class ParserUtil {
 
     // ===== Skill parsing =====
 
+    /**
+     * Parses a {@code String} into a {@link Skill}.
+     *
+     * @param skill Raw skill string.
+     * @return Parsed {@link Skill}.
+     * @throws ParseException If the skill violates constraints.
+     */
     public static Skill parseSkill(String skill) throws ParseException {
         requireNonNull(skill);
         final String trimmed = skill.trim();
@@ -119,10 +179,16 @@ public class ParserUtil {
     /**
      * Parses a collection of skills into a {@code Set<Skill>}.
      *
-     * Behavior:
-     * - If the collection is empty, returns an empty set.
-     * - Blank entries (e.g., "") are ignored (this supports cases like "s/ s/friend").
-     * - Any non-blank invalid entry causes a {@link ParseException}.
+     * <p>Behavior:</p>
+     * <ul>
+     *   <li>If the collection is empty, returns an empty set.</li>
+     *   <li>Blank entries (e.g., {@code ""}) are ignored; this supports inputs like {@code s/ s/friend}.</li>
+     *   <li>Any non-blank invalid entry causes a {@link ParseException}.</li>
+     * </ul>
+     *
+     * @param skills Collection of raw skill strings.
+     * @return Set of parsed {@link Skill}.
+     * @throws ParseException If any non-blank entry violates constraints.
      */
     public static Set<Skill> parseSkills(Collection<String> skills) throws ParseException {
         requireNonNull(skills);
