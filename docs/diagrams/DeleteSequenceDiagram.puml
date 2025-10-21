@@ -57,7 +57,7 @@ activate Model
 Model --> DeleteCommand : lastShownList
 deactivate Model
 
-DeleteCommand -> Model : setPersonToDeletePerson(personToDelete)
+DeleteCommand -> Model : setPersonToDelete(personToDelete)
 activate Model
 
 Model --> DeleteCommand
