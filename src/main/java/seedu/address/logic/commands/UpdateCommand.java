@@ -106,18 +106,18 @@ public class UpdateCommand extends Command {
     }
 
     /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code UpdatePersonDescriptor}.
+     * Creates and returns a {@code Person} with the details of {@code personToUpdate}
+     * updated with {@code UpdatePersonDescriptor}.
      */
-    private static Person createUpdatedPerson(Person personToEdit, UpdatePersonDescriptor updatePersonDescriptor) {
-        assert personToEdit != null;
+    private static Person createUpdatedPerson(Person personToUpdate, UpdatePersonDescriptor updatePersonDescriptor) {
+        assert personToUpdate != null;
 
-        Name updatedName = updatePersonDescriptor.getName().orElse(personToEdit.getName());
-        Phone updatedPhone = updatePersonDescriptor.getPhone().orElse(personToEdit.getPhone());
-        Email updatedEmail = updatePersonDescriptor.getEmail().orElse(personToEdit.getEmail());
+        Name updatedName = updatePersonDescriptor.getName().orElse(personToUpdate.getName());
+        Phone updatedPhone = updatePersonDescriptor.getPhone().orElse(personToUpdate.getPhone());
+        Email updatedEmail = updatePersonDescriptor.getEmail().orElse(personToUpdate.getEmail());
 
-        Set<Category> updatedCategories = updatePersonDescriptor.getCategories().orElse(personToEdit.getCategories());
-        Set<Skill> updatedSkills = updatePersonDescriptor.getSkills().orElse(personToEdit.getSkills());
+        Set<Category> updatedCategories = updatePersonDescriptor.getCategories().orElse(personToUpdate.getCategories());
+        Set<Skill> updatedSkills = updatePersonDescriptor.getSkills().orElse(personToUpdate.getSkills());
 
         return new Person(updatedName, updatedPhone, updatedEmail,
                 updatedCategories, updatedSkills);
@@ -139,6 +139,11 @@ public class UpdateCommand extends Command {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(index, updatePersonDescriptor);
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("index", index)
@@ -147,7 +152,7 @@ public class UpdateCommand extends Command {
     }
 
     /**
-     * Stores the details to edit the person with. Each non-empty field value will replace the
+     * Stores the details to update the person with. Each non-empty field value will replace the
      * corresponding field value of the person.
      */
     public static class UpdatePersonDescriptor {
@@ -172,7 +177,7 @@ public class UpdateCommand extends Command {
         }
 
         /**
-         * Returns true if at least one field is edited.
+         * Returns true if at least one field is updated.
          */
         public boolean isAnyFieldUpdated() {
             return CollectionUtil.isAnyNonNull(name, phone, email, categories, skills);
@@ -252,6 +257,11 @@ public class UpdateCommand extends Command {
                     && Objects.equals(email, otherUpdatePersonDescriptor.email)
                     && Objects.equals(categories, otherUpdatePersonDescriptor.categories)
                     && Objects.equals(skills, otherUpdatePersonDescriptor.skills);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name, phone, email, categories, skills);
         }
 
         @Override

@@ -35,6 +35,7 @@ public class UpdatePersonDescriptorBuilder {
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setEmail(person.getEmail());
+        descriptor.setCategories(person.getCategories());
         // Use skills (replacement for legacy tags).
         descriptor.setSkills(person.getSkills());
     }

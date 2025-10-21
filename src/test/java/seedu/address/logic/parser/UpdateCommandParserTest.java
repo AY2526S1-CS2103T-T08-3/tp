@@ -29,12 +29,12 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.testutil.UpdatePersonDescriptorBuilder;
 
-public class EditCommandParserTest {
+public class UpdateCommandParserTest {
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, UpdateCommand.MESSAGE_USAGE);
 
-    private UpdatePersonDescriptor parser = new UpdatePersonDescriptor();
+    private UpdateCommandParser parser = new UpdateCommandParser();
 
     @Test
     public void parse_missingParts_failure() {
@@ -148,6 +148,7 @@ public class EditCommandParserTest {
     public void parse_resetSkills_success() {
         Index targetIndex = INDEX_THIRD_PERSON;
         String userInput = targetIndex.getOneBased() + SKILL_EMPTY;
+        System.out.println(userInput);
 
         UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder().withSkills().build();
         UpdateCommand expectedCommand = new UpdateCommand(targetIndex, descriptor);

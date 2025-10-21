@@ -2,11 +2,7 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.*;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
@@ -76,7 +72,7 @@ public class CommandTestUtil {
     public static final String INVALID_TAG_DESC = INVALID_SKILL_DESC; // back-compat
 
     // For tests that need an empty prefix to clear skills/tags
-    public static final String SKILL_EMPTY = " " + PREFIX_TAG;
+    public static final String SKILL_EMPTY = " " + PREFIX_SKILL;
     public static final String TAG_EMPTY = SKILL_EMPTY; // back-compat
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
