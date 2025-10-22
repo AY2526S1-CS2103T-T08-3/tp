@@ -24,7 +24,7 @@ create AddCommandParser
 AddressBookParser -> AddCommandParser
 activate AddCommandParser
 
-create AddCommand 
+create AddCommand
 AddCommandParser -> AddCommand
 activate AddCommand
 

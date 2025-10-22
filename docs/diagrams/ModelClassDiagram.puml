@@ -47,7 +47,7 @@ Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
 
 Name -[hidden]right-> Phone
-Phone -[hidden]right-> Email 
+Phone -[hidden]right-> Email
 
 ModelManager --> "~* filtered" Person
 ModelManager --> "0..1 toDeletePerson" Person
