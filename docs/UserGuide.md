@@ -19,7 +19,7 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 
 1. Copy the file to the folder you want to use as the _home folder_ for SlackBook.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar slackbook.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in (e.g. `cd Desktop\slackbook`), and use the `java -jar slackbook.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -28,9 +28,9 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the directory.
+   * `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python` : Adds a contact named `John Doe` to the directory.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete_employee 3` : Prompts the confirmation of the deletion of the 3rd contact shown in the current list.
 
    * `clear` : Deletes all contacts.
 
@@ -77,11 +77,11 @@ Format: `help`
 
 Adds a person to the directory.
 
-Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]*`
+Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
+:bulb: **Tip:**
 A person can have any number of skills (including 0)
-</div>
+
 
 Examples:
 * `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
@@ -99,12 +99,14 @@ Deletes the specified person from the directory.
 
 Format: `delete_employee INDEX`
 
-* Deletes the person at the specified `INDEX`.
+* Prompts the confirmation of the deletion of the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* A confirmation prompt will be shown.
+* Input `yes` to confirm the deletion.
 
 Examples:
-* `delete_employee 2` deletes the 2nd person in the directory.
+* `delete_employee 2` prompts the confirmation of the deletion of the 2nd person in the directory.
 
 ### Categorize employee : `assign_category`
 
@@ -139,21 +141,17 @@ Slackbook data are saved in the hard disk automatically after any command that c
 
 Slackbook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
+:exclamation: **Caution:**
 If your changes to the data file makes its format invalid, Slackbook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the Slackbook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
-</div>
 
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Slackbook home folder.
+**A**: Install the app in the other computer and replace the file `[JAR file location]/data/addressbook.json` with the file from the same location on your previous computer.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -168,9 +166,9 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]*​` <br> e.g., `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
+**Add** | `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...​` <br> e.g., `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
 **Clear** | `clear`
 **Delete** | `delete_employee INDEX`<br> e.g., `delete 3`
-**Organize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
+**Categorize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
 **List** | `list`
 **Help** | `help`
