@@ -5,12 +5,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSIGN_CATEGORY_VALUE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 
 import java.util.Set;
 
 import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.address.logic.commands.UpdateCommand.UpdatePersonDescriptor;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Category;
@@ -40,15 +40,15 @@ public class PersonUtil {
                         .append(PREFIX_ASSIGN_CATEGORY_VALUE + s.getValue() + " ")
         );
         person.getSkills().stream().forEach(
-            s -> sb.append(PREFIX_TAG + s.skillName + " ")
+            s -> sb.append(PREFIX_SKILL + s.skillName + " ")
         );
         return sb.toString();
     }
 
     /**
-     * Returns the part of command string for the given {@code EditPersonDescriptor}'s details.
+     * Returns the part of command string for the given {@code UpdatePersonDescriptor}'s details.
      */
-    public static String getEditPersonDescriptorDetails(EditPersonDescriptor descriptor) {
+    public static String getUpdatePersonDescriptorDetails(UpdatePersonDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
         descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
         descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
@@ -65,9 +65,9 @@ public class PersonUtil {
         if (descriptor.getSkills().isPresent()) {
             Set<Skill> tags = descriptor.getSkills().get();
             if (tags.isEmpty()) {
-                sb.append(PREFIX_TAG);
+                sb.append(PREFIX_SKILL);
             } else {
-                tags.forEach(s -> sb.append(PREFIX_TAG).append(s.skillName).append(" "));
+                tags.forEach(s -> sb.append(PREFIX_SKILL).append(s.skillName).append(" "));
             }
         }
         return sb.toString();

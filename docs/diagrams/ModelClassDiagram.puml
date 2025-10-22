@@ -18,7 +18,7 @@ Class Email
 Class Name
 Class Phone
 Class Category
-Class Skill
+Class Skills
 
 Class I #FFFFFF
 }
@@ -36,12 +36,12 @@ ModelManager -right-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 AddressBook *--> "1" UniquePersonList
-UniquePersonList --> "~* all" Person
+UniquePersonList -left-> "~* all" Person
 Person *--> Name
 Person *--> Phone
 Person *--> Email
-Person *--> "*" Category
-Person *--> "*" Skill
+Person *--> "*" Skills
+Person *-> "*" Category
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
@@ -50,4 +50,5 @@ Name -[hidden]right-> Phone
 Phone -[hidden]right-> Email
 
 ModelManager --> "~* filtered" Person
+ModelManager --> "0..1 toDeletePerson" Person
 @enduml
