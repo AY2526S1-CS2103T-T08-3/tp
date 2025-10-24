@@ -92,14 +92,6 @@ public class UpdateCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        if (!personToUpdate.isSameEmail(updatedPerson) && model.hasPerson(updatedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_EMAIL);
-        }
-
-        if (!personToUpdate.isSamePhoneNumber(updatedPerson) && model.hasPerson(updatedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PHONE);
-        }
-
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_UPDATE_PERSON_SUCCESS, Messages.format(updatedPerson)));
