@@ -18,7 +18,7 @@ Class Email
 Class Name
 Class Phone
 Class Category
-Class Skills
+Class Skill
 
 Class I #FFFFFF
 }
@@ -40,8 +40,8 @@ UniquePersonList -left-> "~* all" Person
 Person *--> Name
 Person *--> Phone
 Person *--> Email
-Person *--> "*" Skills
-Person *-> "*" Category
+Person *--> "*" Skill
+Person *--> "*" Category
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
