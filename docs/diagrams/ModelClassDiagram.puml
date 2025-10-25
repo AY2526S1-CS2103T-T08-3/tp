@@ -18,7 +18,7 @@ Class Email
 Class Name
 Class Phone
 Class Category
-Class Skills
+Class Skill
 
 Class I #FFFFFF
 }
@@ -37,18 +37,23 @@ UserPrefs .up.|> ReadOnlyUserPrefs
 
 AddressBook *--> "1" UniquePersonList
 UniquePersonList -left-> "~* all" Person
+
+' Person composition / associations
 Person *--> Name
 Person *--> Phone
 Person *--> Email
-Person *--> "*" Skills
-Person *-> "*" Category
+Person *--> "*" Skill
+Person *--> "*" Category
 
+' layout helpers (hidden)
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
-
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Email
+Email -[hidden]right-> Skill
+Skill -[hidden]right-> Category
 
 ModelManager --> "~* filtered" Person
 ModelManager --> "0..1 toDeletePerson" Person
 @enduml
+
