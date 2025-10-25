@@ -11,6 +11,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Skill;
+import seedu.address.model.tag.Category;
 
 /**
  * A utility class to help with building {@code UpdatePersonDescriptor} objects.
@@ -58,9 +59,15 @@ public class UpdatePersonDescriptorBuilder {
         return this;
     }
 
+    /** Sets the {@code Categories} of the {@code UpdatePersonDescriptor} we are building. */
+    public UpdatePersonDescriptorBuilder withCategories(Set<Category> categories) {
+        descriptor.setCategories(categories);
+        return this;
+    }
+
     // ---------------- SKILL helpers ----------------
 
-    /** Sets the {@code Skill}s of the {@code UpdatePersonDescriptor} we are building. */
+    /** Sets the {@code Skills} of the {@code UpdatePersonDescriptor} we are building. */
     public UpdatePersonDescriptorBuilder withSkills(String... skills) {
         Set<Skill> skillSet = Arrays.stream(skills)
                 .map(Skill::new)
