@@ -3,17 +3,21 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +29,8 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Skill;
+import seedu.address.model.tag.Category;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.UpdatePersonDescriptorBuilder;
 
@@ -35,6 +41,8 @@ public class UpdateCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+    //Successes
+
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
         Person updatedPerson = new PersonBuilder().build();
@@ -43,7 +51,6 @@ public class UpdateCommandTest {
 
         String expectedMessage = String.format(UpdateCommand.MESSAGE_UPDATE_PERSON_SUCCESS,
                 Messages.format(updatedPerson));
-
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), updatedPerson);
 
@@ -52,20 +59,17 @@ public class UpdateCommandTest {
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
-        Index indexLastPerson = Index.fromOneBased(model.getFilteredPersonList().size());
-        Person lastPerson = model.getFilteredPersonList().get(indexLastPerson.getZeroBased());
-
-        PersonBuilder personInList = new PersonBuilder(lastPerson);
-        Person updatedPerson = personInList.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
+        Person lastPerson = model.getFilteredPersonList().get(model.getFilteredPersonList().size() - 1);
+        Person updatedPerson = new PersonBuilder(lastPerson).withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB).build();
 
         UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder().withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_HUSBAND).build();
-        UpdateCommand updateCommand = new UpdateCommand(indexLastPerson, descriptor);
+                .withPhone(VALID_PHONE_BOB).build();
+        UpdateCommand updateCommand = new UpdateCommand(Index.fromOneBased(model.getFilteredPersonList().size()),
+                descriptor);
 
         String expectedMessage = String.format(UpdateCommand.MESSAGE_UPDATE_PERSON_SUCCESS,
                 Messages.format(updatedPerson));
-
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(lastPerson, updatedPerson);
 
@@ -73,35 +77,29 @@ public class UpdateCommandTest {
     }
 
     @Test
-    public void execute_noFieldSpecifiedUnfilteredList_success() {
-        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON, new UpdatePersonDescriptor());
-        Person updatedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+    public void execute_updateMultipleSkillsAndCategories_success() throws Exception {
+        Person personToUpdate = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Set<Category> newCategories = new HashSet<>();
+        newCategories.add(new Category("Department", "Finance"));
+        newCategories.add(new Category("Role", "HR"));
 
-        String expectedMessage = String.format(UpdateCommand.MESSAGE_UPDATE_PERSON_SUCCESS,
-                Messages.format(updatedPerson));
+        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder().withCategories(newCategories)
+                .withSkills("Java", "Python").build();
+        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON, descriptor);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Person updatedPerson = new PersonBuilder(personToUpdate).withCategories(Arrays.asList(
+                new Category("Department", "Finance"), new Category("Role", "HR")))
+                .withSkills("Java", "Python").build();
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.setPerson(personToUpdate, updatedPerson);
 
-        assertCommandSuccess(updateCommand, model, expectedMessage, expectedModel);
+        assertEquals(String.format(UpdateCommand.MESSAGE_UPDATE_PERSON_SUCCESS, Messages.format(updatedPerson)),
+                updateCommand.execute(model).getFeedbackToUser());
+        assertEquals(expectedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()),
+                model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()));
     }
 
-    @Test
-    public void execute_filteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
-
-        Person personInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person updatedPerson = new PersonBuilder(personInFilteredList).withName(VALID_NAME_BOB).build();
-        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON,
-                new UpdatePersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
-
-        String expectedMessage = String.format(UpdateCommand.MESSAGE_UPDATE_PERSON_SUCCESS,
-                Messages.format(updatedPerson));
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(model.getFilteredPersonList().get(0), updatedPerson);
-
-        assertCommandSuccess(updateCommand, model, expectedMessage, expectedModel);
-    }
+    //Duplicate constraint checks
 
     @Test
     public void execute_duplicatePersonUnfilteredList_failure() {
@@ -113,78 +111,108 @@ public class UpdateCommandTest {
     }
 
     @Test
-    public void execute_duplicatePersonFilteredList_failure() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+    public void execute_duplicateEmail_failure() {
+        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder()
+                .withEmail(secondPerson.getEmail().value).build();
+        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON, descriptor);
 
-        // edit person in filtered list into a duplicate in address book
-        Person personInList = model.getAddressBook().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
-        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON,
-                new UpdatePersonDescriptorBuilder(personInList).build());
-
-        assertCommandFailure(updateCommand, model, UpdateCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(updateCommand, model, UpdateCommand.MESSAGE_DUPLICATE_EMAIL);
     }
+
+    @Test
+    public void execute_duplicatePhone_failure() {
+        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder()
+                .withPhone(secondPerson.getPhone().value).build();
+        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON, descriptor);
+
+        assertCommandFailure(updateCommand, model, UpdateCommand.MESSAGE_DUPLICATE_PHONE);
+    }
+
+    //Invalid index
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder().withName(VALID_NAME_BOB).build();
-        UpdateCommand updateCommand = new UpdateCommand(outOfBoundIndex, descriptor);
-
-        assertCommandFailure(updateCommand, model,
-                String.format(Messages.MESSAGE_INDEX_NOT_FOUND, outOfBoundIndex.getOneBased()));
+        UpdateCommand updateCommand = new UpdateCommand(outOfBoundIndex, new UpdatePersonDescriptorBuilder()
+                .withName(VALID_NAME_BOB).build());
+        assertCommandFailure(updateCommand, model, String.format(Messages.MESSAGE_INDEX_NOT_FOUND,
+                outOfBoundIndex.getOneBased()));
     }
 
-    /**
-     * Update filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
-     */
-    @Test
-    public void execute_invalidPersonIndexFilteredList_failure() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
-        Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
-
-        UpdateCommand updateCommand = new UpdateCommand(outOfBoundIndex,
-                new UpdatePersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
-
-        assertCommandFailure(updateCommand, model,
-                String.format(Messages.MESSAGE_INDEX_NOT_FOUND, outOfBoundIndex.getOneBased()));
-    }
+    //Descriptor logic/equals/hashcode
 
     @Test
-    public void equals() {
-        final UpdateCommand standardCommand = new UpdateCommand(INDEX_FIRST_PERSON, DESC_AMY);
+    public void updatePersonDescriptor_equalsAndHashCode() {
+        UpdatePersonDescriptor descriptor1 = new UpdatePersonDescriptorBuilder().withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).build();
+        UpdatePersonDescriptor descriptor2 = new UpdatePersonDescriptorBuilder().withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).build();
+        UpdatePersonDescriptor descriptor3 = new UpdatePersonDescriptorBuilder().withName("Different Name").build();
 
-        // same values -> returns true
-        UpdatePersonDescriptor copyDescriptor = new UpdatePersonDescriptor(DESC_AMY);
-        UpdateCommand commandWithSameValues = new UpdateCommand(INDEX_FIRST_PERSON, copyDescriptor);
-        assertTrue(standardCommand.equals(commandWithSameValues));
-
-        // same object -> returns true
-        assertTrue(standardCommand.equals(standardCommand));
-
-        // null -> returns false
-        assertFalse(standardCommand.equals(null));
-
-        // different types -> returns false
-        assertFalse(standardCommand.equals(new ClearCommand()));
-
-        // different index -> returns false
-        assertFalse(standardCommand.equals(new UpdateCommand(INDEX_SECOND_PERSON, DESC_AMY)));
-
-        // different descriptor -> returns false
-        assertFalse(standardCommand.equals(new UpdateCommand(INDEX_FIRST_PERSON, DESC_BOB)));
+        assertTrue(descriptor1.equals(descriptor2));
+        assertEquals(descriptor1.hashCode(), descriptor2.hashCode());
+        assertFalse(descriptor1.equals(descriptor3));
+        assertFalse(descriptor1.equals(null));
+        assertFalse(descriptor1.equals("string"));
+        assertTrue(descriptor1.equals(descriptor1));
     }
 
     @Test
-    public void toStringMethod() {
-        Index index = Index.fromOneBased(1);
-        UpdatePersonDescriptor updatePersonDescriptor = new UpdatePersonDescriptor();
-        UpdateCommand updateCommand = new UpdateCommand(index, updatePersonDescriptor);
-        String expected = UpdateCommand.class.getCanonicalName() + "{index=" + index + ", UpdatePersonDescriptor="
-                + updatePersonDescriptor + "}";
-        assertEquals(expected, updateCommand.toString());
+    public void updatePersonDescriptor_emptyDescriptor_isAnyFieldUpdatedFalse() {
+        assertFalse(new UpdatePersonDescriptor().isAnyFieldUpdated());
     }
 
+    @Test
+    public void updatePersonDescriptor_setSkills_defensiveCopy() {
+        Set<Skill> skills = new HashSet<>();
+        skills.add(new Skill("Java"));
+        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptor();
+        descriptor.setSkills(skills);
+        skills.add(new Skill("Python"));
+        assertEquals(1, descriptor.getSkills().get().size());
+    }
+
+    @Test
+    public void updatePersonDescriptor_getSkills_unmodifiable() {
+        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder().withSkills("Java").build();
+        Set<Skill> skills = descriptor.getSkills().get();
+        assertThrows(UnsupportedOperationException.class, () -> skills.add(new Skill("Python")));
+    }
+
+    //Update when there's existing categories
+    @Test
+    public void execute_overrideCategoriesOfSameType_success() throws Exception {
+        Person personToUpdate = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+
+        Set<Category> originalCategories = new HashSet<>(personToUpdate.getCategories());
+
+        Set<Category> newCategories = new HashSet<>();
+        newCategories.add(new Category("Team", "B"));
+
+        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptor();
+        descriptor.setCategories(newCategories);
+
+        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON, descriptor);
+
+        List<Category> expectedCategories = new ArrayList<>();
+        for (Category cat : originalCategories) {
+            if (!cat.getCategory().equals("Team")) {
+                expectedCategories.add(cat);
+            }
+        }
+        expectedCategories.add(new Category("Team", "B"));
+
+        Person expectedPerson = new PersonBuilder(personToUpdate)
+                .withCategories(expectedCategories)
+                .build();
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.setPerson(personToUpdate, expectedPerson);
+
+        assertCommandSuccess(updateCommand, model,
+                String.format(UpdateCommand.MESSAGE_UPDATE_PERSON_SUCCESS, Messages.format(expectedPerson)),
+                expectedModel);
+    }
 }
