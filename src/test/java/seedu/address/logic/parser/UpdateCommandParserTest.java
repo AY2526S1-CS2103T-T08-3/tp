@@ -51,7 +51,7 @@ public class UpdateCommandParserTest {
 
     private UpdateCommandParser parser = new UpdateCommandParser();
 
-    // --- Failure scenarios ---
+    //Failure scenarios
 
     @Test
     public void parse_missingParts_failure() {
@@ -91,7 +91,7 @@ public class UpdateCommandParserTest {
                 String.format(Messages.MESSAGE_DUPLICATE_FIELDS + PREFIX_PHONE));
     }
 
-    // --- Success scenarios ---
+    //Success scenarios
 
     @Test
     public void parse_allFieldsSpecified_success() {
@@ -165,7 +165,7 @@ public class UpdateCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
-    // --- Category tests ---
+    //Category tests
 
     @Test
     public void parse_singleCategory_success() {
@@ -202,7 +202,7 @@ public class UpdateCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
-    // --- Skill tests ---
+    //Skill tests
 
     @Test
     public void parse_singleSkill_success() {
@@ -232,7 +232,7 @@ public class UpdateCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
-    // --- Edge cases ---
+    //Edge cases
 
     @Test
     public void parse_extraTextAfterIndex_failure() {
