@@ -162,6 +162,9 @@ Format: `delete_employee INDEX`
 :bulb: **Tip:**
 Use list before deletion to verify the correct employee.
 
+:exclamation: **Caution:**
+This action cannot be undone. Once an employee's information is deleted, it cannot be recovered.
+
 Examples:
 * `delete_employee 2` prompts the confirmation of the deletion of the 2nd employee in the directory.
 
