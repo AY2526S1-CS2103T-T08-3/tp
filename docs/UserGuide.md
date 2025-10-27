@@ -35,7 +35,6 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 
 3. **Copy** the file to the folder you want to use as the _home folder_ for SlackBook.
 
-**Run the app**:
 4. Open a command terminal, `cd` into the folder you put the jar file in (e.g. `cd Desktop\slackbook`), and use the `java -jar slackbook.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
@@ -254,7 +253,7 @@ Action | Format, Examples
 **Add** | `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...​` <br> e.g., `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
 **List** | `list [s/SKILLS]`<br> e.g., `list s/java`
 **List By Category** | `listbycategory c/CATEGORY`<br> e.g., `listbycategory c/role`
-**Delete** | `delete_employee INDEX`<br> e.g., `delete 3`
+**Delete** | `delete_employee INDEX`<br> e.g., `delete_employee 3`
 **Categorize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
 **Update** | `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
 **Clear** | `clear`
