@@ -3,10 +3,24 @@ layout: page
 title: User Guide
 ---
 
-SlackBook is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) inspired by AB3 while still having the benefits of a Graphical User Interface (GUI). If you can type fast, it can get your contact management tasks done faster than traditional GUI apps.
+SlackBook is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) that has the benefits of a Graphical User Interface (GUI). If you can type fast, it can get your contact management tasks done faster than traditional GUI apps.
 
-* Table of Contents
-{:toc}
+## Table of Contents
+* [Quick start](#quick-start)
+* [Features](#features)
+  * [Viewing Help](#viewing-help--help)
+  * [Adding an employee](#adding-an-employee-add_employee)
+  * [Listing all employees](#listing-all-employees--list)
+  * [Deleting an employee](#deleting-an-employee--delete_employee)
+  * [Categorize employees](#categorize-employees--assign_category)
+  * [Update employee information](#update-employee-information--update_employee)
+  * [Clearing all entries](#clearing-all-entries--clear)
+  * [Exiting the program](#exiting-the-program--exit)
+* [Saving the data](#saving-the-data)
+* [Editing the data file](#editing-the-data-file)
+* [FAQ](#faq)
+* [Known issues](#known-issues)
+* [Command summary](#command-summary)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -73,7 +87,7 @@ Shows a message explaining how to access the help page.
 Format: `help`
 
 
-### Adding a person: `add_employee`
+### Adding an employee: `add_employee`
 
 Adds a person to the directory.
 
@@ -87,13 +101,13 @@ Examples:
 * `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
 * `add_employee n/Alex Yeo d/HR t/Team A r/Manager e/alex.yeo@example.com p/92345678`
 
-### Listing all persons : `list`
+### Listing all employees : `list`
 
 Allow HR managers to view all employees currently stored in the system in a clear and structured format.
 
 Format: `list`
 
-### Deleting a person : `delete_employee`
+### Deleting an employee : `delete_employee`
 
 Deletes the specified person from the directory.
 
@@ -108,7 +122,7 @@ Format: `delete_employee INDEX`
 Examples:
 * `delete_employee 2` prompts the confirmation of the deletion of the 2nd person in the directory.
 
-### Categorize employee : `assign_category`
+### Categorize employees : `assign_category`
 
 Help users to organize employees by department, team, or role for easier navigation.
 
@@ -119,7 +133,21 @@ Format: `assign_category INDEX c/CATEGORY_TYPE v/VALUE`
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `assign_category 2 c/Department v/Engineering` assigns the 2nd person in the directory the Department, Engineering.
+* `assign_category 2 c/Department v/Engineering` assigns the 2nd person in the directory with, Department: Engineering.
+
+### Update employee information : `update_employee`
+
+Enable users to modify existing employee information to keep records accurate.
+
+Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...`
+
+* Updates the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `update_employee 1 r/Senior Software Engineer d/Product Engineering` updates the 1st person in the directory with, Role: Senior Software Engineer, Department: Product Engineering.
+* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C 
 
 ### Clearing all entries : `clear`
 
@@ -167,8 +195,10 @@ Furthermore, certain edits can cause the Slackbook to behave in unexpected ways 
 Action | Format, Examples
 --------|------------------
 **Add** | `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...​` <br> e.g., `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
-**Clear** | `clear`
 **Delete** | `delete_employee INDEX`<br> e.g., `delete 3`
 **Categorize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
+**Update** | `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
+**Clear** | `clear`
 **List** | `list`
 **Help** | `help`
+**Exit** | `exit`
