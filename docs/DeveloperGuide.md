@@ -422,3 +422,82 @@ testers are expected to do more *exploratory* testing.
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
+# Appendix: Effort
+
+SlackBook builds upon **AddressBook Level 3 (AB3)**, extending it from a simple contact manager into a **Human Resource management tool** that supports structured employee data such as **skills**, **roles**, **teams**, and **departments**.  
+This expansion introduced significant architectural and design complexity while maintaining code quality and defensive programming practices.
+
+---
+
+## Difficulty Level
+
+Compared to AB3 (which handled a single entity — `Person`), SlackBook introduces multiple dynamic entities:
+
+- **Category** (representing Role, Team, Department)
+- **Skill** (a new entity linked to each person)
+
+Supporting these required:
+
+- Modifying the **Model layer** (to store sets of dynamic objects)  
+- Updating **Storage** (adding `JsonAdaptedSkill` and `JsonAdaptedCategory`)  
+- Extending **Logic** (new commands, parsers, and command words)  
+- Maintaining **UI and testing compatibility**
+
+These changes increased both design and testing complexity while preserving AB3’s architecture.
+
+---
+
+## Challenges Faced
+
+- **Model Expansion:** Introducing multiple entity types within one `Person` object without breaking serialization compatibility.  
+- **Command Integration:** Implementing new commands (`assign_category`, `listbycategory`) that interact seamlessly with existing AB3 command patterns.  
+- **Grouping and Filtering Logic:** Designing `listbycategory` to group and format employees dynamically based on stored categories.  
+- **Error Handling and Validation:** Ensuring robust defensive programming — e.g., rejecting invalid categories, handling missing fields, and maintaining consistent UI state.  
+- **Data Persistence:** Modifying JSON serialization to handle multiple sets while maintaining readability and backward compatibility.
+
+---
+
+## Effort and Achievements
+
+The overall project effort is estimated to be **~1.5× AB3**, considering new entity management, model refactoring, and user experience enhancements.
+
+**Key achievements include:**
+
+- Custom category assignment system  
+- Enhanced commands with skill-based filtering  
+- Improved validation and user guidance messages  
+
+---
+
+## Reuse and Efficiency
+
+- Reused AB3’s **command framework**, **parsing utilities**, and **test harness**, which reduced base implementation effort by about **10–15%**.  
+- Extended existing components instead of reimplementing:
+  - `JsonAdaptedPerson` → now stores both `Skill` and `Category` objects.  
+  - `Messages` → centralized consistent error messaging.  
+- No external libraries were added; all functionality was built using **Java 17** and AB3’s existing structure.
+
+---
+
+# Appendix: Planned Enhancements
+
+---
+
+### 1. Add alphabetical sorting within groups
+- **Issue:** Grouped employees are unordered.  
+- **Enhancement:** Sort names alphabetically within each category section.
+
+### 2. Autocomplete for known categories
+- **Issue:** Users may mistype existing categories.  
+- **Enhancement:** Suggest previously used category names when typing in the CLI.
+
+### 3. Add confirmation prompt for `clear`
+- **Issue:** Accidental use may delete all data without warning.  
+- **Enhancement:** Require a “yes/no” confirmation before executing.
+
+### 4. Show change summary after updates
+- **Issue:** Current success message does not show what changed.  
+- **Enhancement:** Display comparison summary, e.g.,  
+  *“Updated Role: Engineer → Senior Engineer.”*
+
