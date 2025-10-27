@@ -92,6 +92,14 @@ public class UpdateCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
+        if (!personToUpdate.isSamePhoneNumber(updatedPerson) && model.hasPhoneNumber(updatedPerson)) {
+            throw new CommandException(MESSAGE_DUPLICATE_PHONE);
+        }
+
+        if (!personToUpdate.isSameEmail(updatedPerson) && model.hasEmail(updatedPerson)) {
+            throw new CommandException(MESSAGE_DUPLICATE_EMAIL);
+        }
+
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_UPDATE_PERSON_SUCCESS, Messages.format(updatedPerson)));
@@ -108,11 +116,53 @@ public class UpdateCommand extends Command {
         Phone updatedPhone = updatePersonDescriptor.getPhone().orElse(personToUpdate.getPhone());
         Email updatedEmail = updatePersonDescriptor.getEmail().orElse(personToUpdate.getEmail());
 
-        Set<Category> updatedCategories = updatePersonDescriptor.getCategories().orElse(personToUpdate.getCategories());
+        Set<Category> updatedCategories = mergeCategoriesWithOverride(
+                personToUpdate.getCategories(),
+                updatePersonDescriptor.getCategories()
+        );
         Set<Skill> updatedSkills = updatePersonDescriptor.getSkills().orElse(personToUpdate.getSkills());
 
         return new Person(updatedName, updatedPhone, updatedEmail,
                 updatedCategories, updatedSkills);
+    }
+
+    /**
+     * Merges categories from person with new categories from descriptor.
+     * If descriptor contains a category with the same type as existing category,
+     * the descriptor's category overrides the existing one.
+     *
+     * @param existingCategories Categories from the person to update
+     * @param newCategories Optional categories from the update descriptor
+     * @return Merged set of categories with overrides applied
+     */
+    private static Set<Category> mergeCategoriesWithOverride(
+            Set<Category> existingCategories,
+            Optional<Set<Category>> newCategories) {
+
+        if (newCategories.isEmpty()) {
+            return existingCategories;
+        }
+
+        Set<Category> descriptorCategories = newCategories.get();
+
+        if (descriptorCategories.isEmpty()) {
+            return descriptorCategories;
+        }
+
+        Set<String> descriptorCategoryTypes = new HashSet<>();
+        for (Category category : descriptorCategories) {
+            descriptorCategoryTypes.add(category.getCategory());
+        }
+
+        Set<Category> mergedCategories = new HashSet<>(descriptorCategories);
+
+        for (Category existingCategory : existingCategories) {
+            if (!descriptorCategoryTypes.contains(existingCategory.getCategory())) {
+                mergedCategories.add(existingCategory);
+            }
+        }
+
+        return mergedCategories;
     }
 
     @Override

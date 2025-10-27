@@ -2,10 +2,13 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DEPARTMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TEAM;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
@@ -31,8 +34,6 @@ public class CommandTestUtil {
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
-    public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
-    public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
 
     // Category/Value (if your model uses them)
     public static final String VALID_CATEGORY_AMY = "Role";
@@ -80,6 +81,13 @@ public class CommandTestUtil {
 
     public static final UpdateCommand.UpdatePersonDescriptor DESC_AMY;
     public static final UpdateCommand.UpdatePersonDescriptor DESC_BOB;
+
+    public static final String VALID_DEPARTMENT = " " + PREFIX_DEPARTMENT + "Finance";
+    public static final String VALID_TEAM = " " + PREFIX_TEAM + "Team A";
+    public static final String VALID_ROLE = " " + PREFIX_ROLE + "HR";
+
+    public static final String VALID_SKILL_PYTHON = " " + PREFIX_SKILL + "Python";
+    public static final String VALID_SKILL_JAVA = " " + PREFIX_SKILL + "Java";
 
     static {
         // Address removed from descriptor builder usage
