@@ -42,8 +42,8 @@ UniquePersonList -left-> "~* all" Person
 Person *--> Name
 Person *--> Phone
 Person *--> Email
-Person *--> "*" Skill
-Person *--> "*" Category
+Person --> "*" Skill
+Person --> "*" Category
 
 ' layout helpers (hidden)
 Person -[hidden]up--> I
