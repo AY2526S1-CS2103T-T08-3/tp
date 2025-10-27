@@ -7,12 +7,6 @@ title: Developer Guide
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Acknowledgements**
-
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
-
---------------------------------------------------------------------------------------------------------------------
-
 ## **Setting up, getting started**
 
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
@@ -91,9 +85,9 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete_employee 1")` API call as an example.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `delete_employee 1` Command](images/DeleteSequenceDiagram.png)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
@@ -102,9 +96,14 @@ How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+1. The command can communicate with the `Model` when it is executed (e.g. to set the person to delete).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+1. 'Logic' is then called upon to execute a confirmation command, which is passed on to a 'ConfirmationParser' object which in turn creates a command to either confirm or cancel the deletion.
+1. Similar to 2. and 3.:
+   1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `ConfirmDeleteCommand`) which is executed by the `LogicManager`.
+   1. The command can communicate with the `Model` when it is executed (e.g. to delete the person previously set).
+   1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
@@ -127,13 +126,6 @@ The `Model` component,
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
-
-<img src="images/BetterModelClassDiagram.png" width="450" />
-
-</div>
-
-
 ### Storage component
 
 **API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
@@ -148,101 +140,6 @@ The `Storage` component,
 ### Common classes
 
 Classes used by multiple components are in the `seedu.address.commons` package.
-
---------------------------------------------------------------------------------------------------------------------
-
-## **Implementation**
-
-This section describes some noteworthy details on how certain features are implemented.
-
-### \[Proposed\] Undo/redo feature
-
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-![UndoRedoState0](images/UndoRedoState0.png)
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-![UndoRedoState1](images/UndoRedoState1.png)
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-![UndoRedoState2](images/UndoRedoState2.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
-</div>
-
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-![UndoRedoState3](images/UndoRedoState3.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</div>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</div>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<img src="images/CommitActivityDiagram.png" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -272,7 +169,7 @@ Ultimately, Slackbook enables HR teams to focus more on people and less on admin
 
 ---
 
-### User stories (MVP version)
+### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
@@ -385,18 +282,19 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+   1. Download the jar file and copy into an empty folder.
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Open a command terminal, `cd` into the folder the jar file was placed in.
+
+   1. Run `java -jar slackbook.jar`.<br>
+      Expected: Shows the GUI with a set of sample contacts.
 
 1. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
-
-1. _{ more test cases …​ }_
+   1. Re-launch the app by running `java -jar slackbook.jar` in the folder with the jar file.<br>
+      Expected: The most recent window size and location is retained.
 
 ### Deleting a person
 
@@ -404,21 +302,106 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `delete_employee 1`<br>
+      Expected: Confirmation prompt is displayed in the status message with details of the to be deleted person.
+      1. Enter `yes`<br>
+         Expected: First person is deleted from the list. Details of the deleted person are shown in the status message.
 
-   1. Test case: `delete 0`<br>
+   1. Test case: `delete_employee 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
-
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Launch the app by running `java -jar slackbook.jar` in the folder with the jar file.
 
-1. _{ more test cases …​ }_
+   1. Run `list` in the application.
+   
+   1. Close the app by running `exit`
+ 
+   1. Edit the `[JAR file location]/data/slackbook.json` file by removing the row `"email" : "berniceyu@example.com",` to simulate corrupted data
+
+   1. Re-launch the app by running `java -jar slackbook.jar` in the folder with the jar file.<br>
+      Expected: No persons loaded. Error details shown in the status message.
+
+# Appendix: Effort
+
+SlackBook builds upon **AddressBook Level 3 (AB3)**, extending it from a simple contact manager into a **Human Resource management tool** that supports structured employee data such as **skills**, **roles**, **teams**, and **departments**.  
+This expansion introduced significant architectural and design complexity while maintaining code quality and defensive programming practices.
+
+---
+
+## Difficulty Level
+
+Compared to AB3 (which handled a single entity — `Person`), SlackBook introduces multiple dynamic entities:
+
+- **Category** (representing Role, Team, Department)
+- **Skill** (a new entity linked to each person)
+
+Supporting these required:
+
+- Modifying the **Model layer** (to store sets of dynamic objects)  
+- Updating **Storage** (adding `JsonAdaptedSkill` and `JsonAdaptedCategory`)  
+- Extending **Logic** (new commands, parsers, and command words)  
+- Maintaining **UI and testing compatibility**
+
+These changes increased both design and testing complexity while preserving AB3’s architecture.
+
+---
+
+## Challenges Faced
+
+- **Model Expansion:** Introducing multiple entity types within one `Person` object without breaking serialization compatibility.  
+- **Command Integration:** Implementing new commands (`assign_category`, `listbycategory`) that interact seamlessly with existing AB3 command patterns.  
+- **Grouping and Filtering Logic:** Designing `listbycategory` to group and format employees dynamically based on stored categories.  
+- **Error Handling and Validation:** Ensuring robust defensive programming — e.g., rejecting invalid categories, handling missing fields, and maintaining consistent UI state.  
+- **Data Persistence:** Modifying JSON serialization to handle multiple sets while maintaining readability and backward compatibility.
+
+---
+
+## Effort and Achievements
+
+The overall project effort is estimated to be **~1.5× AB3**, considering new entity management, model refactoring, and user experience enhancements.
+
+**Key achievements include:**
+
+- Custom category assignment system  
+- Enhanced commands with skill-based filtering  
+- Improved validation and user guidance messages  
+
+---
+
+## Reuse and Efficiency
+
+- Reused AB3’s **command framework**, **parsing utilities**, and **test harness**, which reduced base implementation effort by about **10–15%**.  
+- Extended existing components instead of reimplementing:
+  - `JsonAdaptedPerson` → now stores both `Skill` and `Category` objects.  
+  - `Messages` → centralized consistent error messaging.  
+- No external libraries were added; all functionality was built using **Java 17** and AB3’s existing structure.
+
+---
+
+# Appendix: Planned Enhancements
+
+---
+
+### 1. Add alphabetical sorting within groups
+- **Issue:** Grouped employees are unordered.  
+- **Enhancement:** Sort names alphabetically within each category section.
+
+### 2. Autocomplete for known categories
+- **Issue:** Users may mistype existing categories.  
+- **Enhancement:** Suggest previously used category names when typing in the CLI.
+
+### 3. Add confirmation prompt for `clear`
+- **Issue:** Accidental use may delete all data without warning.  
+- **Enhancement:** Require a “yes/no” confirmation before executing.
+
+### 4. Show change summary after updates
+- **Issue:** Current success message does not show what changed.  
+- **Enhancement:** Display comparison summary, e.g.,  
+  *“Updated Role: Engineer → Senior Engineer.”*

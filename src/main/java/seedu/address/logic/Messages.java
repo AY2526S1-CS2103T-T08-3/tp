@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.parser.Prefix;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Skill;
 
 /**
  * Container for user visible messages.
@@ -45,7 +46,12 @@ public class Messages {
                 .append(person.getEmail())
                 .append("; Categories: ");
         person.getCategories().forEach(builder::append);
-        person.getSkills().forEach(builder::append);
+        builder.append("; Skills: ");
+        String skillsString = person.getSkills().stream()
+                .map(Skill::toString)
+                .collect(Collectors.joining(", "));
+        builder.append(skillsString);
+
         return builder.toString();
     }
 
