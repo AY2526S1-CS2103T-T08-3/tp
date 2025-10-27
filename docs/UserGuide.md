@@ -131,7 +131,7 @@ Examples:
 
 ### Listing by category : `listbycategory`
 
-Displays a structured summary of all employees in the address book, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
+Displays a structured summary of all employees in the directory, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
 This helps users get an overview of how employees are distributed across different parts of the organization.
 
 Format: `listbycategory c/CATEGORY`
@@ -223,7 +223,7 @@ Slackbook data are saved in the hard disk automatically after any command that c
 
 ### Editing the data file
 
-Slackbook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Slackbook data are saved automatically as a JSON file `[JAR file location]/data/slackbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 :exclamation: **Caution:**
 If your changes to the data file makes its format invalid, Slackbook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
@@ -235,7 +235,7 @@ Furthermore, certain edits can cause the Slackbook to behave in unexpected ways 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and replace the file `[JAR file location]/data/addressbook.json` with the file from the same location on your previous computer.
+**A**: Install the app in the other computer and replace the file `[JAR file location]/data/slackbook.json` with the file from the same location on your previous computer.
 
 --------------------------------------------------------------------------------------------------------------------
 
