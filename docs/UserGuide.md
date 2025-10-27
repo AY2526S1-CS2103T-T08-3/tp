@@ -35,7 +35,6 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 
 3. **Copy** the file to the folder you want to use as the _home folder_ for SlackBook.
 
-**Run the app**:
 4. Open a command terminal, `cd` into the folder you put the jar file in (e.g. `cd Desktop\slackbook`), and use the `java -jar slackbook.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
@@ -131,7 +130,7 @@ Examples:
 
 ### Listing by category : `listbycategory`
 
-Displays a structured summary of all employees in the address book, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
+Displays a structured summary of all employees in the directory, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
 This helps users get an overview of how employees are distributed across different parts of the organization.
 
 Format: `listbycategory c/CATEGORY`
@@ -161,6 +160,9 @@ Format: `delete_employee INDEX`
 
 :bulb: **Tip:**
 Use list before deletion to verify the correct employee.
+
+:exclamation: **Caution:**
+This action cannot be undone. Once an employee's information is deleted, it cannot be recovered.
 
 Examples:
 * `delete_employee 2` prompts the confirmation of the deletion of the 2nd employee in the directory.
@@ -220,7 +222,7 @@ Slackbook data are saved in the hard disk automatically after any command that c
 
 ### Editing the data file
 
-Slackbook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Slackbook data are saved automatically as a JSON file `[JAR file location]/data/slackbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 :exclamation: **Caution:**
 If your changes to the data file makes its format invalid, Slackbook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
@@ -232,7 +234,7 @@ Furthermore, certain edits can cause the Slackbook to behave in unexpected ways 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and replace the file `[JAR file location]/data/addressbook.json` with the file from the same location on your previous computer.
+**A**: Install the app in the other computer and replace the file `[JAR file location]/data/slackbook.json` with the file from the same location on your previous computer.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -251,7 +253,7 @@ Action | Format, Examples
 **Add** | `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...​` <br> e.g., `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python`
 **List** | `list [s/SKILLS]`<br> e.g., `list s/java`
 **List By Category** | `listbycategory c/CATEGORY`<br> e.g., `listbycategory c/role`
-**Delete** | `delete_employee INDEX`<br> e.g., `delete 3`
+**Delete** | `delete_employee INDEX`<br> e.g., `delete_employee 3`
 **Categorize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
 **Update** | `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
 **Clear** | `clear`
