@@ -10,10 +10,11 @@ public class Skill {
 
     /** Alphanumeric + spaces only; not blank. */
     public static final String MESSAGE_CONSTRAINTS =
-            "Skills should only contain alphanumeric characters and spaces, and should not be blank.";
+            "Skills should only contain alphanumeric characters and spaces,"
+                    + "and should not be blank.(maximum 30 characters)";
 
     /** One or more alphanumeric words separated by single spaces. */
-    private static final String VALIDATION_REGEX = "[\\p{Alnum}]+( [\\p{Alnum}]+)*";
+    private static final String VALIDATION_REGEX = "^[\\p{Alnum} ]{1,30}$";
 
     /** The name of this skill (immutable). */
     public final String skillName;
