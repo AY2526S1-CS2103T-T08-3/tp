@@ -36,7 +36,7 @@ public class Category {
         requireNonNull(category);
         requireNonNull(value);
 
-        checkArgument(isValidData(category), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidCategory(category), MESSAGE_CONSTRAINTS);
         checkArgument(isValidData(value), MESSAGE_CONSTRAINTS);
 
         this.category = category;

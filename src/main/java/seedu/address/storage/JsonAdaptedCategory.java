@@ -52,7 +52,7 @@ class JsonAdaptedCategory {
         requireNonNull(category);
         requireNonNull(value);
 
-        if (!Category.isValidData(category) || !Category.isValidData(value)) {
+        if (!Category.isValidCategory(category) || !Category.isValidData(value)) {
             throw new IllegalValueException(Category.MESSAGE_CONSTRAINTS);
         }
         return new Category(category, value);
