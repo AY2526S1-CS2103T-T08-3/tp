@@ -59,13 +59,13 @@ public class JsonAdaptedCategoryTest {
     public void toModelType_emptyCategory_returnsCategory() throws Exception {
         JsonAdaptedCategory adaptedCategory = new JsonAdaptedCategory(VALID_EMPTY_CATEGORY, VALID_VALUE);
         IllegalValueException e = assertThrows(IllegalValueException.class, adaptedCategory::toModelType);
-        assertEquals(Category.MESSAGE_CONSTRAINTS, e.getMessage());
+        assertEquals(Category.CATEGORY_CORRUPT, e.getMessage());
     }
 
     @Test
     public void toModelType_emptyValue_returnsCategory() throws Exception {
         JsonAdaptedCategory adaptedCategory = new JsonAdaptedCategory(VALID_CATEGORY, VALID_EMPTY_VALUE);
         IllegalValueException e = assertThrows(IllegalValueException.class, adaptedCategory::toModelType);
-        assertEquals(Category.MESSAGE_CONSTRAINTS, e.getMessage());
+        assertEquals(Category.CATEGORY_CORRUPT, e.getMessage());
     }
 }
