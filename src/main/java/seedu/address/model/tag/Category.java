@@ -13,6 +13,7 @@ public class Category {
     public static final String MESSAGE_CONSTRAINTS = "Category/Value should be alphanumeric and spaces";
     public static final String VALIDATION_REGEX = "[\\p{Alnum} ]+";
     public static final String CATEGORY_CONSTRAINTS = "Category must be one of Team/Role/Department";
+    public static final String CATEGORY_CORRUPT = "Data corrupted, " + CATEGORY_CONSTRAINTS;
 
     /**
      * Represents the valid categories.
