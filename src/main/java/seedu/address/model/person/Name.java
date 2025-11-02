@@ -22,7 +22,7 @@ public class Name {
     //public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
     //- 1–100 characters
     //- Only letters, spaces, hyphens, and apostrophes allowed
-    public static final String VALIDATION_REGEX = "^[A-Za-z'\\-\\s/\\\\]{1,100}$";
+    public static final String VALIDATION_REGEX = "^[A-Za-z0-9][A-Za-z0-9'\\-/\\\\ ]{0,99}$";
 
     public final String fullName;
 
