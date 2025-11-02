@@ -135,27 +135,38 @@ class JsonAdaptedPerson {
         // Merge canonical skills + legacy tagged
         List<JsonAdaptedSkill> allSkillNodes = new ArrayList<>(skills);
         allSkillNodes.addAll(tagged);
-
-        final Set<Skill> modelSkills = allSkillNodes.stream()
-                .map(s -> {
-                    try {
-                        return s.toModelType();
-                    } catch (IllegalValueException e) {
-                        throw new IllegalArgumentException(e);
-                    }
-                })
-                .collect(Collectors.toSet());
-
-        final Set<Category> modelCategories = categories.stream()
-                .map(c -> {
-                    try {
-                        return c.toModelType();
-                    } catch (IllegalValueException e) {
-                        throw new IllegalArgumentException(e);
-                    }
-                })
-                .collect(Collectors.toSet());
-
+        Set<Skill> modelSkills = null;
+        try {
+            modelSkills = allSkillNodes.stream()
+                    .map(s -> {
+                        try {
+                            return s.toModelType();
+                        } catch (IllegalValueException e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    })
+                    .collect(Collectors.toSet());
+        } catch (IllegalArgumentException e) {
+            if (e.getCause() instanceof IllegalValueException exception) {
+                throw exception;
+            }
+        }
+        Set<Category> modelCategories = null;
+        try {
+            modelCategories = categories.stream()
+                    .map(c -> {
+                        try {
+                            return c.toModelType();
+                        } catch (IllegalValueException e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    })
+                    .collect(Collectors.toSet());
+        } catch (IllegalArgumentException e) {
+            if (e.getCause() instanceof IllegalValueException exception) {
+                throw exception;
+            }
+        }
         // Your current Person signature (from earlier errors):
         // Person(Name, Phone, Email, Set<Category>, Set<Skill>)
         return new Person(modelName, modelPhone, modelEmail, modelCategories, modelSkills);
