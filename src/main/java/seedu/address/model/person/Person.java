@@ -65,6 +65,37 @@ public class Person {
     public Set<Skill> getSkills() {
         return Collections.unmodifiableSet(skills);
     }
+    
+    /**
+     * Returns a human-readable one-line summary of this person,
+     * including their categories and skills, suitable for confirmation dialogs.
+     */
+    public String toSummaryString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name.fullName).append(" (");
+
+        // Join categories
+        if (!categories.isEmpty()) {
+            String categoryList = categories.stream()
+                    .map(Category::toString)
+                    .collect(java.util.stream.Collectors.joining(", "));
+            sb.append("Categories: ").append(categoryList);
+        }
+
+        // Join skills
+        if (!skills.isEmpty()) {
+            if (!categories.isEmpty()) {
+                sb.append("; ");
+            }
+            String skillList = skills.stream()
+                    .map(Skill::toString)
+                    .collect(java.util.stream.Collectors.joining(", "));
+            sb.append("Skills: ").append(skillList);
+        }
+
+        sb.append(")");
+        return sb.toString();
+    }
 
     /**
      * Returns true if both persons have the same name.
