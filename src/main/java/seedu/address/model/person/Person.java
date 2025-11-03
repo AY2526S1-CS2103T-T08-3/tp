@@ -75,34 +75,11 @@ public class Person {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
-    }
+        boolean isSameName = otherPerson.getName().equals(getName());
+        boolean isSameEmail = otherPerson.getEmail().equals(getEmail());
+        boolean isSamePhoneNumber = otherPerson.getPhone().equals(getPhone());
 
-    /**
-     * Returns true if both persons have the same email.
-     * This defines a weaker notion of equality between two persons.
-     */
-    public boolean isSameEmail(Person otherPerson) {
-        if (otherPerson == this) {
-            return true;
-        }
-
-        return otherPerson != null
-                && otherPerson.getEmail().equals(getEmail());
-    }
-
-    /**
-     * Returns true if both persons have the same phone number.
-     * This defines a weaker notion of equality between two persons.
-     */
-    public boolean isSamePhoneNumber(Person otherPerson) {
-        if (otherPerson == this) {
-            return true;
-        }
-
-        return otherPerson != null
-                && otherPerson.getPhone().equals(getPhone());
+        return otherPerson != null && isSameName && isSameEmail && isSamePhoneNumber;
     }
 
     /**
