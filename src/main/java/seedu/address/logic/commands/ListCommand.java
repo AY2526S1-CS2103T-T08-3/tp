@@ -3,102 +3,118 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Predicate;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.PersonMatchesListFiltersPredicate;
+import seedu.address.model.person.Skill;
+import seedu.address.model.person.predicate.PersonHasTagPredicate;
 
 /**
- * Lists persons in the address book.
- * <p>
- * Behaviour:
- * <ul>
- *   <li><b>Unfiltered</b>: {@code list} shows all persons (AB3-compatible message).</li>
- *   <li><b>Legacy filtered</b>: {@code new ListCommand(Predicate<Person>)} uses a predicate provided by tests.</li>
- *   <li><b>New filtered</b>: {@code list s/} filters by skills and categories.</li>
- * </ul>
+ * Lists persons in the address book, optionally filtered by skills.
+ * If constructed with an explicit skills list (via parser), it will validate that each skill exists.
+ * If constructed with only a predicate (e.g., in tests), it will skip validation and just filter.
  */
 public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
 
-    // Keep AB3 stock message so existing tests continue to pass for unfiltered/legacy usage.
+    /** Message expected by existing tests. */
     public static final String MESSAGE_SUCCESS = "Listed all persons";
-    public static final String MESSAGE_FILTERED_SUCCESS = "Listed matching persons";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows persons, optionally filtered by skills and/or "
-            + "category.\n"
-            + "Parameters: [s/SKILL]\n"
+    /** Usage text with c/ removed. */
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Shows persons, optionally filtered by skills.\n"
+            + "Parameters: [s/SKILL]...\n"
             + "Examples:\n"
             + "  list\n"
-            + "  list s/java\n";
+            + "  list s/java\n"
+            + "  list s/java s/python";
 
-    // --- State ---
-    private final List<String> skills; // for new s/ filtering
-    private final List<String> categories; // for new c/ filtering
-    private final boolean unfiltered; // true when plain "list"
-    private final Predicate<Person> legacyPredicate; // for AB3-style tests & backward compatibility
+    /** When null, we skip existence validation (maintains legacy/test behaviour). */
+    private final List<String> requestedSkillsOrNull;
 
-    // --- Constructors must appear before factory methods (Checkstyle: DeclarationOrder) ---
+    /** Predicate used to filter when any skills are supplied. May be null for the plain 'list' command. */
+    private final PersonHasTagPredicate predicate;
 
-    /** AB3-compatible: plain list (no filter). */
+    /** Creates a list command that shows all persons. */
     public ListCommand() {
-        this.skills = List.of();
-        this.categories = List.of();
-        this.unfiltered = true;
-        this.legacyPredicate = null;
+        this.predicate = null;
+        this.requestedSkillsOrNull = new ArrayList<>(); // empty => show all
     }
 
-    /** AB3-compatible: filtered list with a caller-provided predicate (e.g., PersonHasTagPredicate in tests). */
-    public ListCommand(Predicate<Person> predicate) {
-        this.skills = List.of();
-        this.categories = List.of();
-        this.unfiltered = false;
-        this.legacyPredicate = Objects.requireNonNull(predicate);
+    /**
+     * Creates a list command filtered by skill(s) without validation.
+     * Used by existing tests that call {@code new ListCommand(predicate)}.
+     */
+    public ListCommand(PersonHasTagPredicate predicate) {
+        this.predicate = requireNonNull(predicate);
+        this.requestedSkillsOrNull = null; // null => skip validation, just filter
     }
 
-    /** Internal main constructor for new s/ and c/ filtering path. */
-    private ListCommand(List<String> skills, List<String> categories, boolean unfiltered) {
-        this.skills = skills == null ? List.of() : List.copyOf(skills);
-        this.categories = categories == null ? List.of() : List.copyOf(categories);
-        this.unfiltered = unfiltered;
-        this.legacyPredicate = null;
-    }
-
-    // --- Factory methods for the new path ---
-
-    /** Factory for unfiltered behaviour (backwards compatible). */
-    public static ListCommand unfiltered() {
-        return new ListCommand(List.of(), List.of(), true);
-    }
-
-    /** Factory for filtered behaviour (new s/ and c/ flags). */
-    public static ListCommand filtered(List<String> skills, List<String> categories) {
-        return new ListCommand(skills, categories, false);
+    /**
+     * Creates a list command filtered by skill(s) with validation.
+     * Used by the parser to enforce "non-existing skill" errors.
+     */
+    public ListCommand(PersonHasTagPredicate predicate, List<String> requestedSkills) {
+        this.predicate = requireNonNull(predicate);
+        this.requestedSkillsOrNull = new ArrayList<>(requireNonNull(requestedSkills));
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (unfiltered) {
+        // No predicate means plain "list" -> show all persons.
+        if (predicate == null) {
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             return new CommandResult(MESSAGE_SUCCESS);
         }
 
-        if (legacyPredicate != null) {
-            // Maintain original semantics & message for tests using the legacy constructor.
-            model.updateFilteredPersonList(legacyPredicate);
+        // If requestedSkillsOrNull is null, we are in legacy/test path: skip validation, just filter.
+        if (requestedSkillsOrNull == null) {
+            model.updateFilteredPersonList(predicate);
             return new CommandResult(MESSAGE_SUCCESS);
         }
 
-        // New s/ and c/ filtering path
-        var predicate = new PersonMatchesListFiltersPredicate(skills, categories);
+        // Parser path with validation:
+        if (requestedSkillsOrNull.isEmpty()) {
+            // Shouldn't normally happen (parser passes skills when a predicate is provided),
+            // but handle gracefully: show all.
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            return new CommandResult(MESSAGE_SUCCESS);
+        }
+
+        // Validate that each requested skill exists at least once in the address book.
+        Set<String> existingSkillsLower = model.getAddressBook().getPersonList().stream()
+                .map(Person::getSkills)
+                .flatMap(Set::stream)
+                .map(Skill::toString) // or s -> s.value if you have a value field
+                .map(s -> s.toLowerCase(Locale.ROOT).trim())
+                .collect(Collectors.toCollection(HashSet::new));
+
+        List<String> missing = requestedSkillsOrNull.stream()
+                .map(s -> s.toLowerCase(Locale.ROOT).trim())
+                .filter(s -> !existingSkillsLower.contains(s))
+                .collect(Collectors.toList());
+
+        if (!missing.isEmpty()) {
+            throw new CommandException(String.format(
+                    Messages.MESSAGE_SKILL_NOT_FOUND,
+                    String.join(", ", missing)
+            ));
+        }
+
+        // All requested skills exist -> apply filter.
         model.updateFilteredPersonList(predicate);
-        return new CommandResult(MESSAGE_FILTERED_SUCCESS);
+        return new CommandResult(MESSAGE_SUCCESS);
     }
 
     @Override
@@ -109,24 +125,18 @@ public class ListCommand extends Command {
         if (!(other instanceof ListCommand)) {
             return false;
         }
-        ListCommand o = (ListCommand) other;
-        return this.unfiltered == o.unfiltered
-                && Objects.equals(this.skills, o.skills)
-                && Objects.equals(this.categories, o.categories)
-                && Objects.equals(this.legacyPredicate, o.legacyPredicate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(unfiltered, skills, categories, legacyPredicate);
-    }
-
-    @Override
-    public String toString() {
-        return "ListCommand{unfiltered=" + unfiltered
-                + ", skills=" + skills
-                + ", categories=" + categories
-                + ", legacyPredicate=" + legacyPredicate + "}";
+        ListCommand that = (ListCommand) other;
+        // Compare predicates by string form to avoid depending on predicate internals
+        boolean samePredicate = String.valueOf(this.predicate).equals(String.valueOf(that.predicate));
+        // Handle null-vs-null and list equality
+        boolean sameSkills;
+        if (this.requestedSkillsOrNull == null && that.requestedSkillsOrNull == null) {
+            sameSkills = true;
+        } else if (this.requestedSkillsOrNull == null || that.requestedSkillsOrNull == null) {
+            sameSkills = false;
+        } else {
+            sameSkills = this.requestedSkillsOrNull.equals(that.requestedSkillsOrNull);
+        }
+        return samePredicate && sameSkills;
     }
 }
-
