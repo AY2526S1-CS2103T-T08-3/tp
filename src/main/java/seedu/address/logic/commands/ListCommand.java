@@ -18,7 +18,7 @@ import seedu.address.model.person.PersonMatchesListFiltersPredicate;
  * <ul>
  *   <li><b>Unfiltered</b>: {@code list} shows all persons (AB3-compatible message).</li>
  *   <li><b>Legacy filtered</b>: {@code new ListCommand(Predicate<Person>)} uses a predicate provided by tests.</li>
- *   <li><b>New filtered</b>: {@code list s/... c/...} filters by skills and categories.</li>
+ *   <li><b>New filtered</b>: {@code list s/} filters by skills and categories.</li>
  * </ul>
  */
 public class ListCommand extends Command {
@@ -31,7 +31,7 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows persons, optionally filtered by skills and/or "
             + "category.\n"
-            + "Parameters: [s/SKILL]...\n"
+            + "Parameters: [s/SKILL]\n"
             + "Examples:\n"
             + "  list\n"
             + "  list s/java\n";
