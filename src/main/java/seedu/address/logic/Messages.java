@@ -19,6 +19,7 @@ public class Messages {
     public static final String MESSAGE_INDEX_NOT_FOUND = "The index provided does not exist in the list.";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
+    public static final String MESSAGE_SKILL_NOT_FOUND = "The following skill(s) do not exist: %s";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
