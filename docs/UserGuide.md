@@ -258,7 +258,16 @@ If you run any commands the data file will be overridden with an empty file. It 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and replace the file `[JAR file location]/data/slackbook.json` with the file from the same location on your previous computer.
+**A**: Install the app in the other computer and replace the file `[JAR file location]/data/slackbook.json` with the file from the same location on your previous computer.<br>
+
+**Q**: Where is the data file stored?<br>
+**A**: At `[JAR file location]/data/slackbook.json` by default.<br>
+
+**Q**: How do I back up my data?<br>
+**A**: Copy the folder `[JAR file location]/data/slackbook.json` to another folder or an external drive.<br>
+
+**Q**: How do I update Slackbook to a newer version?<br>
+**A**: Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-T08-3/tp/releases) and replace the old `.jar` file.<br>
 
 --------------------------------------------------------------------------------------------------------------------
 
