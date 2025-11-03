@@ -23,6 +23,7 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 * [FAQ](#faq)
 * [Known issues](#known-issues)
 * [Command summary](#command-summary)
+* [Glossary](#glossary)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -261,3 +262,12 @@ Action | Format, Examples
 **Update** | `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
 **Clear** | `clear`
 **Exit** | `exit`
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Glossary
+
+- **Employee Record**: A set of details (name, role, department, contact info, skills) about an employee.
+- **HR Manager/Professional**: User responsible for maintaining employee information.
+- **Skills**: Specific competencies associated with an employee (e.g., Python, Java).
+- **Category**: A label grouping employees (e.g., Department, Team, Role).
