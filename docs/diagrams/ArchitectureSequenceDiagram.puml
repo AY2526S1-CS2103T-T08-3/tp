@@ -11,7 +11,7 @@ Participant ":Storage" as storage STORAGE_COLOR
 user -[USER_COLOR]> ui : "add_employee n/John \np/12345678 e/john.doe@gmail.com"
 activate ui UI_COLOR
 
-ui -[UI_COLOR]> logic : execute("add_employee n/John \np/12345678 e/john.doe@gmail.com)"
+ui -[UI_COLOR]> logic : execute("add_employee n/John \np/12345678 e/john.doe@gmail.com")
 activate logic LOGIC_COLOR
 
 logic -[LOGIC_COLOR]> model : addPerson(p)
