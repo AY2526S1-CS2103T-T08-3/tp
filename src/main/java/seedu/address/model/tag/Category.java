@@ -14,6 +14,7 @@ public class Category {
             + "contain only alphanumeric characters and spaces (maximum 50 characters)";
     public static final String VALIDATION_REGEX = "^[\\p{Alnum} ]{1,50}$";
     public static final String CATEGORY_CONSTRAINTS = "Category must be one of Team/Role/Department";
+    public static final String CATEGORY_CORRUPT = "Data corrupted, " + CATEGORY_CONSTRAINTS;
 
     /**
      * Represents the valid categories.
@@ -37,7 +38,7 @@ public class Category {
         requireNonNull(category);
         requireNonNull(value);
 
-        checkArgument(isValidData(category), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidCategory(category), MESSAGE_CONSTRAINTS);
         checkArgument(isValidData(value), MESSAGE_CONSTRAINTS);
 
         this.category = category;
