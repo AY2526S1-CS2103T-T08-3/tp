@@ -170,7 +170,7 @@ Use list before deletion to verify the correct employee.
 This action cannot be undone. Once an employee's information is deleted, it cannot be recovered.
 
 Examples:
-* `delete_employee 2` prompts the confirmation of the deletion of the 2nd employee in the directory.
+* `delete_employee 3` prompts the confirmation of the deletion of the 3rd employee in the directory.
 
 ![delete_employee_example](images/delete_employee_example.png)
 
@@ -195,7 +195,7 @@ Format: `assign_category INDEX c/CATEGORY_TYPE v/VALUE`
 
 
 Examples:
-* `assign_category 2 c/Department v/Engineering` assigns the 2nd employee in the directory with, Department: Engineering.
+* `assign_category 6 c/team v/Bravo` assigns the 6th employee in the directory with, Team: Bravo.
 
 ![assign_category_example](images/assign_category_example.png)
 
@@ -211,7 +211,8 @@ Format: `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAI
 
 Examples:
 * `update_employee 1 r/Senior Software Engineer d/Product Engineering` updates the 1st person in the directory with, Role: Senior Software Engineer, Department: Product Engineering.
-* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C 
+* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C
+* `update_employee 6 t/Alpha` updates the 6th person in the directory with, Team: Alpha
 
 ![update_employee_example](images/update_employee_example.png)
 
