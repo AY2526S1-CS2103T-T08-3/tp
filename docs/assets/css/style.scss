@@ -6,6 +6,12 @@
   "minima/skins/{{ site.minima.skin | default: 'classic' }}",
   "minima/initialize";
 
+@media print {
+    .site-header:before {
+        content: "Slackbook" !important;
+    }
+}
+
 .icon {
     height: 21px;
     width: 21px
