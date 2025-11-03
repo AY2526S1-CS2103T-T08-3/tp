@@ -31,12 +31,10 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows persons, optionally filtered by skills and/or "
             + "category.\n"
-            + "Parameters: [s/SKILL]... [c/CATEGORY]...\n"
+            + "Parameters: [s/SKILL]...\n"
             + "Examples:\n"
             + "  list\n"
-            + "  list s/java\n"
-            + "  list c/Engineering\n"
-            + "  list s/java s/spring c/Platform";
+            + "  list s/java\n";
 
     // --- State ---
     private final List<String> skills; // for new s/ filtering
