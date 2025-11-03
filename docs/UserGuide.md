@@ -129,7 +129,7 @@ Format: `list [s/SKILL]`
 Examples:
 * `list`
 * `list s/java`
-
+![list_example](images/list_example.png)
 ### Listing by category : `listbycategory`
 
 Displays a structured summary of all employees in the directory, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
