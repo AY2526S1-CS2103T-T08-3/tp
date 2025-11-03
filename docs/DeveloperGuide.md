@@ -208,7 +208,7 @@ Jean launches Slackbook automatically each day. She reviews flagged errors, filt
 **Actor:** HR professional\
 
 **MSS (Main Success Scenario):**
-1. HR professional enters new employee details (name, email, role, department, phone).
+1. HR professional enters new employee details.
 2. System validates input.
 3. System saves employee record.
 4. Employee appears in the directory.\
@@ -217,6 +217,9 @@ Use case ends.
 **Extensions:**
 - 2a. System detects an invalid input.
   - 2a1. System displays error.\
+  - Use case ends.
+- 3a. Duplicate employee (same name + email + phone)
+  - 3a1. System rejects entry
   - Use case ends.
 
 ---
