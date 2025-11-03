@@ -42,7 +42,7 @@ public class AddCommand extends Command {
 
 
     public static final String MESSAGE_SUCCESS = "Employee added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "Error: Employee %$1s alreading exists";
+    public static final String MESSAGE_DUPLICATE_PERSON = "Employee already exists: %1$s";
 
     private final Person toAdd;
 
@@ -59,7 +59,7 @@ public class AddCommand extends Command {
         requireNonNull(model);
 
         if (model.hasPerson(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(toAdd)));
         }
 
         model.addPerson(toAdd);
