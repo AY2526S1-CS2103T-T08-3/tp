@@ -175,6 +175,7 @@ Help users to organize employees by department, team, or role for easier navigat
 
 **Note:**
 <code>assign_category</code> is a narrower, more focused function of <code>update_employee</code> that specifically handles assigning of an employee who does not have a category.
+<code>assign_category</code> does not reassign the category.
 
 Format: `assign_category INDEX c/CATEGORY_TYPE v/VALUE`
 
