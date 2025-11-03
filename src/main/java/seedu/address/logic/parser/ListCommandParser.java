@@ -18,7 +18,8 @@ import seedu.address.model.person.predicate.PersonHasTagPredicate;
  *   - list s/SKILL_NAME [s/ANOTHER_SKILL ...]
  *   - list skills/SKILL_NAME [skills/ANOTHER_SKILL ...]   (long form kept for backward-compat)
  *
- * Any other prefixes or stray text will cause a parse error.
+ * Any other prefixes (e.g., c/) cause a parse error. Harmless preamble without '/' (e.g., "3") is allowed
+ * for AB3 compatibility.
  */
 public class ListCommandParser implements Parser<ListCommand> {
 
@@ -35,8 +36,9 @@ public class ListCommandParser implements Parser<ListCommand> {
         // Only accept skill prefixes; unknown prefixes (e.g., c/) will end up in preamble -> error.
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SKILL, PREFIX_SKILLS_LONG);
 
-        // Reject any preamble or stray text (e.g., "c/" or plain words)
-        if (!argMultimap.getPreamble().isEmpty()) {
+        // Allow harmless preamble (e.g., "list 3"); reject anything that looks like an unknown prefix (contains '/')
+        String preamble = argMultimap.getPreamble();
+        if (!preamble.isEmpty() && preamble.contains("/")) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
 
