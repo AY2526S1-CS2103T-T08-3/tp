@@ -108,7 +108,7 @@ If you forget to add a category (like department or role), you can use assign_ca
 | Team (t/)      | No       | - Up to 50 characters                                                                                         | ⚠ Use readable names instead of codes.<br>✅ Example: t/Team 3                                                                    |
 | Role (r/)      | No       | - Up to 50 characters                                                                                         | ⚠ Long role names may be rejected.<br>✅ Example: r/Software Engineer                                                             |
 | Email (e/)     | Yes      | - Must follow `local@domain.com` format                                                                                     | ⚠ Invalid email formats are rejected.<br>✅ Example: e/jane.doe@example.com<br>❌ Error: Error: Invalid email format.              |
-| Phone (p/)     | Yes      | - More than 3 digits<br>- Digits only                                                                                       | ⚠ Do not include country code or symbols.<br>✅ Example: p/92345678<br>❌ Error: Error: Invalid phone number.                      |
+| Phone (p/)     | Yes      | - Between 3 and 15 digits<br>- Digits only                                                                                       | ⚠ Do not include country code or symbols.<br>✅ Example: p/92345678<br>❌ Error: Error: Invalid phone number.                      |
 | Skills (s/)    | No       |                                                               | ✅ Example: s/Python s/Java s/Project Management                                                                                  |
 
 
