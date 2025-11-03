@@ -91,7 +91,7 @@ Format: `help`
 
 Adds an employee to the directory.
 
-Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...`
+Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILL]...`
 
 :bulb: **Tip:**
 A person can have any number of skills (including 0).
@@ -118,7 +118,7 @@ Examples:
 
 Allow users to view all employees currently stored in the system in a clear and structured format.
 
-Format: `list [s/SKILLS]`
+Format: `list [s/SKILL]`
 
 | Field (Prefix) | Required | Rules & Usage                              | Examples                             |
 |----------------|----------|-------------------------------------------|-------------------------------------------------|
@@ -191,7 +191,7 @@ Examples:
 
 Enable users to modify existing employee information to keep records accurate.
 
-Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...`
+Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILL]...`
 
 * Updates the employee at the specified `INDEX`.
 * The index refers to the index number shown in the displayed employee list.
