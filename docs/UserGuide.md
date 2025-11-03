@@ -108,7 +108,7 @@ If you forget to add a category (like department or role), you can use assign_ca
 | Team (t/)      | No       | - Up to 50 characters                                                                                         | ⚠ Use readable names instead of codes.<br>✅ Example: t/Team 3                                                                    |
 | Role (r/)      | No       | - Up to 50 characters                                                                                         | ⚠ Long role names may be rejected.<br>✅ Example: r/Software Engineer                                                             |
 | Email (e/)     | Yes      | - Must follow `local@domain.com` format                                                                                     | ⚠ Invalid email formats are rejected.<br>✅ Example: e/jane.doe@example.com<br>❌ Error: Error: Invalid email format.              |
-| Phone (p/)     | Yes      | - More than 3 digits<br>- Digits only                                                                                       | ⚠ Do not include country code or symbols.<br>✅ Example: p/92345678<br>❌ Error: Error: Invalid phone number.                      |
+| Phone (p/)     | Yes      | - Between 3 and 15 digits<br>- Digits only                                                                                       | ⚠ Do not include country code or symbols.<br>✅ Example: p/92345678<br>❌ Error: Error: Invalid phone number.                      |
 | Skills (s/)    | No       | - Each ≤ 30 characters                                                              | ✅ Example: s/Python s/Java s/Project Management                                                                                  |
 
 
@@ -129,7 +129,9 @@ Format: `list [s/SKILL]`
 Examples:
 * `list`
 * `list s/java`
+  
 ![list_example](images/list_example.png)
+
 ### Listing by category : `listbycategory`
 
 Displays a structured summary of all employees in the directory, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
@@ -147,6 +149,7 @@ Examples:
 * `listbycategory c/team`
 * `listbycategory c/department`
 
+![listbycategory_example](images/listbycategory_example.png)
 
 ### Deleting an employee : `delete_employee`
 
@@ -167,7 +170,9 @@ Use list before deletion to verify the correct employee.
 This action cannot be undone. Once an employee's information is deleted, it cannot be recovered.
 
 Examples:
-* `delete_employee 2` prompts the confirmation of the deletion of the 2nd employee in the directory.
+* `delete_employee 3` prompts the confirmation of the deletion of the 3rd employee in the directory.
+
+![delete_employee_example](images/delete_employee_example.png)
 
 ### Categorize employees : `assign_category`
 
@@ -191,7 +196,9 @@ Format: `assign_category INDEX c/CATEGORY_TYPE v/VALUE`
 
 
 Examples:
-* `assign_category 2 c/Department v/Engineering` assigns the 2nd employee in the directory with, Department: Engineering.
+* `assign_category 6 c/team v/Bravo` assigns the 6th employee in the directory with, Team: Bravo.
+
+![assign_category_example](images/assign_category_example.png)
 
 ### Update employee information : `update_employee`
 
@@ -205,11 +212,16 @@ Format: `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAI
 
 Examples:
 * `update_employee 1 r/Senior Software Engineer d/Product Engineering` updates the 1st person in the directory with, Role: Senior Software Engineer, Department: Product Engineering.
-* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C 
+* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C
+* `update_employee 6 t/Alpha` updates the 6th person in the directory with, Team: Alpha
+
+![update_employee_example](images/update_employee_example.png)
 
 ### Clearing all entries : `clear`
 
 Removes all employees and their information from the directory.
+
+![clear_example](images/clear_example.png)
 
 :exclamation: **Caution:**
 Use this only when you’re absolutely sure — **it removes every entry**. Slackbook automatically saves after clearing.
