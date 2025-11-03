@@ -134,7 +134,7 @@ Examples:
 
 ### Listing by category : `listbycategory`
 
-Displays a structured summary of all employees in the directory, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
+Displays a structured summary of all employees currently listed, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
 This helps users get an overview of how employees are distributed across different parts of the organization.
 
 Format: `listbycategory c/CATEGORY`
