@@ -53,12 +53,16 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         // Potetial refactor into parserUtil
         Set<Category> categoryList = new HashSet<>();
-        argMultimap.getValue(PREFIX_DEPARTMENT).ifPresent(
-                d -> categoryList.add(new Category("Department", d)));
-        argMultimap.getValue(PREFIX_ROLE).ifPresent(
-                r -> categoryList.add(new Category("Role", r)));
-        argMultimap.getValue(PREFIX_TEAM).ifPresent(
-                t -> categoryList.add(new Category("Team", t)));
+        try {
+            argMultimap.getValue(PREFIX_DEPARTMENT).ifPresent(
+                    d -> categoryList.add(new Category("Department", d)));
+            argMultimap.getValue(PREFIX_ROLE).ifPresent(
+                    r -> categoryList.add(new Category("Role", r)));
+            argMultimap.getValue(PREFIX_TEAM).ifPresent(
+                    t -> categoryList.add(new Category("Team", t)));
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(Category.MESSAGE_CONSTRAINTS);
+        }
 
         Set<Skill> skillList = ParserUtil.parseSkills(argMultimap.getAllValues(PREFIX_SKILL));
 

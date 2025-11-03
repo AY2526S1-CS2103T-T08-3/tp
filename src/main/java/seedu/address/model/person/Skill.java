@@ -10,10 +10,11 @@ public class Skill {
 
     /** Alphanumeric + spaces only; not blank. */
     public static final String MESSAGE_CONSTRAINTS =
-            "Skills should only contain alphanumeric characters and spaces, and should not be blank.";
+            "Skills should only contain alphanumeric characters and spaces,"
+                    + "and should not be blank.(maximum 30 characters)";
 
     /** One or more alphanumeric words separated by single spaces. */
-    private static final String VALIDATION_REGEX = "[\\p{Alnum}]+( [\\p{Alnum}]+)*";
+    private static final String VALIDATION_REGEX = "^[\\p{Alnum} ]{1,30}$";
 
     /** The name of this skill (immutable). */
     public final String skillName;
@@ -30,7 +31,7 @@ public class Skill {
         if (!isValidSkillName(trimmed)) {
             throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
         }
-        this.skillName = trimmed;
+        this.skillName = trimmed.toLowerCase();
     }
 
     /**
@@ -70,7 +71,7 @@ public class Skill {
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof Skill
-                && skillName.equals(((Skill) other).skillName)); // case-sensitive (matches AB-3 Tag)
+                && skillName.equalsIgnoreCase(((Skill) other).skillName));
     }
 
     /**
@@ -81,7 +82,7 @@ public class Skill {
      */
     @Override
     public int hashCode() {
-        return skillName.hashCode(); // case-sensitive
+        return skillName.toLowerCase().hashCode(); // case-insensitive
     }
 }
 

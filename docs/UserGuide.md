@@ -9,17 +9,17 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 ## Table of Contents
 * [Quick start](#quick-start)
 * [Features](#features)
-    * [Viewing Help](#viewing-help--help)
-    * [Adding an employee](#adding-an-employee-add_employee)
-    * [Listing all employees](#listing-all-employees--list)
-    * [Listing by category](#listing-by-category--listbycategory)
-    * [Deleting an employee](#deleting-an-employee--delete_employee)
-    * [Categorize employees](#categorize-employees--assign_category)
-    * [Update employee information](#update-employee-information--update_employee)
-    * [Clearing all entries](#clearing-all-entries--clear)
-    * [Exiting the program](#exiting-the-program--exit)
-    * [Saving the data](#saving-the-data)
-    * [Editing the data file](#editing-the-data-file)
+  * [Viewing Help](#viewing-help--help)
+  * [Adding an employee](#adding-an-employee-add_employee)
+  * [Listing all employees](#listing-all-employees--list)
+  * [Listing by category](#listing-by-category--listbycategory)
+  * [Deleting an employee](#deleting-an-employee--delete_employee)
+  * [Categorize employees](#categorize-employees--assign_category)
+  * [Update employee information](#update-employee-information--update_employee)
+  * [Clearing all entries](#clearing-all-entries--clear)
+  * [Exiting the program](#exiting-the-program--exit)
+  * [Saving the data](#saving-the-data)
+  * [Editing the data file](#editing-the-data-file)
 * [FAQ](#faq)
 * [Known issues](#known-issues)
 * [Command summary](#command-summary)
@@ -41,15 +41,15 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-    * `list` : Lists all employees.
+   * `list` : Lists all employees.
 
-    * `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python` : Adds an employee named `John Doe` to the directory that has the department `Engineering`, is on `Team 3`, has the role of a `Software Engineer`, email `john.doe@example.com`, phone number `92345678`, and have skills in `Python`.
+   * `add_employee n/John Doe d/Engineering t/Team 3 r/Software Engineer e/john.doe@example.com p/92345678 s/Python` : Adds an employee named `John Doe` to the directory that has the department `Engineering`, is on `Team 3`, has the role of a `Software Engineer`, email `john.doe@example.com`, phone number `92345678`, and have skills in `Python`.
 
-    * `delete_employee 3` : Prompts the confirmation of the deletion of the 3rd employee shown in the current list.
+   * `delete_employee 3` : Prompts the confirmation of the deletion of the 3rd employee shown in the current list.
 
-    * `clear` : Deletes all employees.
+   * `clear` : Deletes all employees.
 
-    * `exit` : Exits the app.
+   * `exit` : Exits the app.
 6. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
@@ -171,9 +171,6 @@ Examples:
 
 Help users to organize employees by department, team, or role for easier navigation.
 
-**Note:**
-<code>assign_category</code> is a narrower, more focused function of <code>update_employee</code> that specifically handles only assigning of an employee's category.
-
 Format: `assign_category INDEX c/CATEGORY_TYPE v/VALUE`
 
 * Categorize the employee at the specified `INDEX`.
@@ -194,7 +191,7 @@ Examples:
 
 Enable users to modify existing employee information to keep records accurate.
 
-Format: `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...`
+Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...`
 
 * Updates the employee at the specified `INDEX`.
 * The index refers to the index number shown in the displayed employee list.
@@ -202,7 +199,7 @@ Format: `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAI
 
 Examples:
 * `update_employee 1 r/Senior Software Engineer d/Product Engineering` updates the 1st person in the directory with, Role: Senior Software Engineer, Department: Product Engineering.
-* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C
+* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C 
 
 ### Clearing all entries : `clear`
 
@@ -258,6 +255,6 @@ Action | Format, Examples
 **List By Category** | `listbycategory c/CATEGORY`<br> e.g., `listbycategory c/role`
 **Delete** | `delete_employee INDEX`<br> e.g., `delete_employee 3`
 **Categorize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
-**Update** | `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
+**Update** | `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
 **Clear** | `clear`
 **Exit** | `exit`

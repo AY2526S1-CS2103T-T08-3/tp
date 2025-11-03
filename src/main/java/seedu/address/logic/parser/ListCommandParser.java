@@ -1,7 +1,6 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 
 import java.util.ArrayList;
@@ -15,52 +14,53 @@ import seedu.address.model.person.predicate.PersonHasTagPredicate;
  * Parses input arguments and creates a new {@code ListCommand} object.
  *
  * Supports:
- *   list
- *   list s/SKILL_NAME
- *   list skills/SKILL_NAME
- *   list c/CATEGORY_NAME
- *   list s/SKILL_NAME c/CATEGORY_NAME
- *   list skills/SKILL_NAME c/CATEGORY_NAME
+ *   - list
+ *   - list s/SKILL_NAME [s/ANOTHER_SKILL ...]
+ *   - list skills/SKILL_NAME [skills/ANOTHER_SKILL ...]   (long form kept for backward-compat)
  *
- * Legacy behaviour (for existing tests):
- *   If only skills are provided (no categories), returns
- *   {@code new ListCommand(new PersonHasTagPredicate(skillString))}.
+ * Any other prefixes (e.g., c/) cause a parse error. Harmless preamble without '/' (e.g., "3") is allowed
+ * for AB3 compatibility.
  */
 public class ListCommandParser implements Parser<ListCommand> {
 
-    // Long-form skills prefix to support "skills/java" in addition to "s/java"
+    /** Long-form skills prefix to support "skills/java" in addition to "s/java". */
     private static final Prefix PREFIX_SKILLS_LONG = new Prefix("skills/");
+
+    /** Local copy of the usual format string to avoid dependency on seedu.address.commons.core.Messages. */
+    private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
 
     @Override
     public ListCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
-        // Tokenize user input for both skill prefixes and the category prefix.
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_SKILLS_LONG, PREFIX_SKILL, PREFIX_CATEGORY);
+        // Only accept skill prefixes; unknown prefixes (e.g., c/) will end up in preamble -> error.
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SKILL, PREFIX_SKILLS_LONG);
 
-        // Collect all occurrences (e.g., list s/java s/spring skills/backend)
+        // Allow harmless preamble (e.g., "list 3"); reject anything that looks like an unknown prefix (contains '/')
+        String preamble = argMultimap.getPreamble();
+        if (!preamble.isEmpty() && preamble.contains("/")) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        }
+
+        // Collect all occurrences: e.g., "list s/java s/spring skills/backend"
         List<String> skills = new ArrayList<>();
         skills.addAll(argMultimap.getAllValues(PREFIX_SKILLS_LONG));
         skills.addAll(argMultimap.getAllValues(PREFIX_SKILL));
 
-        // Collect categories
-        List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
-
-        // If no prefixes provided, return unfiltered "list" (AB3-compatible)
-        if (skills.isEmpty() && categories.isEmpty()) {
+        // No prefixes -> plain "list"
+        if (skills.isEmpty()) {
             return new ListCommand();
         }
 
-        // Legacy test compatibility: only skills → use PersonHasTagPredicate constructor
-        if (!skills.isEmpty() && categories.isEmpty()) {
-            // If multiple skills were provided, join them with a space (legacy find-style OR semantics).
-            String combined = String.join(" ", skills).trim();
-            return new ListCommand(new PersonHasTagPredicate(combined));
+        // Validate non-empty values
+        for (String s : skills) {
+            if (s == null || s.trim().isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+            }
         }
 
-        // New path: any presence of categories (or mixed usage) → multi-filter command
-        return ListCommand.filtered(skills, categories);
+        // Join multiple skills with a single space (legacy OR semantics for PersonHasTagPredicate)
+        String combined = String.join(" ", skills).trim();
+        return new ListCommand(new PersonHasTagPredicate(combined));
     }
 }
-

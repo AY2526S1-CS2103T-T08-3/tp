@@ -96,18 +96,6 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean hasEmail(Person person) {
-        requireNonNull(person);
-        return addressBook.hasEmail(person);
-    }
-
-    @Override
-    public boolean hasPhoneNumber(Person person) {
-        requireNonNull(person);
-        return addressBook.hasPhoneNumber(person);
-    }
-
-    @Override
     public void setPersonToDelete(Person target) {
         toDeletePerson = target;
     }
