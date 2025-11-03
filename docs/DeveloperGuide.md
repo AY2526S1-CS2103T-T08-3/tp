@@ -123,6 +123,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the currently 'selected' `Person` object to be deleted while waiting for deletion confirmation from the user as a separate _toDeletePerson_. This will be used to delete the `Person` once the user gives the confirmation input.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -291,7 +292,6 @@ Use case ends.
 - **HR Manager/Professional**: User responsible for maintaining employee information.
 - **Skills**: Specific competencies associated with an employee (e.g., Python, Java).
 - **Category**: A label grouping employees (e.g., Department, Team, Role).
-- **Slack Integration**: Ability to connect Slackbook with Slack for quick communication.
 
 --------------------------------------------------------------------------------------------------------------------
 
