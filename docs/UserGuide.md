@@ -20,6 +20,7 @@ Slackbook is a **desktop app for managing contacts, optimized for use via a Comm
   * [Exiting the program](#exiting-the-program--exit)
   * [Saving the data](#saving-the-data)
   * [Editing the data file](#editing-the-data-file)
+  * [Handling corrupted data](#handling-corrupted-data)
 * [FAQ](#faq)
 * [Known issues](#known-issues)
 * [Command summary](#command-summary)
@@ -92,7 +93,7 @@ Format: `help`
 
 Adds an employee to the directory.
 
-Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...`
+Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILL]...`
 
 :bulb: **Tip:**
 A person can have any number of skills (including 0).
@@ -119,7 +120,7 @@ Examples:
 
 Allow users to view all employees currently stored in the system in a clear and structured format.
 
-Format: `list [s/SKILLS]`
+Format: `list [s/SKILL]`
 
 | Field (Prefix) | Required | Rules & Usage                              | Examples                             |
 |----------------|----------|-------------------------------------------|-------------------------------------------------|
@@ -232,6 +233,12 @@ Slackbook data is saved automatically as a JSON file `[JAR file location]/data/s
 If your changes to the data file make its format invalid, Slackbook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the Slackbook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
+### Handling corrupted data
+
+Slackbook automatically checks for missing/corrupted important data on startup. If any missing/corrupted data is found, an error message is displayed and the application will start with an empty Slackbook.
+
+:exclamation: **Caution:**
+If you run any commands the data file will be overridden with an empty file. It is highly recommended to close Slackbook and fix the issues in the Slackbook data file found at `[JAR file location]/data/slackbook.json`.
 
 --------------------------------------------------------------------------------------------------------------------
 
