@@ -75,11 +75,15 @@ public class Person {
             return true;
         }
 
+        if (otherPerson == null) {
+            return false;
+        }
+
         boolean isSameName = otherPerson.getName().equals(getName());
         boolean isSameEmail = otherPerson.getEmail().equals(getEmail());
         boolean isSamePhoneNumber = otherPerson.getPhone().equals(getPhone());
 
-        return otherPerson != null && isSameName && isSameEmail && isSamePhoneNumber;
+        return isSameName && isSameEmail && isSamePhoneNumber;
     }
 
     /**
