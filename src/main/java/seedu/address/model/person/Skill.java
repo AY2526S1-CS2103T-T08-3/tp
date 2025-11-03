@@ -31,7 +31,7 @@ public class Skill {
         if (!isValidSkillName(trimmed)) {
             throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
         }
-        this.skillName = trimmed;
+        this.skillName = trimmed.toLowerCase();
     }
 
     /**
@@ -71,7 +71,7 @@ public class Skill {
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof Skill
-                && skillName.equals(((Skill) other).skillName)); // case-sensitive (matches AB-3 Tag)
+                && skillName.equalsIgnoreCase(((Skill) other).skillName));
     }
 
     /**
@@ -82,7 +82,7 @@ public class Skill {
      */
     @Override
     public int hashCode() {
-        return skillName.hashCode(); // case-sensitive
+        return skillName.toLowerCase().hashCode(); // case-insensitive
     }
 }
 
