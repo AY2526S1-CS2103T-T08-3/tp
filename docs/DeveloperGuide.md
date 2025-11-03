@@ -203,48 +203,74 @@ Jean launches Slackbook automatically each day. She reviews flagged errors, filt
 
 ### Use cases
 
-**Use case: UC01 – Add a new employee**
-**Actor:** HR professional
-**Preconditions:** Slackbook is running, HR professional is logged in
+**Use case: UC01 – Add a new employee**\
+**Actor:** HR professional\
 
 **MSS (Main Success Scenario):**
 1. HR professional enters new employee details (name, email, role, department, phone).
 2. System validates input.
 3. System saves employee record.
-4. Employee appears in the directory.
+4. Employee appears in the directory.\
+Use case ends.
 
 **Extensions:**
-- 2a. Input invalid → System shows error message.
-- 3a. Duplicate employee (same name + email) → System rejects entry.
+- 2a. System detects an invalid input.
+  - 2a1. System displays error.\
+  - Use case ends.
 
 ---
 
-**Use case: UC02 – Search employee by skill**
+**Use case: UC02 – Search employee by skill**\
 **Actor:** HR professional
 
 **MSS:**
 1. HR professional enters a search query with a skill (e.g., “Python”).
 2. System searches employee records.
-3. System displays a filtered list of employees with that skill.
-
-**Extensions:**
-- 1a. No results → System displays “No results found.”
+3. System displays a filtered list of employees with that skill.\
+Use case ends.
 
 ---
 
-**Use case: UC03 – Update employee details**
+**Use case: UC03 – Update employee details**\
 **Actor:** HR professional
 
 **MSS:**
-1. HR professional selects an employee by ID.
+1. HR professional selects an employee by index.
 2. HR professional edits one or more fields (e.g., role, department, phone).
-3. System validates and saves the updated record.
-4. System displays confirmation message.
+3. System validates input.
+4. System saves the updated record.
+4. System displays confirmation message.\
+Use case ends.
 
 **Extensions:**
-- 1a. Employee ID not found → System shows error.
-- 2a. No fields provided → System shows error.
-- 3a. Email already exists in another record → System rejects update.
+- 3a. System detects invalid index.
+  - 3a1. System displays error.
+  - Use case ends.
+- 3b. System detects duplicate field.
+  - 3b1. System displays error.
+  - Use case ends.
+
+---
+
+**Use case: UC04 – Delete employee**\
+**Actor:** HR professional
+
+**MSS:**
+1. HR professional selects an employee to be deleted by index.
+2. System prompts to ask for confirmation.
+3. HR professional confirms the deletion
+4. System deletes the employee. 
+5. System saves the updated record.
+6. System displays confirmation message.\
+Use case ends.
+
+**Extensions:**
+- 1a. System detects invalid index.
+   - 1a1. System displays error.
+   - Use case ends.
+- 2a. HR professional cancels deletion.
+  - 2a1. System displays deletion cancelled.
+  - Use case ends.
 
 ---
 
