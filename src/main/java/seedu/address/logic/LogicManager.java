@@ -53,7 +53,6 @@ public class LogicManager implements Logic {
         Command command = parseCommand(commandText);
 
         commandResult = command.execute(model);
-
         try {
             storage.saveAddressBook(model.getAddressBook());
         } catch (AccessDeniedException e) {

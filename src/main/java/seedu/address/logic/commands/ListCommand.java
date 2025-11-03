@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.PersonMatchesListFiltersPredicate;
 
 /**
  * Lists persons in the address book.
@@ -28,6 +27,7 @@ public class ListCommand extends Command {
     // Keep AB3 stock message so existing tests continue to pass for unfiltered/legacy usage.
     public static final String MESSAGE_SUCCESS = "Listed all persons";
     public static final String MESSAGE_FILTERED_SUCCESS = "Listed matching persons";
+    public static final String MESSAGE_FILTERED_NONE = "0 matching persons";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows persons, optionally filtered by skills and/or "
             + "category.\n"
@@ -92,12 +92,10 @@ public class ListCommand extends Command {
         if (legacyPredicate != null) {
             // Maintain original semantics & message for tests using the legacy constructor.
             model.updateFilteredPersonList(legacyPredicate);
-            return new CommandResult(MESSAGE_SUCCESS);
+            if (model.getFilteredPersonList().size() == 0) {
+                return new CommandResult(MESSAGE_FILTERED_NONE);
+            }
         }
-
-        // New s/ and c/ filtering path
-        var predicate = new PersonMatchesListFiltersPredicate(skills, categories);
-        model.updateFilteredPersonList(predicate);
         return new CommandResult(MESSAGE_FILTERED_SUCCESS);
     }
 
