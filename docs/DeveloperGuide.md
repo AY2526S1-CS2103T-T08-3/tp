@@ -175,14 +175,14 @@ Ultimately, Slackbook enables HR teams to focus more on people and less on admin
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
 | Priority | As a …​                     | I want to …​                                               | So that I can…​                                            |
-|----------|-----------------------------|------------------------------------------------------------|------------------------------------------------------------|
-| `* * *`  | HR professional             | quickly add employee details in one place                  | ensure the directory always reflects the latest information|
-| `* * *`  | HR professional             | update existing employee details                           | keep records accurate and current                          |
-| `* * *`  | Senior HR manager           | categorize employees by department, team, or role          | easily locate and manage groups within the organization    |
-| `* * *`  | New HR assistant            | see missing or corrupted information flagged automatically | fix gaps quickly and maintain data integrity               |
-| `* * *`  | Remote HR coordinator       | search and filter employees by name, department, or skill  | quickly find the right person when needed                  |
-| `* *`    | HR professional             | export filtered employee lists                             | share data with managers or other departments              |
-| `*`      | HR staff with many employees| generate department-level summaries                        | review staffing needs more efficiently                     |
+|--------|-----------------------------|------------------------------------------------------------|------------------------------------------------------------|
+| `* * *` | HR professional             | quickly add employee details in one place                  | ensure the directory always reflects the latest information|
+| `* * *` | HR professional             | update existing employee details                           | keep records accurate and current                          |
+| `* * *` | Senior HR manager           | categorize employees by department, team, or role          | easily locate and manage groups within the organization    |
+| `* * *` | New HR assistant            | see missing or corrupted information flagged automatically | fix gaps quickly and maintain data integrity               |
+| `* *`  | Remote HR coordinator       | list employees by skill                                    | quickly find the right person when needed                  |
+| `* *`  | HR professional             | export filtered employee lists                             | share data with managers or other departments              |
+| `*`    | HR staff with many employees| generate category-level summaries                          | review staffing needs more efficiently                     |
 
 ---
 
@@ -224,7 +224,18 @@ Use case ends.
 
 ---
 
-**Use case: UC02 – Search employee by skill**\
+**Use case: UC02 – List all employees**\
+**Actor:** HR professional
+
+**MSS:**
+1. HR professional requests a list of all employees.
+2. System searches employee records.
+3. System displays a list of all the employees.\
+   Use case ends.
+
+---
+
+**Use case: UC03 – List employee by skill**\
 **Actor:** HR professional
 
 **MSS:**
@@ -235,7 +246,18 @@ Use case ends.
 
 ---
 
-**Use case: UC03 – Update employee details**\
+**Use case: UC04 – List employees by category**\
+**Actor:** HR professional
+
+**MSS (Main Success Scenario):**
+1. HR professional enters a search query with a category (e.g., "Role").
+2. System searches employee records.
+3. System displays a summary of the searched category of employees currently listed.
+Use case ends.
+
+---
+
+**Use case: UC05 – Update employee details**\
 **Actor:** HR professional
 
 **MSS:**
@@ -256,7 +278,7 @@ Use case ends.
 
 ---
 
-**Use case: UC04 – Delete employee**\
+**Use case: UC06 – Delete employee**\
 **Actor:** HR professional
 
 **MSS:**
@@ -274,6 +296,27 @@ Use case ends.
    - Use case ends.
 - 2a. HR professional cancels deletion.
   - 2a1. System displays deletion cancelled.
+  - Use case ends.
+
+---
+
+**Use case: UC07 – Assign category to an employee**\
+**Actor:** Senior HR manager
+
+**MSS (Main Success Scenario):**
+1. Senior HR manager selects an employee by index.
+2. Senior HR manager assigns one or more category that the employee does not have.
+3. System validates input.
+4. System saves the updated record.
+5. System displays confirmation message.
+Use case ends.
+
+**Extensions:**
+- 3a. System detects invalid index.
+  - 3a1. System displays error.
+  - Use case ends.
+- 3b. System detects categories that already have data.
+  - 3b1. System displays error.
   - Use case ends.
 
 ---
