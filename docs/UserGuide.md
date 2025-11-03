@@ -122,7 +122,7 @@ Format: `list [s/SKILL]`
 
 | Field (Prefix) | Required | Rules & Usage                              | Examples                             |
 |----------------|----------|-------------------------------------------|-------------------------------------------------|
-| Skills (s/)    | No       | - Each ≤ 30 characters                                 | ✅ Example: s/Python s/Java s/Project Management |
+| Skills (s/)    | No       |                                  | ✅ Example: s/Python s/Java s/Project Management |
 
 Examples:
 * `list`
