@@ -356,14 +356,14 @@ testers are expected to do more *exploratory* testing.
 
 # Appendix: Effort
 
-SlackBook builds upon **AddressBook Level 3 (AB3)**, extending it from a simple contact manager into a **Human Resource management tool** that supports structured employee data such as **skills**, **roles**, **teams**, and **departments**.  
+Slackbook builds upon **AddressBook Level 3 (AB3)**, extending it from a simple contact manager into a **Human Resource management tool** that supports structured employee data such as **skills**, **roles**, **teams**, and **departments**.  
 This expansion introduced significant architectural and design complexity while maintaining code quality and defensive programming practices.
 
 ---
 
 ## Difficulty Level
 
-Compared to AB3 (which handled a single entity — `Person`), SlackBook introduces multiple dynamic entities:
+Compared to AB3 (which handled a single entity — `Person`), Slackbook introduces multiple dynamic entities:
 
 - **Category** (representing Role, Team, Department)
 - **Skill** (a new entity linked to each person)
