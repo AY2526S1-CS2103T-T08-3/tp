@@ -2,9 +2,9 @@
 layout: page
 title: User Guide
 ---
-<h1>SlackBook User Guide</h1>
+<h1>Slackbook User Guide</h1>
 
-SlackBook is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) that has the benefits of a Graphical User Interface (GUI). It is a productivity tool purpose-built for HR departments to handle the increasing administrative load of a growing company. Experienced HR professionals who are familiar with the tasks they need to perform but whose productivity are bottlenecked by the tools they’re using will stand to benefit the most, as for the fast typers, SlackBook can perform day-to-day contact management tasks done faster than traditional GUI-based apps.
+Slackbook is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) that has the benefits of a Graphical User Interface (GUI). It is a productivity tool purpose-built for HR departments to handle the increasing administrative load of a growing company. Experienced HR professionals who are familiar with the tasks they need to perform but whose productivity are bottlenecked by the tools they’re using will stand to benefit the most, as for the fast typers, Slackbook can perform day-to-day contact management tasks done faster than traditional GUI-based apps.
 
 ## Table of Contents
 * [Quick start](#quick-start)
@@ -33,7 +33,7 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 
 2. **Download** the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-T08-3/tp/releases).
 
-3. **Copy** the file to the folder you want to use as the _home folder_ for SlackBook.
+3. **Copy** the file to the folder you want to use as the _home folder_ for Slackbook.
 
 4. Open a command terminal, `cd` into the folder you put the jar file in (e.g. `cd Desktop\slackbook`), and use the `java -jar slackbook.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
@@ -91,7 +91,7 @@ Format: `help`
 
 Adds an employee to the directory.
 
-Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...`
+Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILL]...`
 
 :bulb: **Tip:**
 A person can have any number of skills (including 0).
@@ -118,7 +118,7 @@ Examples:
 
 Allow users to view all employees currently stored in the system in a clear and structured format.
 
-Format: `list [s/SKILLS]`
+Format: `list [s/SKILL]`
 
 | Field (Prefix) | Required | Rules & Usage                              | Examples                             |
 |----------------|----------|-------------------------------------------|-------------------------------------------------|
@@ -191,7 +191,7 @@ Examples:
 
 Enable users to modify existing employee information to keep records accurate.
 
-Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...`
+Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILL]...`
 
 * Updates the employee at the specified `INDEX`.
 * The index refers to the index number shown in the displayed employee list.
@@ -206,7 +206,7 @@ Examples:
 Removes all employees and their information from the directory.
 
 :exclamation: **Caution:**
-Use this only when you’re absolutely sure — **it removes every entry**. SlackBook automatically saves after clearing.
+Use this only when you’re absolutely sure — **it removes every entry**. Slackbook automatically saves after clearing.
 
 Format: `clear`
 
