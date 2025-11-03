@@ -205,15 +205,16 @@ Ultimately, Slackbook enables HR teams to focus more on people and less on admin
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                     | I want to …​                                               | So that I can…​                                            |
-|----------|-----------------------------|------------------------------------------------------------|------------------------------------------------------------|
-| `* * *`  | HR professional             | quickly add employee details in one place                  | ensure the directory always reflects the latest information|
-| `* * *`  | HR professional             | update existing employee details                           | keep records accurate and current                          |
-| `* * *`  | Senior HR manager           | categorize employees by department, team, or role          | easily locate and manage groups within the organization    |
-| `* * *`  | New HR assistant            | see missing or corrupted information flagged automatically | fix gaps quickly and maintain data integrity               |
-| `* * *`  | Remote HR coordinator       | search and filter employees by name, department, or skill  | quickly find the right person when needed                  |
-| `* *`    | HR professional             | export filtered employee lists                             | share data with managers or other departments              |
-| `*`      | HR staff with many employees| generate department-level summaries                        | review staffing needs more efficiently                     |
+| Priority | As a …​                     | I want to …​                                               | So that I can…​                                             |
+|--------|-----------------------------|------------------------------------------------------------|-------------------------------------------------------------|
+| `* * *` | HR professional             | quickly add employee details in one place                  | ensure the directory always reflects the latest information |
+| `* * *` | HR professional             | delete employee details                                    | remove wrong employee information                           |
+| `* * *` | Senior HR manager           | categorize employees by department, team, or role          | easily locate and manage groups within the organization     |
+| `* * *` | New HR assistant            | see missing or corrupted information flagged automatically | fix gaps quickly and maintain data integrity                |
+| `* * *` | Remote HR coordinator       | search and filter employees by name, department, or skill  | quickly find the right person when needed                   |
+| `* *`  | HR professional             | update existing employee details                           | keep records accurate and current                           |
+| `* *`  | HR professional             | export filtered employee lists                             | share data with managers or other departments               |
+| `*`    | HR staff with many employees| generate department-level summaries                        | review staffing needs more efficiently                      |
 
 ---
 
