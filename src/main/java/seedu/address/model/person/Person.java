@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Category;
@@ -21,6 +22,7 @@ public class Person {
     private final Phone phone;
     private final Email email;
 
+    // Additional attributes
     private final Set<Category> categories = new HashSet<>();
     private final Set<Skill> skills = new HashSet<>();
 
@@ -28,7 +30,7 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email,
-            Set<Category> categories, Set<Skill> skills) {
+                  Set<Category> categories, Set<Skill> skills) {
         requireAllNonNull(name, phone, email, categories, skills);
         this.name = name;
         this.phone = phone;
@@ -67,6 +69,37 @@ public class Person {
     }
 
     /**
+     * Returns a human-readable one-line summary of this person,
+     * including their categories and skills, suitable for confirmation dialogs.
+     */
+    public String toSummaryString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name.fullName).append(" (");
+
+        // Join categories
+        if (!categories.isEmpty()) {
+            String categoryList = categories.stream()
+                    .map(Category::toString)
+                    .collect(Collectors.joining(", "));
+            sb.append("Categories: ").append(categoryList);
+        }
+
+        // Join skills
+        if (!skills.isEmpty()) {
+            if (!categories.isEmpty()) {
+                sb.append("; ");
+            }
+            String skillList = skills.stream()
+                    .map(Skill::toString)
+                    .collect(Collectors.joining(", "));
+            sb.append("Skills: ").append(skillList);
+        }
+
+        sb.append(")");
+        return sb.toString();
+    }
+
+    /**
      * Returns true if both persons have the same name.
      * This defines a weaker notion of equality between two persons.
      */
@@ -75,34 +108,15 @@ public class Person {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
-    }
-
-    /**
-     * Returns true if both persons have the same email.
-     * This defines a weaker notion of equality between two persons.
-     */
-    public boolean isSameEmail(Person otherPerson) {
-        if (otherPerson == this) {
-            return true;
+        if (otherPerson == null) {
+            return false;
         }
 
-        return otherPerson != null
-                && otherPerson.getEmail().equals(getEmail());
-    }
+        boolean isSameName = otherPerson.getName().equals(getName());
+        boolean isSameEmail = otherPerson.getEmail().equals(getEmail());
+        boolean isSamePhoneNumber = otherPerson.getPhone().equals(getPhone());
 
-    /**
-     * Returns true if both persons have the same phone number.
-     * This defines a weaker notion of equality between two persons.
-     */
-    public boolean isSamePhoneNumber(Person otherPerson) {
-        if (otherPerson == this) {
-            return true;
-        }
-
-        return otherPerson != null
-                && otherPerson.getPhone().equals(getPhone());
+        return isSameName && isSameEmail && isSamePhoneNumber;
     }
 
     /**
@@ -144,4 +158,3 @@ public class Person {
                 .toString();
     }
 }
-

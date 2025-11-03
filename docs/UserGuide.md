@@ -2,9 +2,9 @@
 layout: page
 title: User Guide
 ---
-<h1>SlackBook User Guide</h1>
+<h1>Slackbook User Guide</h1>
 
-SlackBook is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) that has the benefits of a Graphical User Interface (GUI). It is a productivity tool purpose-built for HR departments to handle the increasing administrative load of a growing company. Experienced HR professionals who are familiar with the tasks they need to perform but whose productivity are bottlenecked by the tools they’re using will stand to benefit the most, as for the fast typers, SlackBook can perform day-to-day contact management tasks done faster than traditional GUI-based apps.
+Slackbook is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) that has the benefits of a Graphical User Interface (GUI). It is a productivity tool purpose-built for HR departments to handle the increasing administrative load of a growing company. Experienced HR professionals who are familiar with the tasks they need to perform but whose productivity are bottlenecked by the tools they’re using will stand to benefit the most, as for the fast typers, Slackbook can perform day-to-day contact management tasks done faster than traditional GUI-based apps.
 
 ## Table of Contents
 * [Quick start](#quick-start)
@@ -20,9 +20,11 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
   * [Exiting the program](#exiting-the-program--exit)
   * [Saving the data](#saving-the-data)
   * [Editing the data file](#editing-the-data-file)
+  * [Handling corrupted data](#handling-corrupted-data)
 * [FAQ](#faq)
 * [Known issues](#known-issues)
 * [Command summary](#command-summary)
+* [Glossary](#glossary)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +35,7 @@ SlackBook is a **desktop app for managing contacts, optimized for use via a Comm
 
 2. **Download** the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-T08-3/tp/releases).
 
-3. **Copy** the file to the folder you want to use as the _home folder_ for SlackBook.
+3. **Copy** the file to the folder you want to use as the _home folder_ for Slackbook.
 
 4. Open a command terminal, `cd` into the folder you put the jar file in (e.g. `cd Desktop\slackbook`), and use the `java -jar slackbook.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
@@ -91,7 +93,7 @@ Format: `help`
 
 Adds an employee to the directory.
 
-Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILLS]...`
+Format: `add_employee n/NAME [d/DEPARTMENT] [t/TEAM] [r/ROLE] e/EMAIL p/PHONE [s/SKILL]...`
 
 :bulb: **Tip:**
 A person can have any number of skills (including 0).
@@ -106,7 +108,7 @@ If you forget to add a category (like department or role), you can use assign_ca
 | Team (t/)      | No       | - Up to 50 characters                                                                                         | ⚠ Use readable names instead of codes.<br>✅ Example: t/Team 3                                                                    |
 | Role (r/)      | No       | - Up to 50 characters                                                                                         | ⚠ Long role names may be rejected.<br>✅ Example: r/Software Engineer                                                             |
 | Email (e/)     | Yes      | - Must follow `local@domain.com` format                                                                                     | ⚠ Invalid email formats are rejected.<br>✅ Example: e/jane.doe@example.com<br>❌ Error: Error: Invalid email format.              |
-| Phone (p/)     | Yes      | - More than 3 digits<br>- Digits only                                                                                       | ⚠ Do not include country code or symbols.<br>✅ Example: p/92345678<br>❌ Error: Error: Invalid phone number.                      |
+| Phone (p/)     | Yes      | - Between 3 and 15 digits<br>- Digits only                                                                                       | ⚠ Do not include country code or symbols.<br>✅ Example: p/92345678<br>❌ Error: Error: Invalid phone number.                      |
 | Skills (s/)    | No       | - Each ≤ 30 characters                                                              | ✅ Example: s/Python s/Java s/Project Management                                                                                  |
 
 
@@ -118,7 +120,7 @@ Examples:
 
 Allow users to view all employees currently stored in the system in a clear and structured format.
 
-Format: `list [s/SKILLS]`
+Format: `list [s/SKILL]`
 
 | Field (Prefix) | Required | Rules & Usage                              | Examples                             |
 |----------------|----------|-------------------------------------------|-------------------------------------------------|
@@ -127,10 +129,12 @@ Format: `list [s/SKILLS]`
 Examples:
 * `list`
 * `list s/java`
+  
+![list_example](images/list_example.png)
 
 ### Listing by category : `listbycategory`
 
-Displays a structured summary of all employees in the directory, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
+Displays a structured summary of all employees currently listed, grouped by a selected **category** — such as their **Role**, **Team**, or **Department**.
 This helps users get an overview of how employees are distributed across different parts of the organization.
 
 Format: `listbycategory c/CATEGORY`
@@ -145,6 +149,7 @@ Examples:
 * `listbycategory c/team`
 * `listbycategory c/department`
 
+![listbycategory_example](images/listbycategory_example.png)
 
 ### Deleting an employee : `delete_employee`
 
@@ -165,11 +170,17 @@ Use list before deletion to verify the correct employee.
 This action cannot be undone. Once an employee's information is deleted, it cannot be recovered.
 
 Examples:
-* `delete_employee 2` prompts the confirmation of the deletion of the 2nd employee in the directory.
+* `delete_employee 3` prompts the confirmation of the deletion of the 3rd employee in the directory.
+
+![delete_employee_example](images/delete_employee_example.png)
 
 ### Categorize employees : `assign_category`
 
 Help users to organize employees by department, team, or role for easier navigation.
+
+**Note:**
+<code>assign_category</code> is a narrower, more focused function of <code>update_employee</code> that specifically handles assigning of an employee who does not have a category.
+<code>assign_category</code> does not reassign the category.
 
 Format: `assign_category INDEX c/CATEGORY_TYPE v/VALUE`
 
@@ -185,13 +196,15 @@ Format: `assign_category INDEX c/CATEGORY_TYPE v/VALUE`
 
 
 Examples:
-* `assign_category 2 c/Department v/Engineering` assigns the 2nd employee in the directory with, Department: Engineering.
+* `assign_category 6 c/team v/Bravo` assigns the 6th employee in the directory with, Team: Bravo.
+
+![assign_category_example](images/assign_category_example.png)
 
 ### Update employee information : `update_employee`
 
 Enable users to modify existing employee information to keep records accurate.
 
-Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...`
+Format: `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...`
 
 * Updates the employee at the specified `INDEX`.
 * The index refers to the index number shown in the displayed employee list.
@@ -199,14 +212,19 @@ Format: `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/E
 
 Examples:
 * `update_employee 1 r/Senior Software Engineer d/Product Engineering` updates the 1st person in the directory with, Role: Senior Software Engineer, Department: Product Engineering.
-* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C 
+* `update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C` updates the 2nd person in the directory with, Name: Alex Yeo, Department: IT, Team: Team A, Role: Coder, Email: alexyeo@example.com, Phone: 98765432, Skills: Csharp, C
+* `update_employee 6 t/Alpha` updates the 6th person in the directory with, Team: Alpha
+
+![update_employee_example](images/update_employee_example.png)
 
 ### Clearing all entries : `clear`
 
 Removes all employees and their information from the directory.
 
+![clear_example](images/clear_example.png)
+
 :exclamation: **Caution:**
-Use this only when you’re absolutely sure — **it removes every entry**. SlackBook automatically saves after clearing.
+Use this only when you’re absolutely sure — **it removes every entry**. Slackbook automatically saves after clearing.
 
 Format: `clear`
 
@@ -228,6 +246,12 @@ Slackbook data is saved automatically as a JSON file `[JAR file location]/data/s
 If your changes to the data file make its format invalid, Slackbook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the Slackbook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
+### Handling corrupted data
+
+Slackbook automatically checks for missing/corrupted important data on startup. If any missing/corrupted data is found, an error message is displayed and the application will start with an empty Slackbook.
+
+:exclamation: **Caution:**
+If you run any commands the data file will be overridden with an empty file. It is highly recommended to close Slackbook and fix the issues in the Slackbook data file found at `[JAR file location]/data/slackbook.json`.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -255,6 +279,15 @@ Action | Format, Examples
 **List By Category** | `listbycategory c/CATEGORY`<br> e.g., `listbycategory c/role`
 **Delete** | `delete_employee INDEX`<br> e.g., `delete_employee 3`
 **Categorize** | `assign_category INDEX c/CATEGORY_TYPE v/VALUE​`<br> e.g.,`assign_category 2 c/Department v/Engineering`
-**Update** | `update_employee id/INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
+**Update** | `update_employee INDEX [n/NAME] [d/DEPARTMENT] [t/TEAM] [r/ROLE] [e/EMAIL] [p/PHONE] [s/SKILLS]...​`<br> e.g.,`update_employee 2 n/Alex Yeo d/IT t/Team A r/Coder e/alexyeo@example.com p/98765432 s/Csharp s/C`
 **Clear** | `clear`
 **Exit** | `exit`
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Glossary
+
+- **Employee Record**: A set of details (name, role, department, contact info, skills) about an employee.
+- **HR Manager/Professional**: User responsible for maintaining employee information.
+- **Skills**: Specific competencies associated with an employee (e.g., Python, Java).
+- **Category**: A label grouping employees (e.g., Department, Team, Role).

@@ -123,6 +123,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the currently 'selected' `Person` object to be deleted while waiting for deletion confirmation from the user as a separate _toDeletePerson_. This will be used to delete the `Person` once the user gives the confirmation input.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -173,15 +174,15 @@ Ultimately, Slackbook enables HR teams to focus more on people and less on admin
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                     | I want to …​                                                            | So that I can…​                                            |
-|----------|-----------------------------|-------------------------------------------------------------------------|------------------------------------------------------------|
-| `* * *`  | HR professional             | quickly add employee details in one place                               | ensure the directory always reflects the latest information|
-| `* * *`  | HR professional             | update existing employee details                                        | keep records accurate and current                          |
-| `* * *`  | Senior HR manager           | categorize employees by department, team, or role                       | easily locate and manage groups within the organization    |
-| `* * *`  | New HR assistant            | see missing or outdated information flagged automatically               | fix gaps quickly and maintain data integrity               |
-| `* * *`  | Remote HR coordinator       | search and filter employees by name, department, or skill               | quickly find the right person when needed                  |
-| `* *`    | HR professional             | export filtered employee lists                                          | share data with managers or other departments              |
-| `*`      | HR staff with many employees| generate department-level summaries                                     | review staffing needs more efficiently                     |
+| Priority | As a …​                     | I want to …​                                               | So that I can…​                                            |
+|----------|-----------------------------|------------------------------------------------------------|------------------------------------------------------------|
+| `* * *`  | HR professional             | quickly add employee details in one place                  | ensure the directory always reflects the latest information|
+| `* * *`  | HR professional             | update existing employee details                           | keep records accurate and current                          |
+| `* * *`  | Senior HR manager           | categorize employees by department, team, or role          | easily locate and manage groups within the organization    |
+| `* * *`  | New HR assistant            | see missing or corrupted information flagged automatically | fix gaps quickly and maintain data integrity               |
+| `* * *`  | Remote HR coordinator       | search and filter employees by name, department, or skill  | quickly find the right person when needed                  |
+| `* *`    | HR professional             | export filtered employee lists                             | share data with managers or other departments              |
+| `*`      | HR staff with many employees| generate department-level summaries                        | review staffing needs more efficiently                     |
 
 ---
 
@@ -203,48 +204,74 @@ Jean launches Slackbook automatically each day. She reviews flagged errors, filt
 
 ### Use cases
 
-**Use case: UC01 – Add a new employee**
-**Actor:** HR professional
-**Preconditions:** Slackbook is running, HR professional is logged in
+**Use case: UC01 – Add a new employee**\
+**Actor:** HR professional\
 
 **MSS (Main Success Scenario):**
 1. HR professional enters new employee details (name, email, role, department, phone).
 2. System validates input.
 3. System saves employee record.
-4. Employee appears in the directory.
+4. Employee appears in the directory.\
+Use case ends.
 
 **Extensions:**
-- 2a. Input invalid → System shows error message.
-- 3a. Duplicate employee (same name + email) → System rejects entry.
+- 2a. System detects an invalid input.
+  - 2a1. System displays error.\
+  - Use case ends.
 
 ---
 
-**Use case: UC02 – Search employee by skill**
+**Use case: UC02 – Search employee by skill**\
 **Actor:** HR professional
 
 **MSS:**
 1. HR professional enters a search query with a skill (e.g., “Python”).
 2. System searches employee records.
-3. System displays a filtered list of employees with that skill.
-
-**Extensions:**
-- 1a. No results → System displays “No results found.”
+3. System displays a filtered list of employees with that skill.\
+Use case ends.
 
 ---
 
-**Use case: UC03 – Update employee details**
+**Use case: UC03 – Update employee details**\
 **Actor:** HR professional
 
 **MSS:**
-1. HR professional selects an employee by ID.
+1. HR professional selects an employee by index.
 2. HR professional edits one or more fields (e.g., role, department, phone).
-3. System validates and saves the updated record.
-4. System displays confirmation message.
+3. System validates input.
+4. System saves the updated record.
+4. System displays confirmation message.\
+Use case ends.
 
 **Extensions:**
-- 1a. Employee ID not found → System shows error.
-- 2a. No fields provided → System shows error.
-- 3a. Email already exists in another record → System rejects update.
+- 3a. System detects invalid index.
+  - 3a1. System displays error.
+  - Use case ends.
+- 3b. System detects duplicate field.
+  - 3b1. System displays error.
+  - Use case ends.
+
+---
+
+**Use case: UC04 – Delete employee**\
+**Actor:** HR professional
+
+**MSS:**
+1. HR professional selects an employee to be deleted by index.
+2. System prompts to ask for confirmation.
+3. HR professional confirms the deletion
+4. System deletes the employee. 
+5. System saves the updated record.
+6. System displays confirmation message.\
+Use case ends.
+
+**Extensions:**
+- 1a. System detects invalid index.
+   - 1a1. System displays error.
+   - Use case ends.
+- 2a. HR professional cancels deletion.
+  - 2a1. System displays deletion cancelled.
+  - Use case ends.
 
 ---
 
@@ -255,7 +282,6 @@ Jean launches Slackbook automatically each day. She reviews flagged errors, filt
 3. Operations (add, update, search) should return results within 2 seconds.
 4. The system should run on Windows, macOS, and Linux (Constraint-Portable).
 5. The system should be easy to use for non-technical HR staff (Constraint-Usability).
-6. The system should highlight missing or outdated data automatically (Constraint-DataQuality).
 
 ---
 
@@ -265,7 +291,6 @@ Jean launches Slackbook automatically each day. She reviews flagged errors, filt
 - **HR Manager/Professional**: User responsible for maintaining employee information.
 - **Skills**: Specific competencies associated with an employee (e.g., Python, Java).
 - **Category**: A label grouping employees (e.g., Department, Team, Role).
-- **Slack Integration**: Ability to connect Slackbook with Slack for quick communication.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -330,14 +355,14 @@ testers are expected to do more *exploratory* testing.
 
 # Appendix: Effort
 
-SlackBook builds upon **AddressBook Level 3 (AB3)**, extending it from a simple contact manager into a **Human Resource management tool** that supports structured employee data such as **skills**, **roles**, **teams**, and **departments**.  
+Slackbook builds upon **AddressBook Level 3 (AB3)**, extending it from a simple contact manager into a **Human Resource management tool** that supports structured employee data such as **skills**, **roles**, **teams**, and **departments**.  
 This expansion introduced significant architectural and design complexity while maintaining code quality and defensive programming practices.
 
 ---
 
 ## Difficulty Level
 
-Compared to AB3 (which handled a single entity — `Person`), SlackBook introduces multiple dynamic entities:
+Compared to AB3 (which handled a single entity — `Person`), Slackbook introduces multiple dynamic entities:
 
 - **Category** (representing Role, Team, Department)
 - **Skill** (a new entity linked to each person)

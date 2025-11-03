@@ -110,26 +110,6 @@ public class UpdateCommandTest {
         assertCommandFailure(updateCommand, model, UpdateCommand.MESSAGE_DUPLICATE_PERSON);
     }
 
-    @Test
-    public void execute_duplicateEmail_failure() {
-        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
-        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder()
-                .withEmail(secondPerson.getEmail().value).build();
-        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON, descriptor);
-
-        assertCommandFailure(updateCommand, model, UpdateCommand.MESSAGE_DUPLICATE_EMAIL);
-    }
-
-    @Test
-    public void execute_duplicatePhone_failure() {
-        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
-        UpdatePersonDescriptor descriptor = new UpdatePersonDescriptorBuilder()
-                .withPhone(secondPerson.getPhone().value).build();
-        UpdateCommand updateCommand = new UpdateCommand(INDEX_FIRST_PERSON, descriptor);
-
-        assertCommandFailure(updateCommand, model, UpdateCommand.MESSAGE_DUPLICATE_PHONE);
-    }
-
     //Invalid index
 
     @Test
