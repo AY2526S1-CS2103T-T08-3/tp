@@ -14,7 +14,7 @@ public class Skill {
                     + "and should not be blank.(maximum 30 characters)";
 
     /** One or more alphanumeric words separated by single spaces. */
-    private static final String VALIDATION_REGEX = "^[\\p{Alnum} ]{1,30}$";
+    private static final String VALIDATION_REGEX = "^[A-Za-z0-9+.#_\\-]+(?: [A-Za-z0-9+.#_\\-]+)*$";
 
     /** The name of this skill (immutable). */
     public final String skillName;
