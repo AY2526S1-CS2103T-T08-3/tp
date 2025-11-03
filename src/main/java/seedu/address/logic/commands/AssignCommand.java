@@ -21,7 +21,7 @@ import seedu.address.model.tag.Category;
  */
 public class AssignCommand extends Command {
     public static final String COMMAND_WORD = "assign_category";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Updates the category of the person identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Assigns the category to the person identified "
             + "by the index number used in the last person listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_ASSIGN_CATEGORY + "CATEGORY_TYPE "
