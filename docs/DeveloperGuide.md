@@ -291,7 +291,6 @@ Use case ends.
 - **HR Manager/Professional**: User responsible for maintaining employee information.
 - **Skills**: Specific competencies associated with an employee (e.g., Python, Java).
 - **Category**: A label grouping employees (e.g., Department, Team, Role).
-- **Slack Integration**: Ability to connect Slackbook with Slack for quick communication.
 
 --------------------------------------------------------------------------------------------------------------------
 
