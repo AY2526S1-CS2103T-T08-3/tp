@@ -282,7 +282,6 @@ Use case ends.
 3. Operations (add, update, search) should return results within 2 seconds.
 4. The system should run on Windows, macOS, and Linux (Constraint-Portable).
 5. The system should be easy to use for non-technical HR staff (Constraint-Usability).
-6. The system should highlight missing or outdated data automatically (Constraint-DataQuality).
 
 ---
 
