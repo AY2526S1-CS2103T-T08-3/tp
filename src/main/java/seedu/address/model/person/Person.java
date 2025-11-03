@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Category;
@@ -21,6 +22,7 @@ public class Person {
     private final Phone phone;
     private final Email email;
 
+    // Additional attributes
     private final Set<Category> categories = new HashSet<>();
     private final Set<Skill> skills = new HashSet<>();
 
@@ -28,7 +30,7 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email,
-            Set<Category> categories, Set<Skill> skills) {
+                  Set<Category> categories, Set<Skill> skills) {
         requireAllNonNull(name, phone, email, categories, skills);
         this.name = name;
         this.phone = phone;
@@ -65,7 +67,7 @@ public class Person {
     public Set<Skill> getSkills() {
         return Collections.unmodifiableSet(skills);
     }
-    
+
     /**
      * Returns a human-readable one-line summary of this person,
      * including their categories and skills, suitable for confirmation dialogs.
@@ -78,7 +80,7 @@ public class Person {
         if (!categories.isEmpty()) {
             String categoryList = categories.stream()
                     .map(Category::toString)
-                    .collect(java.util.stream.Collectors.joining(", "));
+                    .collect(Collectors.joining(", "));
             sb.append("Categories: ").append(categoryList);
         }
 
@@ -89,7 +91,7 @@ public class Person {
             }
             String skillList = skills.stream()
                     .map(Skill::toString)
-                    .collect(java.util.stream.Collectors.joining(", "));
+                    .collect(Collectors.joining(", "));
             sb.append("Skills: ").append(skillList);
         }
 
@@ -156,4 +158,3 @@ public class Person {
                 .toString();
     }
 }
-
