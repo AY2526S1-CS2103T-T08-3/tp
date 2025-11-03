@@ -2,8 +2,39 @@
 layout: page
 title: Developer Guide
 ---
-* Table of Contents
-{:toc}
+<h1>Slackbook Developer Guide</h1>
+
+## Table of Contents
+* [Setting up, getting started](#setting-up-getting-started)
+* [Design](#design)
+  * [Architecture](#architecture)
+  * [UI component](#ui-component)
+  * [Logic component](#logic-component)
+  * [Model component](#model-component)
+  * [Storage component](#storage-component)
+  * [Common classes](#common-classes)
+* [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
+* [Appendix: Requirements](#appendix-requirements)
+  * [Product scope](#product-scope)
+  * [User stories](#user-stories)
+  * [User scenarios](#user-scenarios)
+  * [Use cases](#use-cases)
+  * [Non-Functional Requirements](#non-functional-requirements)
+  * [Glossary](#glossary)
+* [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
+  * [Launch and shutdown](#launch-and-shutdown)
+  * [Deleting a person](#deleting-a-person)
+  * [Saving data](#saving-data)
+* [Appendix: Effort](#appendix-effort)
+  * [Difficulty level](#difficulty-level)
+  * [Challenges faced](#challenges-faced)
+  * [Effort and Achievements](#effort-and-achievements)
+  * [Reuse and Efficiency](#reuse-and-efficiency)
+* [Appendix: Planned Enhancements](#appendix-planned-enhancements)
+  * [1. Add alphabetical sorting within groups](#1-add-alphabetical-sorting-within-groups)
+  * [2. Autocomplete for known categories](#2-autocomplete-for-known-categories)
+  * [3. Add confirmation prompt for `clear`](#3-add-confirmation-prompt-for-clear)
+  * [4. Show change summary after updates](#4-show-change-summary-after-updates)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -154,7 +185,7 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Appendix: Requirements
+## **Appendix: Requirements**
 
 ### Product scope
 
@@ -186,7 +217,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ---
 
-### User Scenarios
+### User scenarios
 
 **A. First Use (new and curious HR professional)**
 Jean, a first-time HR professional, hears about Slackbook as a faster way to manage employee directories. She installs Slackbook, explores search and categorization, and adds her first employee profile. She realizes Slackbook could replace her manual spreadsheets.
